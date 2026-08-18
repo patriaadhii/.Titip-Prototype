@@ -282,7 +282,7 @@
 
   .feed-card-body{ padding:13px 14px 14px; }
   .feed-card-title{ font-size:14.5px; font-weight:700; color:var(--primary); line-height:1.35; margin-bottom:4px; }
-  .feed-card-meta, .location-line{ font-size:12px; color:var(--muted); display:flex; align-items:center; gap:5px; margin-bottom:8px; }
+  .feed-card-meta{ font-size:12px; color:var(--muted); display:flex; align-items:center; gap:5px; margin-bottom:8px; }
   .feed-card-desc{
     font-size:12px;
     color:var(--tertiary);
@@ -608,15 +608,48 @@
   }
   .my-request-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; gap:8px;}
   .my-request-title{ font-size:13.5px; font-weight:700; color:var(--primary); }
-  .status-pill{
-    font-size:10px; font-weight:700;
-    padding:4px 9px; border-radius:100px;
-    white-space:nowrap;
+  
+  .order-item{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:16px;
+    margin:0 16px 12px;
+    padding:13px 14px;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.025);
+    box-sizing:border-box;
+    transition:all .15s ease;
   }
-  .status-waiting{ background:#FEF3C7; color:#B45309; }
-  .status-offer{ background:#DBEAFE; color:#1D4ED8; }
-  .status-accepted{ background:#DCFCE7; color:#15803D; }
-  .status-cancelled{ background:#F1F5F9; color:#64748B; }
+  .order-info{ flex:1; min-width:0; }
+  .order-title{
+    font-size:13.5px;
+    font-weight:800;
+    color:var(--primary);
+    line-height:1.35;
+    word-break:break-word;
+  }
+  .order-meta{ font-size:11px; color:var(--muted); margin-top:2px; }
+  .order-status-row{ display:flex; align-items:center; flex-wrap:wrap; }
+
+  .status-pill{
+    font-size:10px;
+    font-weight:700;
+    padding:3.5px 8px;
+    border-radius:100px;
+    white-space:nowrap;
+    display:inline-flex;
+    align-items:center;
+    gap:3px;
+    flex-shrink:0;
+    line-height:1.2;
+  }
+  .status-waiting, .status-warning{ background:#FEF3C7; color:#B45309; border:1px solid #FDE68A; }
+  .status-offer, .status-processing{ background:#DBEAFE; color:#1D4ED8; border:1px solid #BFDBFE; }
+  .status-accepted, .status-completed{ background:#DCFCE7; color:#15803D; border:1px solid #BBF7D0; }
+  .status-cancelled, .status-danger{ background:#FEE2E2; color:#DC2626; border:1px solid #FECACA; }
+  .status-neutral{ background:#F1F5F9; color:#64748B; border:1px solid #CBD5E1; }
   .my-request-sub{ font-size:11.5px; color:var(--muted); }
   .offer-count{ display:flex; align-items:center; gap:5px; margin-top:8px; font-size:11.5px; color:var(--secondary); font-weight:700; }
 
@@ -2193,93 +2226,191 @@
   .topbar-mode-badge:hover {
     background: #FFEDD5;
   }
+  /* ============ JASTIPER BUYER REQUEST CARD (MODERN & REFINED) ============ */
+  /* ============ JASTIPER BUYER REQUEST FEED CARD (SIMPLE & COMPACT) ============ */
   .buyer-request-card {
     background: #fff;
     border: 1px solid var(--border);
     border-radius: 16px;
-    padding: 14px 15px;
-    margin-bottom: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-    transition: all .15s ease;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    transition: all .18s ease;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
   }
   .buyer-request-card:hover {
     border-color: #CBD5E1;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    transform: translateY(-1.5px);
+    box-shadow: 0 5px 14px rgba(0,0,0,0.05);
+  }
+  .buyer-request-card:active {
+    transform: scale(0.99);
   }
   .buyer-req-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
   }
   .buyer-req-user {
     display: flex;
     align-items: center;
     gap: 8px;
   }
+  .buyer-req-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 800;
+    font-size: 10.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .buyer-req-user-name {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    line-height: 1.2;
+  }
+  .buyer-req-user-city {
+    font-size: 10px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 2.5px;
+    margin-top: 1px;
+  }
+  .buyer-req-posted-pill {
+    font-size: 9.5px;
+    font-weight: 600;
+    color: var(--muted);
+    background: var(--neutral);
+    border: 1px solid var(--border);
+    padding: 2px 6.5px;
+    border-radius: 100px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    white-space: nowrap;
+  }
+  .buyer-req-main {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .buyer-req-tags-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+  .buyer-req-category-badge {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #0284C7;
+    background: #F0F9FF;
+    border: 1px solid #BAE6FD;
+    padding: 1.5px 6px;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .buyer-req-qty-badge {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #475569;
+    background: #F1F5F9;
+    border: 1px solid #CBD5E1;
+    padding: 1.5px 5px;
+    border-radius: 5px;
+  }
   .buyer-req-title {
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 800;
     color: var(--primary);
     line-height: 1.35;
   }
-  .buyer-req-budget-box {
-    background: #FFF7ED;
-    border: 1px solid #FFEDD5;
+  .buyer-req-simple-strip {
+    background: #F8FAFC;
+    border: 1px solid #F1F5F9;
     border-radius: 10px;
-    padding: 8px 12px;
+    padding: 8px 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
   }
-  .buyer-req-budget-label {
+  .buyer-req-simple-route {
     font-size: 11px;
-    color: #9A3412;
     font-weight: 600;
-  }
-  .buyer-req-budget-val {
-    font-size: 13.5px;
-    font-weight: 800;
-    color: var(--secondary);
-  }
-  .buyer-req-meta-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    font-size: 11px;
     color: var(--tertiary);
-  }
-  .buyer-req-meta-item {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 65%;
+  }
+  .buyer-req-budget-val {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--secondary);
+    line-height: 1.2;
+    white-space: nowrap;
   }
   .buyer-req-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-top: 6px;
+    gap: 8px;
+    padding-top: 4px;
     border-top: 1px dashed var(--border);
+  }
+  .buyer-req-status-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10.5px;
+    color: var(--muted);
+  }
+  .buyer-req-offers-indicator {
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
   }
   .offer-submit-btn {
     background: var(--secondary);
     color: #fff;
     border: none;
     border-radius: 10px;
-    padding: 7px 13px;
+    padding: 6.5px 13px;
     font-size: 11.5px;
     font-weight: 700;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    box-shadow: 0 2px 8px rgba(255,87,34,0.25);
+    box-shadow: 0 2px 8px rgba(255,87,34,0.22);
     transition: all .15s ease;
+    white-space: nowrap;
   }
+  .offer-submit-btn:hover { background: #E64A19; transform: translateY(-0.5px); }
   .offer-submit-btn:active { transform: scale(0.97); }
-  .offer-submit-btn:hover { background: #E64A19; }
 
   /* Jastiper Event Join Banner */
   .jastiper-event-join-banner {
@@ -2620,11 +2751,11 @@
       <span class="logo-dot"></span><span class="logo-text">Titip</span>
     </div>
     <div class="topbar-icons">
-      <button class="icon-btn" onclick="showToast('Buka chat')">
+      <button class="icon-btn" onclick="showToast('Direct chat opened')" title="Direct Chat">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
         <span class="notif-dot"></span>
       </button>
-      <button class="icon-btn" onclick="openCart()" title="Buka Keranjang Belanja">
+      <button class="icon-btn" onclick="openCart()" title="Shopping Cart">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 2-1.58l1.65-8.42H5.12"/></svg>
         <span class="cart-count" id="cart-count-badge">2</span>
       </button>
@@ -2654,6 +2785,42 @@ const user = {
   homebase: "Jakarta Selatan",
   badge: "Silver"
 };
+
+let savedPickupAddresses = [
+  {
+    id: 'addr-event-1',
+    label: 'JIEXPO Kemayoran (Event Venue)',
+    tag: 'Event Hub',
+    address: 'Gedung Pusat Niaga Lt. 1, Arena PRJ Kemayoran, Jakarta Pusat 10620',
+    city: 'Jakarta Pusat',
+    contactName: 'Raka Pratama (0812-9876-5432)',
+    coords: { lat: -6.1495, lng: 106.8456 },
+    coordsVerified: true,
+    isDefault: false
+  },
+  {
+    id: 'addr-home-1',
+    label: 'Homebase Utama (Jakarta Selatan)',
+    tag: 'Homebase',
+    address: 'Jl. Senopati No. 42, Kebayoran Baru, Jakarta Selatan 12190',
+    city: 'Jakarta Selatan',
+    contactName: 'Raka Pratama (0812-9876-5432)',
+    coords: { lat: -6.2341, lng: 106.8124 },
+    coordsVerified: true,
+    isDefault: true
+  },
+  {
+    id: 'addr-office-1',
+    label: 'Studio Dispatch (Jakarta Pusat)',
+    tag: 'Office Hub',
+    address: 'Menara BCA Lt. 18, Jl. M.H. Thamrin No. 1, Jakarta Pusat 10310',
+    city: 'Jakarta Pusat',
+    contactName: 'Raka Pratama (0812-9876-5432)',
+    coords: { lat: -6.1952, lng: 106.8228 },
+    coordsVerified: true,
+    isDefault: false
+  }
+];
 
 const feedItems = [
   { id:'t1', type:'trip', badge:'Trip • Overseas', title:'Shopping Trip from Tokyo, Japan',
@@ -3056,7 +3223,7 @@ let mySentOffers = [
     etaDate: 'Aug 23, 2026',
     notes: 'I can purchase this at Pop Mart CentralWorld Bangkok on Aug 21. 100% authentic guaranteed.',
     status: 'pending',
-    statusLabel: 'Awaiting Buyer Response',
+    statusLabel: 'Awaiting Response',
     createdAt: '10 mins ago'
   },
   {
@@ -3151,7 +3318,8 @@ const icons = {
   shoppingBag:'<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>',
   box:'<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
   sparkles:'<path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>',
-  chat:'<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/>'
+  chat:'<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/>',
+  globe:'<circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'
 };
 function svg(name, extra=''){ return `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ${extra}>${icons[name] || ''}</svg>`; }
 
@@ -3168,11 +3336,248 @@ function renderVerifiedBadge(isVerified, isMini = false){
   }
 }
 
+/* ============ I18N DICTIONARY & TRANSLATION LIBRARY ============ */
+const i18n = {
+  id: {
+    tagline: 'Titik awal impian sampai di tangan',
+    nav: {
+      explore: 'Jelajah',
+      events: 'Event',
+      requestItem: 'Titip Barang',
+      postTrip: 'Buka Jastip',
+      activity: 'Aktivitas',
+      profile: 'Profil'
+    },
+    common: {
+      search: 'Cari',
+      filter: 'Filter',
+      all: 'Semua',
+      save: 'Simpan',
+      cancel: 'Batal',
+      close: 'Tutup',
+      done: 'Selesai',
+      apply: 'Terapkan',
+      back: 'Kembali',
+      delete: 'Hapus',
+      edit: 'Ubah',
+      verified: 'Terverifikasi',
+      unverified: 'Belum Verifikasi',
+      viewDetails: 'Lihat Detail',
+      submitOffer: 'Ajukan Penawaran',
+      items: 'barang',
+      reviews: 'ulasan',
+      sold: 'terjual'
+    },
+    profile: {
+      title: 'Profil Pengguna',
+      verifiedTitle: 'Akun Terverifikasi',
+      unverifiedTitle: 'Akun Belum Verifikasi',
+      verifiedSub: 'Identitas akun Anda telah resmi diverifikasi',
+      unverifiedSub: 'Verifikasi akun Anda untuk meningkatkan keamanan transaksi',
+      verifyNow: 'Verifikasi Sekarang',
+      resetSim: 'Reset Simulasi',
+      balance: 'Saldo TitikTitip',
+      shopperEarnings: 'Penghasilan Jastiper',
+      topUp: '+ Isi Saldo',
+      withdraw: 'Tarik Dana',
+      manageTrips: 'Kelola Jadwal Trip & Lapak',
+      incomingOrders: 'Pesanan Masuk',
+      sentOffers: 'Penawaran ke Pembeli',
+      payoutBank: 'Rekening Bank Pencairan',
+      helpCenter: 'Pusat Bantuan & Jaminan Aman',
+      shopperHelp: 'Pusat Bantuan Jastiper',
+      appGuide: 'Panduan Aplikasi & Tutorial',
+      shopperGuide: 'Panduan Jastiper & Tutorial',
+      language: 'Pilihan Bahasa / Language',
+      languageSub: 'Ganti bahasa tampilan aplikasi',
+      switchToShopper: 'Beralih ke Mode Jastiper',
+      switchToShopperSub: 'Buka layanan jastip & terima pesanan',
+      switchToBuyer: 'Beralih ke Mode Pembeli',
+      switchToBuyerSub: 'Belanja & ajukan permintaan titip barang',
+      logout: 'Keluar Akun'
+    },
+    languageModal: {
+      title: 'Pilih Bahasa / Language',
+      sub: 'Pilih bahasa tampilan untuk aplikasi TitikTitip',
+      idTitle: 'Bahasa Indonesia',
+      idSub: 'Bahasa default & lokal Indonesia',
+      enTitle: 'English',
+      enSub: 'International standard English',
+      note: 'Perubahan bahasa akan langsung diterapkan pada seluruh halaman dan panduan aplikasi.',
+      doneBtn: 'Selesai / Done'
+    },
+    explore: {
+      searchPlaceholder: 'Cari trip, lapak, kota asal, atau produk...',
+      shopperSearchPlaceholder: 'Cari permintaan barang, kategori, atau kota...',
+      recommended: 'Rekomendasi Untukmu',
+      buyerRequests: 'Eksplor Permintaan Titip',
+      shopperModeBadge: 'MODE JASTIPER',
+      shopperSub: 'Daftar titipan terbuka dari pembeli di seluruh Indonesia.',
+      filterTitle: 'Filter Pencarian'
+    },
+    event: {
+      title: 'Event TitikTitip',
+      sub: 'Bazaar, expo, dan konser live dengan jastiper on-site.',
+      newsTab: 'News & Updates',
+      eventTab: 'Live Events',
+      joinEvent: 'Buka Room Belanja di Event Ini',
+      registeredShopper: 'SUDAH TERDAFTAR SEBAGAI JASTIPER',
+      activeShoppers: 'Jastiper Aktif',
+      interestedBuyers: 'Pembeli Tertarik'
+    },
+    activity: {
+      transactions: 'Transaksi',
+      requests: 'Permintaan Titip',
+      incomingOrders: 'Pesanan Masuk',
+      sentOffers: 'Penawaran Terkirim',
+      toPurchase: 'Perlu Dibeli',
+      purchasing: 'Sedang Dibeli',
+      shipped: 'Dikirim',
+      completed: 'Selesai',
+      autoAWB: 'Resi Otomatis (AWB)',
+      reqPickup: '1-Klik Request Pickup Kurir',
+      printLabel: 'Cetak Label Pengiriman'
+    }
+  },
+  en: {
+    tagline: 'Titik awal impian sampai di tangan',
+    nav: {
+      explore: 'Explore',
+      events: 'Events',
+      requestItem: 'Request Item',
+      postTrip: 'Post Trip',
+      activity: 'Activity',
+      profile: 'Profile'
+    },
+    common: {
+      search: 'Search',
+      filter: 'Filter',
+      all: 'All',
+      save: 'Save',
+      cancel: 'Cancel',
+      close: 'Close',
+      done: 'Done',
+      apply: 'Apply',
+      back: 'Back',
+      delete: 'Delete',
+      edit: 'Edit',
+      verified: 'Verified',
+      unverified: 'Unverified',
+      viewDetails: 'View Details',
+      submitOffer: 'Submit Offer',
+      items: 'items',
+      reviews: 'reviews',
+      sold: 'sold'
+    },
+    profile: {
+      title: 'User Profile',
+      verifiedTitle: 'Verified Account',
+      unverifiedTitle: 'Unverified Account',
+      verifiedSub: 'Your account identity is officially verified',
+      unverifiedSub: 'Verify your account to boost transaction security',
+      verifyNow: 'Verify Now',
+      resetSim: 'Reset Simulation',
+      balance: 'TitikTitip Balance',
+      shopperEarnings: 'Shopper Earnings',
+      topUp: '+ Top Up Balance',
+      withdraw: 'Withdraw Funds',
+      manageTrips: 'Manage My Trips & Stalls',
+      incomingOrders: 'Incoming Orders',
+      sentOffers: 'Sent Buyer Request Offers',
+      payoutBank: 'Payout Bank Account',
+      helpCenter: 'Help Center & Security Guarantee',
+      shopperHelp: 'Shopper Help Center & Guidelines',
+      appGuide: 'App Guide & Walkthrough',
+      shopperGuide: 'Shopper Guide & Tutorial',
+      language: 'Language Settings',
+      languageSub: 'Change application display language',
+      switchToShopper: 'Switch to Shopper Mode',
+      switchToShopperSub: 'Switch to post shopping services & accept orders',
+      switchToBuyer: 'Switch to Buyer Mode',
+      switchToBuyerSub: 'Switch to shop & post item requests',
+      logout: 'Log Out'
+    },
+    languageModal: {
+      title: 'Select Language',
+      sub: 'Choose your preferred language for the TitikTitip app',
+      idTitle: 'Bahasa Indonesia',
+      idSub: 'Default Indonesian & local language',
+      enTitle: 'English',
+      enSub: 'International standard English',
+      note: 'Language preference will be applied across all pages and walkthroughs immediately.',
+      doneBtn: 'Save Settings'
+    },
+    explore: {
+      searchPlaceholder: 'Search trips, stalls, cities, or items...',
+      shopperSearchPlaceholder: 'Search buyer requests, categories, or cities...',
+      recommended: 'Recommended for you',
+      buyerRequests: 'Explore Buyer Requests',
+      shopperModeBadge: 'SHOPPER MODE',
+      shopperSub: 'Open requests from verified buyers across Indonesia.',
+      filterTitle: 'Search Filters'
+    },
+    event: {
+      title: 'TitikTitip Events',
+      sub: 'Bazaars, expos, and live concerts with on-site personal shoppers.',
+      newsTab: 'News & Updates',
+      eventTab: 'Live Events',
+      joinEvent: 'Open Shopping Room at This Event',
+      registeredShopper: 'REGISTERED AS SHOPPER',
+      activeShoppers: 'Active Shoppers',
+      interestedBuyers: 'Interested Buyers'
+    },
+    activity: {
+      transactions: 'Transactions',
+      requests: 'Item Requests',
+      incomingOrders: 'Incoming Orders',
+      sentOffers: 'My Sent Offers',
+      toPurchase: 'To Purchase',
+      purchasing: 'Purchasing',
+      shipped: 'Shipped',
+      completed: 'Completed',
+      autoAWB: 'Auto Tracking (AWB)',
+      reqPickup: '1-Click Request Courier Pickup',
+      printLabel: 'Print Shipping Label'
+    }
+  }
+};
+
+function t(key, fallback = ''){
+  const lang = state.lang || 'id';
+  const keys = key.split('.');
+  let val = i18n[lang];
+  for(const k of keys){
+    if(val && val[k] !== undefined){
+      val = val[k];
+    } else {
+      val = null;
+      break;
+    }
+  }
+  if(val !== null && val !== undefined) return val;
+  if(lang !== 'en'){
+    let valEn = i18n['en'];
+    for(const k of keys){
+      if(valEn && valEn[k] !== undefined){
+        valEn = valEn[k];
+      } else {
+        valEn = null;
+        break;
+      }
+    }
+    if(valEn !== null && valEn !== undefined) return valEn;
+  }
+  return fallback || key;
+}
+
 /* ============ STATE ============ */
 let state = {
   tab:'timeline',
   appMode:'buyer',
+  lang:'id', // 'id' | 'en' (Indonesian / English)
+  showLanguageSheet: false,
   guidanceStep: 0, // Starts at Welcome Pop-up (Step 0) on app load
+  shopperGuidanceStep: null, // Shopper Mode Welcome Board & Guidance
   timelineChip:'all',
   eventSubTab:'event',
   activitySubTab:'transaksi',
@@ -3497,41 +3902,29 @@ function getFilteredEvents(){
 function getNavConfig(){
   if(state.appMode === 'jastiper'){
     return [
-      { key:'timeline', label:'Buyer Requests', icon:'home' },
-      { key:'event', label:'Events', icon:'calendar' },
-      { key:'titip', label:'Post Service', icon:'plus', isCenter:true },
-      { key:'activity', label:'Activity', icon:'activity' },
-      { key:'profile', label:'Profile', icon:'user' },
+      { key:'timeline', label: t('nav.explore', 'Explore'), icon:'home' },
+      { key:'event', label: t('nav.events', 'Events'), icon:'calendar' },
+      { key:'titip', label: t('nav.postTrip', 'Post Trip'), icon:'plus', isCenter:true },
+      { key:'activity', label: t('nav.activity', 'Activity'), icon:'activity' },
+      { key:'profile', label: t('nav.profile', 'Profile'), icon:'user' },
     ];
   }
   return [
-    { key:'timeline', label:'Explore', icon:'home' },
-    { key:'event', label:'Events', icon:'calendar' },
-    { key:'titip', label:'Request Item', icon:'plus', isCenter:true },
-    { key:'activity', label:'Activity', icon:'activity' },
-    { key:'profile', label:'Profile', icon:'user' },
+    { key:'timeline', label: t('nav.explore', 'Explore'), icon:'home' },
+    { key:'event', label: t('nav.events', 'Events'), icon:'calendar' },
+    { key:'titip', label: t('nav.requestItem', 'Request Item'), icon:'plus', isCenter:true },
+    { key:'activity', label: t('nav.activity', 'Activity'), icon:'activity' },
+    { key:'profile', label: t('nav.profile', 'Profile'), icon:'user' },
   ];
 }
-
-const navConfig = [
-  { key:'timeline', label:'Explore', icon:'home' },
-  { key:'event', label:'Events', icon:'calendar' },
-  { key:'titip', label:'Request Item', icon:'plus', isCenter:true },
-  { key:'activity', label:'Activity', icon:'activity' },
-  { key:'profile', label:'Profile', icon:'user' },
-];
 
 function getCartCount(){
   return (state.cartItems || []).reduce((acc, item) => acc + (item.qty || 1), 0);
 }
 
 function openCart(){
+  resetSubScreens();
   state.showCart = true;
-  state.detail = null;
-  state.showTitipForm = false;
-  state.eventDetailId = null;
-  state.eventParticipantIdx = null;
-  state.checkoutData = null;
   render();
 }
 
@@ -3648,15 +4041,20 @@ function proceedToCheckoutFromCart(){
   render();
 }
 
-function setTab(tab){
-  state.tab = tab;
+function resetSubScreens(){
   state.detail = null;
   state.showCart = false;
   state.showTitipForm = false;
   state.requestDetailId = null;
+  state.publicBuyerRequestDetailId = null;
   state.eventDetailId = null;
   state.eventParticipantIdx = null;
   state.checkoutData = null;
+}
+
+function setTab(tab){
+  state.tab = tab;
+  resetSubScreens();
   render();
 }
 function setEventSubTab(t){ state.eventSubTab = t; render(); }
@@ -3666,11 +4064,22 @@ function setRequestStageChip(c){ state.requestStageChip = c; render(); }
 function setTimelineChip(c){ state.timelineChip = c; render(); }
 
 function openDetail(id){
+  resetSubScreens();
   state.detail = id;
   render();
 }
 function closeDetail(){
   state.detail = null;
+  render();
+}
+
+function openPublicBuyerRequestDetail(id){
+  resetSubScreens();
+  state.publicBuyerRequestDetailId = id;
+  render();
+}
+function closePublicBuyerRequestDetail(){
+  state.publicBuyerRequestDetailId = null;
   render();
 }
 
@@ -3722,8 +4131,9 @@ function render(){
     : (state.detail ? 'detail_' + state.detail 
     : (state.showTitipForm ? 'titip_form' 
     : (state.requestDetailId ? 'request_' + state.requestDetailId
+    : (state.publicBuyerRequestDetailId ? 'pub_request_' + state.publicBuyerRequestDetailId
     : (state.eventDetailId ? 'event_' + state.eventDetailId + '_' + state.eventParticipantIdx 
-    : 'tab_' + state.tab)))));
+    : 'tab_' + state.tab))))));
 
   const isNewScreen = state._lastScreenKey !== currentScreenKey;
   state._lastScreenKey = currentScreenKey;
@@ -3750,6 +4160,15 @@ function render(){
     const item = feedItems.find(f => f.id === state.detail);
     c.innerHTML = item.type === 'trip' ? renderTripDetail(item) : renderLapakDetail(item);
     c.style.paddingBottom = '24px';
+    nav.classList.add('hidden');
+    if(isNewScreen) c.scrollTop = 0;
+    checkAndInjectModal();
+    return;
+  }
+
+  if(state.publicBuyerRequestDetailId){
+    c.innerHTML = renderPublicBuyerRequestDetailPage();
+    c.style.paddingBottom = '0';
     nav.classList.add('hidden');
     if(isNewScreen) c.scrollTop = 0;
     checkAndInjectModal();
@@ -3798,6 +4217,7 @@ const guidanceSteps = [
   {
     step: 0,
     type: 'welcome',
+    tagline: 'Titik awal impian sampai di tangan',
     title: 'Welcome to TitikTitip!',
     sub: 'Your trusted personal shopping marketplace with 100% money-back guarantee & SLA protection from verified shoppers.',
     highlights: [
@@ -3988,10 +4408,522 @@ const guidanceSteps = [
   }
 ];
 
+const shopperGuidanceSteps = [
+  {
+    step: 0,
+    type: 'welcome',
+    badge: '✈️ Mode Jastiper',
+    tagline: 'Titik awal impian sampai di tangan',
+    title: 'Welcome to Shopper Mode! ✈️',
+    sub: 'Buka peluang penghasilan dari setiap perjalanan & kunjungan event Anda. Raih ribuan pesanan titip dengan jaminan pembayaran 100% aman.',
+    highlights: [
+      { icon: 'search', text: 'Explore & Bid Open Buyer Requests with custom fee' },
+      { icon: 'calendar', text: 'Join Live Event Rooms with auto GPS pickup coordinates' },
+      { icon: 'truck', text: 'Automated Courier Pickup & Auto AWB (Instant & Reguler)' },
+      { icon: 'shield', text: '100% Escrow Protection & Guaranteed Shopper Payouts' }
+    ],
+    tab: 'timeline',
+    layoutPos: 'pos-center',
+    targetInfo: null,
+    btnPrimary: 'Start Shopper Tour (1 min) →',
+    btnSecondary: 'Explore Requests Now'
+  },
+  {
+    step: 1,
+    type: 'feature',
+    stepNumber: 'Step 1 of 5',
+    badge: '🧭 Explore Buyer Requests',
+    tagline: 'Titik awal impian sampai di tangan',
+    title: 'Bid on Open Buyer Requests',
+    sub: 'Browse live requests from buyers across Indonesia. Filter by destination (Tokyo, Bangkok, Singapore, Domestic) and product category. Tap any card to submit competitive offers!',
+    highlights: [
+      { icon: 'search', text: 'Browse budget, quantity, and deadline requirements' },
+      { icon: 'wallet', text: 'Set your personal shopper service fee & payment scheme' },
+      { icon: 'check', text: 'Funds are 100% secured in escrow when offer accepted' }
+    ],
+    tab: 'timeline',
+    layoutPos: 'pos-center',
+    targetInfo: {
+      type: 'rect',
+      tagText: '🎯 Explore Buyer Requests',
+      spotlightStyle: 'bottom:6px; left:8px; width:68px; height:54px;',
+      tagStyle: 'bottom:66px; left:8px;',
+      pathD: 'M 95 630 C 95 720, 42 750, 42 822',
+      targetPoint: { x: 42, y: 822 }
+    },
+    btnPrimary: 'Next: Event Rooms →',
+    btnSecondary: 'Skip Tour'
+  },
+  {
+    step: 2,
+    type: 'feature',
+    stepNumber: 'Step 2 of 5',
+    badge: '🎪 Live Event Rooms',
+    tagline: 'Titik awal impian sampai di tangan',
+    title: 'Join Events & Open Private Rooms',
+    sub: 'Attending an expo, concert, or bazaar? Register at official TitikTitip events to automatically generate your personal room with GPS pickup coordinates for instant delivery!',
+    highlights: [
+      { icon: 'calendar', text: 'View total active shoppers & aggregate buyer demand' },
+      { icon: 'mapPin', text: 'Select saved pickup address with verified GPS coordinates' },
+      { icon: 'camera', text: 'Add live catalog items & collect buyer orders' }
+    ],
+    tab: 'event',
+    layoutPos: 'pos-center',
+    targetInfo: {
+      type: 'rect',
+      tagText: '🎯 Event Live Rooms',
+      spotlightStyle: 'bottom:6px; left:calc(20% + 2px); width:68px; height:54px;',
+      tagStyle: 'bottom:66px; left:21%;',
+      pathD: 'M 140 630 C 140 720, 126 750, 126 822',
+      targetPoint: { x: 126, y: 822 }
+    },
+    btnPrimary: 'Next: Post Trip & Stall →',
+    btnSecondary: '← Back'
+  },
+  {
+    step: 3,
+    type: 'feature',
+    stepNumber: 'Step 3 of 5',
+    badge: '✈️ Trip Schedules & Stalls',
+    tagline: 'Titik awal impian sampai di tangan',
+    title: 'Publish Travel Schedules & PO Stalls',
+    sub: 'Tap the center (+) button to announce upcoming flight routes or launch pre-order shopping stalls. Set custom DP or Full payment schemes according to your capacity.',
+    highlights: [
+      { icon: 'plus', text: 'Schedule overseas trips or intercity shopping runs' },
+      { icon: 'shoppingBag', text: 'Open recurring pre-order stalls with custom catalog' },
+      { icon: 'shield', text: 'Automated 50% DP & 100% Full payment escrow guard' }
+    ],
+    tab: 'timeline',
+    layoutPos: 'pos-center',
+    targetInfo: {
+      type: 'ring',
+      tagText: '🎯 Post Trip (+)',
+      spotlightStyle: 'bottom:23px; left:calc(50% - 29px); width:58px; height:58px;',
+      tagStyle: 'bottom:86px; left:0; right:0; margin:0 auto; width:max-content;',
+      pathD: 'M 210 630 L 210 778',
+      targetPoint: { x: 210, y: 778 }
+    },
+    btnPrimary: 'Next: Activity & Auto AWB →',
+    btnSecondary: '← Back'
+  },
+  {
+    step: 4,
+    type: 'feature',
+    stepNumber: 'Step 4 of 5',
+    badge: '🚚 Auto Logistics & Orders',
+    tagline: 'Titik awal impian sampai di tangan',
+    title: 'Manage Orders & Auto Courier Pickup',
+    sub: 'Fulfill orders with 48h purchase SLA. Upload receipt proof, then tap 1-Click Request Courier Pickup to auto-generate tracking numbers (AWB) and print shipping labels without manual typing!',
+    highlights: [
+      { icon: 'camera', text: 'Upload purchase receipts to verify authenticity' },
+      { icon: 'truck', text: 'Integrated Logistics Aggregator: 1-click pickup & auto AWB' },
+      { icon: 'box', text: 'Print barcodes & live status tracking synchronization' }
+    ],
+    tab: 'activity',
+    layoutPos: 'pos-center',
+    targetInfo: {
+      type: 'rect',
+      tagText: '🎯 Activity & Auto AWB',
+      spotlightStyle: 'bottom:6px; right:calc(20% + 2px); width:68px; height:54px;',
+      tagStyle: 'bottom:66px; right:21%;',
+      pathD: 'M 280 630 C 280 720, 294 750, 294 822',
+      targetPoint: { x: 294, y: 822 }
+    },
+    btnPrimary: 'Next: Shopper Profile →',
+    btnSecondary: '← Back'
+  },
+  {
+    step: 5,
+    type: 'feature',
+    stepNumber: 'Step 5 of 5',
+    badge: '💰 Earnings & Settings',
+    tagline: 'Titik awal impian sampai di tangan',
+    title: 'Track Shopper Earnings & Balance',
+    sub: 'Monitor your total completed earnings and wallet balance ready for bank withdrawal. Manage your trips, stalls, and easily switch back to Buyer mode anytime.',
+    highlights: [
+      { icon: 'wallet', text: 'Instant balance payout after buyer confirms delivery' },
+      { icon: 'shield', text: 'Verified Shopper badge boosts credibility & offers' },
+      { icon: 'users', text: 'Switch between Buyer & Shopper modes seamlessly' }
+    ],
+    tab: 'profile',
+    layoutPos: 'pos-center',
+    targetInfo: {
+      type: 'rect',
+      tagText: '🎯 Shopper Profile & Wallet',
+      spotlightStyle: 'bottom:6px; right:8px; width:68px; height:54px;',
+      tagStyle: 'bottom:66px; right:8px;',
+      pathD: 'M 325 630 C 325 720, 378 750, 378 822',
+      targetPoint: { x: 378, y: 822 }
+    },
+    btnPrimary: 'Start Earning as Shopper! 🎉',
+    btnSecondary: '← Back'
+  }
+];
+
+function getGuidanceSteps(){
+  const isId = state.lang === 'id';
+  if(isId){
+    return [
+      {
+        step: 0,
+        type: 'welcome',
+        tagline: 'Titik awal impian sampai di tangan',
+        title: 'Selamat Datang di TitikTitip!',
+        sub: 'Marketplace jastip terpercaya dengan jaminan 100% uang kembali & proteksi SLA dari jastiper terverifikasi.',
+        highlights: [
+          { icon: 'shield', text: '100% Garansi Pembelian & Proteksi Waktu SLA' },
+          { icon: 'plane', text: 'Jastip Perjalanan Luar Negeri & Lapak PO Lokal' },
+          { icon: 'users', text: 'Personal Shopper Terverifikasi & Rating Komunitas' }
+        ],
+        tab: 'timeline',
+        layoutPos: 'pos-center',
+        targetInfo: null,
+        btnPrimary: 'Mulai Tur (1 mnt) →',
+        btnSecondary: 'Lewati Tur'
+      },
+      {
+        step: 1,
+        type: 'feature',
+        stepNumber: 'Langkah 1 dari 7',
+        badge: '🧭 Feed Jelajah',
+        title: 'Temukan Trip & Lapak PO',
+        sub: 'Jelajahi trip perjalanan ke luar negeri dan lapak lokal. Filter berdasarkan kota asal jastiper, negara tujuan, atau kategori. Temukan barang Ready Stock & Pre-Order!',
+        highlights: [
+          { icon: 'plane', text: 'Jadwal jastip luar negeri & antar kota' },
+          { icon: 'shoppingBag', text: 'Lapak pre-order & berburu ready stock' },
+          { icon: 'shield', text: 'Pilihan DP 50% atau Pembayaran Penuh' }
+        ],
+        tab: 'timeline',
+        layoutPos: 'pos-center',
+        targetInfo: {
+          type: 'rect',
+          tagText: '🎯 Menu Feed Jelajah',
+          spotlightStyle: 'bottom:6px; left:8px; width:68px; height:54px;',
+          tagStyle: 'bottom:66px; left:8px;',
+          pathD: 'M 95 630 C 95 720, 42 750, 42 822',
+          targetPoint: { x: 42, y: 822 }
+        },
+        btnPrimary: 'Lanjut: Event →',
+        btnSecondary: 'Lewati'
+      },
+      {
+        step: 2,
+        type: 'feature',
+        stepNumber: 'Langkah 2 dari 7',
+        badge: '🎟️ Event & Update',
+        title: 'Jastip Event On-Site',
+        sub: 'Ikuti expo, konvensi anime, pop-up bazaar, dan konser musik. Jastiper mengantre di venue untuk merchandise eksklusif. Join room belanja untuk akses katalog khusus!',
+        highlights: [
+          { icon: 'calendar', text: 'Bazaar live, konser musik & expo hobi' },
+          { icon: 'users', text: 'Gabung room belanja untuk akses katalog' },
+          { icon: 'bell', text: 'Update real-time langsung dari lokasi acara' }
+        ],
+        tab: 'event',
+        layoutPos: 'pos-center',
+        targetInfo: {
+          type: 'rect',
+          tagText: '🎯 Event & Bazaar',
+          spotlightStyle: 'bottom:6px; left:calc(20% + 2px); width:68px; height:54px;',
+          tagStyle: 'bottom:66px; left:21%;',
+          pathD: 'M 140 630 C 140 720, 126 750, 126 822',
+          targetPoint: { x: 126, y: 822 }
+        },
+        btnPrimary: 'Lanjut: Titip Barang →',
+        btnSecondary: '← Kembali'
+      },
+      {
+        step: 3,
+        type: 'feature',
+        stepNumber: 'Langkah 3 dari 7',
+        badge: '➕ Titip Custom',
+        title: 'Ajukan Permintaan Barang Apa Saja',
+        sub: 'Belum menemukan barang impianmu? Tekan tombol tengah (+) untuk mengajukan request titip. Tentukan budget maksimal, kota pengiriman, dan batas waktu pembelian.',
+        highlights: [
+          { icon: 'plus', text: 'Upload foto contoh & deskripsi produk' },
+          { icon: 'wallet', text: 'Set budget maksimal dengan format otomatis' },
+          { icon: 'star', text: 'Jastiper akan mengajukan penawaran terbaik' }
+        ],
+        tab: 'timeline',
+        layoutPos: 'pos-center',
+        targetInfo: {
+          type: 'ring',
+          tagText: '🎯 Titip Barang (+)',
+          spotlightStyle: 'bottom:23px; left:calc(50% - 29px); width:58px; height:58px;',
+          tagStyle: 'bottom:86px; left:0; right:0; margin:0 auto; width:max-content;',
+          pathD: 'M 210 630 L 210 778',
+          targetPoint: { x: 210, y: 778 }
+        },
+        btnPrimary: 'Lanjut: Aktivitas →',
+        btnSecondary: '← Kembali'
+      },
+      {
+        step: 4,
+        type: 'feature',
+        stepNumber: 'Langkah 4 dari 7',
+        badge: '⏱️ Aktivitas & Lacak',
+        title: 'Pantau Pesanan & Penawaran',
+        sub: 'Pantau pesananmu secara real-time dengan garansi SLA (48 jam batas beli). Bandingkan penawaran jastiper yang masuk pada request titipmu, pilih yang paling cocok!',
+        highlights: [
+          { icon: 'clock', text: 'Status: Perlu Dibeli → Sedang Dibeli → Dikirim' },
+          { icon: 'shield', text: 'Bandingkan fee jastiper, skema DP & tanggal tiba' },
+          { icon: 'check', text: 'Terima & Bayar dengan proteksi 100% uang kembali' }
+        ],
+        tab: 'activity',
+        layoutPos: 'pos-center',
+        targetInfo: {
+          type: 'rect',
+          tagText: '🎯 Aktivitas & Pesanan',
+          spotlightStyle: 'bottom:6px; right:calc(20% + 2px); width:68px; height:54px;',
+          tagStyle: 'bottom:66px; right:21%;',
+          pathD: 'M 280 630 C 280 720, 294 750, 294 822',
+          targetPoint: { x: 294, y: 822 }
+        },
+        btnPrimary: 'Lanjut: Chat Jastiper →',
+        btnSecondary: '← Kembali'
+      },
+      {
+        step: 5,
+        type: 'feature',
+        stepNumber: 'Langkah 5 dari 7',
+        badge: '💬 Chat dengan Jastiper',
+        title: 'Komunikasi Langsung',
+        sub: 'Ingin memastikan varian, warna, ukuran baju, atau minta foto langsung dari toko? Tekan ikon Chat pada barang katalog atau bar atas untuk mengobrol langsung.',
+        highlights: [
+          { icon: 'edit', text: 'Tanyakan ukuran, kemasan, atau stok toko' },
+          { icon: 'camera', text: 'Minta konfirmasi foto barang langsung di toko' },
+          { icon: 'lock', text: 'Semua chat & pembayaran tetap aman di TitikTitip' }
+        ],
+        tab: 'timeline',
+        layoutPos: 'pos-center',
+        targetInfo: {
+          type: 'ring',
+          tagText: '🎯 Chat Langsung',
+          spotlightStyle: 'top:10px; right:57px; width:38px; height:38px;',
+          tagStyle: 'top:52px; right:42px;',
+          pathD: 'M 290 230 C 290 120, 345 70, 345 29',
+          targetPoint: { x: 345, y: 29 }
+        },
+        btnPrimary: 'Lanjut: Keranjang & Bayar →',
+        btnSecondary: '← Kembali'
+      },
+      {
+        step: 6,
+        type: 'feature',
+        stepNumber: 'Langkah 6 dari 7',
+        badge: '🛍️ Keranjang & Checkout',
+        title: 'Gabungkan Barang & Bayar Aman',
+        sub: 'Tambahkan beberapa barang ke keranjang, pilih opsi kurir (JNE, Instant SameDay, atau Pickup Homebase), dan bayar aman dengan QRIS, Virtual Account, atau Saldo TitikTitip.',
+        highlights: [
+          { icon: 'cart', text: 'Kelompokkan barang per jastiper & room trip' },
+          { icon: 'truck', text: 'Kurir reguler, instan atau COD homebase' },
+          { icon: 'creditCard', text: 'QRIS instan, VA BCA/Mandiri, atau Saldo' }
+        ],
+        tab: 'timeline',
+        layoutPos: 'pos-center',
+        targetInfo: {
+          type: 'ring',
+          tagText: '🎯 Keranjang & Checkout',
+          spotlightStyle: 'top:10px; right:13px; width:38px; height:38px;',
+          tagStyle: 'top:52px; right:12px;',
+          pathD: 'M 310 230 C 310 120, 387 70, 387 29',
+          targetPoint: { x: 387, y: 29 }
+        },
+        btnPrimary: 'Lanjut: Profil & Mode →',
+        btnSecondary: '← Kembali'
+      },
+      {
+        step: 7,
+        type: 'feature',
+        stepNumber: 'Langkah 7 dari 7',
+        badge: '👤 Profil & Beralih Mode',
+        title: 'Kelola Akun & Mode Jastiper',
+        sub: 'Lihat saldo TitikTitip, cek status verifikasi, dan atur alamat. Mau dapat penghasilan saat traveling? Beralih ke Mode Jastiper kapan saja di menu Profil!',
+        highlights: [
+          { icon: 'shield', text: 'Verifikasi identitas akun untuk kepercayaan' },
+          { icon: 'wallet', text: 'Kelola saldo & metode pembayaran' },
+          { icon: 'plane', text: 'Beralih ke Mode Jastiper dalam satu ketukan' }
+        ],
+        tab: 'profile',
+        layoutPos: 'pos-center',
+        targetInfo: {
+          type: 'rect',
+          tagText: '🎯 Profil & Pengaturan',
+          spotlightStyle: 'bottom:6px; right:8px; width:68px; height:54px;',
+          tagStyle: 'bottom:66px; right:8px;',
+          pathD: 'M 325 630 C 325 720, 378 750, 378 822',
+          targetPoint: { x: 378, y: 822 }
+        },
+        btnPrimary: 'Mulai Sekarang! 🎉',
+        btnSecondary: '← Kembali'
+      }
+    ];
+  }
+  return guidanceSteps;
+}
+
+function getShopperGuidanceSteps(){
+  const isId = state.lang === 'id';
+  if(isId){
+    return [
+      {
+        step: 0,
+        type: 'welcome',
+        badge: '✈️ Mode Jastiper',
+        tagline: 'Titik awal impian sampai di tangan',
+        title: 'Selamat Datang di Mode Jastiper! ✈️',
+        sub: 'Buka peluang penghasilan dari setiap perjalanan & kunjungan event Anda. Raih ribuan pesanan titip dengan jaminan pembayaran 100% aman.',
+        highlights: [
+          { icon: 'search', text: 'Eksplor & tawar permintaan titip pembeli dengan custom fee' },
+          { icon: 'calendar', text: 'Buka room belanja event live dengan titik GPS pickup' },
+          { icon: 'truck', text: 'Pickup kurir otomatis & auto AWB (Instan & Reguler)' },
+          { icon: 'shield', text: 'Proteksi escrow 100% & garansi pencairan dana jastiper' }
+        ],
+        tab: 'timeline',
+        layoutPos: 'pos-center',
+        targetInfo: null,
+        btnPrimary: 'Mulai Tur Jastiper (1 mnt) →',
+        btnSecondary: 'Eksplor Titipan Sekarang'
+      },
+      {
+        step: 1,
+        type: 'feature',
+        stepNumber: 'Langkah 1 dari 5',
+        badge: '🧭 Eksplor Titipan Pembeli',
+        tagline: 'Titik awal impian sampai di tangan',
+        title: 'Ajukan Tawaran pada Titipan Pembeli',
+        sub: 'Jelajahi permintaan titip terbuka dari pembeli di seluruh Indonesia. Filter berdasarkan tujuan (Tokyo, Bangkok, Singapore, Domestik) dan kategori produk. Ketuk card untuk ajukan tawaran!',
+        highlights: [
+          { icon: 'search', text: 'Lihat budget, jumlah barang & batas waktu titipan' },
+          { icon: 'wallet', text: 'Tentukan fee jasa jastip & skema pembayaran Anda' },
+          { icon: 'check', text: 'Dana pembeli tersimpan aman di escrow saat tawaran diterima' }
+        ],
+        tab: 'timeline',
+        layoutPos: 'pos-center',
+        targetInfo: {
+          type: 'rect',
+          tagText: '🎯 Eksplor Titipan Pembeli',
+          spotlightStyle: 'bottom:6px; left:8px; width:68px; height:54px;',
+          tagStyle: 'bottom:66px; left:8px;',
+          pathD: 'M 95 630 C 95 720, 42 750, 42 822',
+          targetPoint: { x: 42, y: 822 }
+        },
+        btnPrimary: 'Lanjut: Room Event →',
+        btnSecondary: 'Lewati Tur'
+      },
+      {
+        step: 2,
+        type: 'feature',
+        stepNumber: 'Langkah 2 dari 5',
+        badge: '🎪 Room Belanja Event Live',
+        tagline: 'Titik awal impian sampai di tangan',
+        title: 'Ikuti Event & Buka Room Khusus',
+        sub: 'Menghadiri expo, konser, atau bazaar? Daftarkan diri di event resmi TitikTitip untuk otomatis membuat room jastip pribadimu dengan titik koordinat GPS pickup untuk kurir instan!',
+        highlights: [
+          { icon: 'calendar', text: 'Pantau total jastiper aktif & total demand pembeli' },
+          { icon: 'mapPin', text: 'Pilih alamat pickup tersimpan dengan koordinat GPS terverifikasi' },
+          { icon: 'camera', text: 'Tambah katalog barang live & kumpulkan orderan pembeli' }
+        ],
+        tab: 'event',
+        layoutPos: 'pos-center',
+        targetInfo: {
+          type: 'rect',
+          tagText: '🎯 Room Event Live',
+          spotlightStyle: 'bottom:6px; left:calc(20% + 2px); width:68px; height:54px;',
+          tagStyle: 'bottom:66px; left:21%;',
+          pathD: 'M 140 630 C 140 720, 126 750, 126 822',
+          targetPoint: { x: 126, y: 822 }
+        },
+        btnPrimary: 'Lanjut: Buka Trip & Lapak →',
+        btnSecondary: '← Kembali'
+      },
+      {
+        step: 3,
+        type: 'feature',
+        stepNumber: 'Langkah 3 dari 5',
+        badge: '✈️ Jadwal Trip & Lapak PO',
+        tagline: 'Titik awal impian sampai di tangan',
+        title: 'Publikasikan Jadwal Trip & Lapak PO',
+        sub: 'Tekan tombol tengah (+) untuk mengumumkan jadwal rute penerbangan atau buka lapak pre-order. Atur skema pembayaran DP atau Full sesuai kapasitas Anda.',
+        highlights: [
+          { icon: 'plus', text: 'Buat jadwal perjalanan luar negeri atau antar kota' },
+          { icon: 'shoppingBag', text: 'Buka lapak pre-order berkala dengan katalog khusus' },
+          { icon: 'shield', text: 'Otomatisasi proteksi escrow DP 50% & Full 100%' }
+        ],
+        tab: 'timeline',
+        layoutPos: 'pos-center',
+        targetInfo: {
+          type: 'ring',
+          tagText: '🎯 Buka Jastip (+)',
+          spotlightStyle: 'bottom:23px; left:calc(50% - 29px); width:58px; height:58px;',
+          tagStyle: 'bottom:86px; left:0; right:0; margin:0 auto; width:max-content;',
+          pathD: 'M 210 630 L 210 778',
+          targetPoint: { x: 210, y: 778 }
+        },
+        btnPrimary: 'Lanjut: Aktivitas & Auto AWB →',
+        btnSecondary: '← Kembali'
+      },
+      {
+        step: 4,
+        type: 'feature',
+        stepNumber: 'Langkah 4 dari 5',
+        badge: '🚚 Logistik Otomatis & Orderan',
+        tagline: 'Titik awal impian sampai di tangan',
+        title: 'Kelola Orderan & Auto Pickup Kurir',
+        sub: 'Penuhi pesanan dengan batas SLA beli 48 jam. Upload bukti struk belanja, lalu tekan 1-Klik Request Pickup Kurir untuk cetak resi otomatis (AWB) tanpa perlu ketik manual!',
+        highlights: [
+          { icon: 'camera', text: 'Upload foto struk belanja untuk verifikasi keaslian' },
+          { icon: 'truck', text: 'Agregator Logistik terintegrasi: 1-klik pickup & auto AWB' },
+          { icon: 'box', text: 'Cetak barcode label & sinkronisasi live tracking status' }
+        ],
+        tab: 'activity',
+        layoutPos: 'pos-center',
+        targetInfo: {
+          type: 'rect',
+          tagText: '🎯 Aktivitas & Auto AWB',
+          spotlightStyle: 'bottom:6px; right:calc(20% + 2px); width:68px; height:54px;',
+          tagStyle: 'bottom:66px; right:21%;',
+          pathD: 'M 280 630 C 280 720, 294 750, 294 822',
+          targetPoint: { x: 294, y: 822 }
+        },
+        btnPrimary: 'Lanjut: Profil Jastiper →',
+        btnSecondary: '← Kembali'
+      },
+      {
+        step: 5,
+        type: 'feature',
+        stepNumber: 'Langkah 5 dari 5',
+        badge: '💰 Penghasilan & Saldo Dompet',
+        tagline: 'Titik awal impian sampai di tangan',
+        title: 'Pantau Penghasilan & Saldo Jastiper',
+        sub: 'Pantau total penghasilan pesanan selesai dan saldo dompet yang siap ditarik ke rekening bank. Kelola listing trip dan kembali ke mode pembeli kapan saja.',
+        highlights: [
+          { icon: 'wallet', text: 'Pencairan saldo instan setelah pembeli konfirmasi penerimaan' },
+          { icon: 'shield', text: 'Badge Jastiper Terverifikasi meningkatkan kepercayaan' },
+          { icon: 'users', text: 'Beralih antara Mode Pembeli & Jastiper dengan mulus' }
+        ],
+        tab: 'profile',
+        layoutPos: 'pos-center',
+        targetInfo: {
+          type: 'rect',
+          tagText: '🎯 Profil & Dompet Jastiper',
+          spotlightStyle: 'bottom:6px; right:8px; width:68px; height:54px;',
+          tagStyle: 'bottom:66px; right:8px;',
+          pathD: 'M 325 630 C 325 720, 378 750, 378 822',
+          targetPoint: { x: 378, y: 822 }
+        },
+        btnPrimary: 'Mulai Menghasilkan Uang! 🎉',
+        btnSecondary: '← Kembali'
+      }
+    ];
+  }
+  return shopperGuidanceSteps;
+}
+
 function renderGuidanceModal(){
   if(state.guidanceStep === null || state.guidanceStep === undefined) return '';
-  const current = guidanceSteps[state.guidanceStep] || guidanceSteps[0];
-  const t = current.targetInfo;
+  const steps = getGuidanceSteps();
+  const current = steps[state.guidanceStep] || steps[0];
+  const tInfo = current.targetInfo;
 
   if(state.guidanceStep === 0){
     return `
@@ -4002,9 +4934,14 @@ function renderGuidanceModal(){
           </button>
           
           <!-- Hero .Titip Logo Badge -->
-          <div style="margin:4px auto 14px; display:inline-flex; align-items:center; gap:8px; background:var(--primary); padding:9px 18px; border-radius:14px; box-shadow:0 6px 20px rgba(15,23,42,0.2);">
+          <div style="margin:2px auto 4px; display:inline-flex; align-items:center; gap:8px; background:var(--primary); padding:9px 18px; border-radius:14px; box-shadow:0 6px 20px rgba(15,23,42,0.2);">
             <span class="logo-dot" style="width:10px; height:10px; background:var(--secondary); border-radius:50%; display:inline-block;"></span>
             <span class="logo-text" style="font-size:22px; font-weight:900; color:#fff; letter-spacing:-0.4px;">Titip</span>
+          </div>
+
+          <!-- Official Tagline -->
+          <div style="font-size:11px; font-weight:700; color:var(--secondary); font-style:italic; margin-bottom:12px; letter-spacing:0.2px;">
+            "${t('tagline', 'Titik awal impian sampai di tangan')}"
           </div>
 
           <div style="font-size:16px; font-weight:800; color:var(--primary); margin-bottom:6px; line-height:1.3;">
@@ -4025,7 +4962,7 @@ function renderGuidanceModal(){
           </div>
 
           <div class="guidance-actions">
-            <button class="guidance-btn-secondary" onclick="closeGuidance()">Skip Tour</button>
+            <button class="guidance-btn-secondary" onclick="closeGuidance()">${current.btnSecondary || 'Skip Tour'}</button>
             <button class="guidance-btn-primary" onclick="nextGuidanceStep()">
               <span>${current.btnPrimary}</span>
             </button>
@@ -4039,10 +4976,10 @@ function renderGuidanceModal(){
     <div class="guidance-overlay" onclick="closeGuidance()">
       
       <!-- Target Spotlight Indicator (Rendered in Native Overlay) -->
-      ${t ? `
-        <div class="${t.type === 'ring' ? 'guidance-spotlight-ring' : 'guidance-spotlight-rect'}" style="${t.spotlightStyle}"></div>
-        <div class="guidance-target-tag" style="${t.tagStyle}">
-          ${t.tagText}
+      ${tInfo ? `
+        <div class="${tInfo.type === 'ring' ? 'guidance-spotlight-ring' : 'guidance-spotlight-rect'}" style="${tInfo.spotlightStyle}"></div>
+        <div class="guidance-target-tag" style="${tInfo.tagStyle}">
+          ${tInfo.tagText}
         </div>
         <svg class="guidance-svg-layer" viewBox="0 0 420 860" preserveAspectRatio="none">
           <defs>
@@ -4050,9 +4987,9 @@ function renderGuidanceModal(){
               <path d="M 1 2 L 10 6 L 1 10 z" fill="#FF5722"/>
             </marker>
           </defs>
-          <path d="${t.pathD}" class="guidance-dashed-path" marker-end="url(#guidance-arrow)" />
-          ${t.targetPoint ? `
-            <circle cx="${t.targetPoint.x}" cy="${t.targetPoint.y}" r="4" fill="#FF5722" stroke="#fff" stroke-width="1.5" />
+          <path d="${tInfo.pathD}" class="guidance-dashed-path" marker-end="url(#guidance-arrow)" />
+          ${tInfo.targetPoint ? `
+            <circle cx="${tInfo.targetPoint.x}" cy="${tInfo.targetPoint.y}" r="4" fill="#FF5722" stroke="#fff" stroke-width="1.5" />
           ` : ''}
         </svg>
       ` : ''}
@@ -4094,7 +5031,7 @@ function renderGuidanceModal(){
 
         <div class="guidance-actions">
           <button class="guidance-btn-secondary" onclick="${state.guidanceStep === 1 ? 'closeGuidance()' : 'prevGuidanceStep()'}">
-            ${state.guidanceStep === 1 ? 'Skip' : '← Back'}
+            ${state.guidanceStep === 1 ? (state.lang === 'id' ? 'Lewati' : 'Skip') : (state.lang === 'id' ? '← Kembali' : '← Back')}
           </button>
           <button class="guidance-btn-primary" onclick="nextGuidanceStep()">
             <span>${current.btnPrimary}</span>
@@ -4108,25 +5045,16 @@ function renderGuidanceModal(){
 function startGuidanceTour(){
   state.appMode = 'buyer';
   state.guidanceStep = 0;
+  state.shopperGuidanceStep = null;
   state.tab = 'timeline';
-  state.detail = null;
-  state.showCart = false;
-  state.showTitipForm = false;
-  state.requestDetailId = null;
-  state.eventDetailId = null;
-  state.checkoutData = null;
+  resetSubScreens();
   render();
 }
 
 function closeGuidance(){
   state.guidanceStep = null;
   state.tab = 'timeline';
-  state.detail = null;
-  state.showCart = false;
-  state.showTitipForm = false;
-  state.requestDetailId = null;
-  state.eventDetailId = null;
-  state.checkoutData = null;
+  resetSubScreens();
   render();
 }
 
@@ -4134,19 +5062,15 @@ function nextGuidanceStep(){
   if(state.guidanceStep === null || state.guidanceStep === undefined) return;
   if(state.guidanceStep >= 7){
     closeGuidance();
-    showToast('🎉 Welcome aboard! Enjoy shopping on TitikTitip.');
+    showToast(state.lang === 'id' ? '🎉 Selamat bergabung! Nikmati kemudahan jastip di TitikTitip.' : '🎉 Welcome aboard! Enjoy shopping on TitikTitip.');
     return;
   }
   state.guidanceStep++;
-  const targetTab = guidanceSteps[state.guidanceStep]?.tab;
+  const steps = getGuidanceSteps();
+  const targetTab = steps[state.guidanceStep]?.tab;
   if(targetTab){
     state.tab = targetTab;
-    state.detail = null;
-    state.showCart = false;
-    state.showTitipForm = false;
-    state.requestDetailId = null;
-    state.eventDetailId = null;
-    state.checkoutData = null;
+    resetSubScreens();
   }
   render();
 }
@@ -4155,15 +5079,11 @@ function prevGuidanceStep(){
   if(state.guidanceStep === null || state.guidanceStep === undefined) return;
   if(state.guidanceStep <= 0) return;
   state.guidanceStep--;
-  const targetTab = guidanceSteps[state.guidanceStep]?.tab;
+  const steps = getGuidanceSteps();
+  const targetTab = steps[state.guidanceStep]?.tab;
   if(targetTab){
     state.tab = targetTab;
-    state.detail = null;
-    state.showCart = false;
-    state.showTitipForm = false;
-    state.requestDetailId = null;
-    state.eventDetailId = null;
-    state.checkoutData = null;
+    resetSubScreens();
   }
   render();
 }
@@ -4171,17 +5091,272 @@ function prevGuidanceStep(){
 function jumpToGuidanceStep(stepNum){
   if(stepNum < 1 || stepNum > 7) return;
   state.guidanceStep = stepNum;
-  const targetTab = guidanceSteps[state.guidanceStep]?.tab;
+  const steps = getGuidanceSteps();
+  const targetTab = steps[state.guidanceStep]?.tab;
   if(targetTab){
     state.tab = targetTab;
-    state.detail = null;
-    state.showCart = false;
-    state.showTitipForm = false;
-    state.requestDetailId = null;
-    state.eventDetailId = null;
-    state.checkoutData = null;
+    resetSubScreens();
   }
   render();
+}
+
+/* ============ SHOPPER GUIDANCE & ONBOARDING ============ */
+function renderShopperGuidanceModal(){
+  if(state.shopperGuidanceStep === null || state.shopperGuidanceStep === undefined) return '';
+  const steps = getShopperGuidanceSteps();
+  const current = steps[state.shopperGuidanceStep] || steps[0];
+  const tInfo = current.targetInfo;
+
+  if(state.shopperGuidanceStep === 0){
+    return `
+      <div class="guidance-overlay pos-center" onclick="closeShopperGuidance()">
+        <div class="guidance-card" onclick="event.stopPropagation()">
+          <button class="modal-close-icon-btn" onclick="closeShopperGuidance()" title="Close Tour">
+            ${svg('x')}
+          </button>
+          
+          <!-- Hero TitikTitip Shopper Logo Badge -->
+          <div style="margin:2px auto 6px; display:inline-flex; align-items:center; gap:8px; background:var(--primary); padding:9px 18px; border-radius:14px; box-shadow:0 6px 20px rgba(15,23,42,0.2);">
+            <span class="logo-dot" style="width:10px; height:10px; background:var(--secondary); border-radius:50%; display:inline-block;"></span>
+            <span class="logo-text" style="font-size:22px; font-weight:900; color:#fff; letter-spacing:-0.4px;">Titip</span>
+            <span style="font-size:10px; font-weight:800; background:#FF5722; color:#fff; padding:2px 8px; border-radius:100px; text-transform:uppercase;">Shopper</span>
+          </div>
+
+          <!-- Official Tagline -->
+          <div style="font-size:11px; font-weight:700; color:var(--secondary); font-style:italic; margin-bottom:12px; letter-spacing:0.2px;">
+            "${t('tagline', 'Titik awal impian sampai di tangan')}"
+          </div>
+
+          <div style="font-size:16px; font-weight:800; color:var(--primary); margin-bottom:6px; line-height:1.3;">
+            ${current.title}
+          </div>
+          
+          <div style="font-size:11.5px; color:var(--muted); line-height:1.5; margin-bottom:12px;">
+            ${current.sub}
+          </div>
+
+          <div class="guidance-highlight-box">
+            ${current.highlights.map(h => `
+              <div class="guidance-highlight-item">
+                <div class="guidance-highlight-icon">${svg(h.icon)}</div>
+                <span>${h.text}</span>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="guidance-actions">
+            <button class="guidance-btn-secondary" onclick="closeShopperGuidance()">${current.btnSecondary || 'Explore Requests Now'}</button>
+            <button class="guidance-btn-primary" onclick="nextShopperGuidanceStep()">
+              <span>${current.btnPrimary}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="guidance-overlay" onclick="closeShopperGuidance()">
+      
+      <!-- Target Spotlight Indicator (Rendered in Native Overlay) -->
+      ${tInfo ? `
+        <div class="${tInfo.type === 'ring' ? 'guidance-spotlight-ring' : 'guidance-spotlight-rect'}" style="${tInfo.spotlightStyle}"></div>
+        <div class="guidance-target-tag" style="${tInfo.tagStyle}">
+          ${tInfo.tagText}
+        </div>
+        <svg class="guidance-svg-layer" viewBox="0 0 420 860" preserveAspectRatio="none">
+          <defs>
+            <marker id="guidance-arrow" viewBox="0 0 12 12" refX="6" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+              <path d="M 1 2 L 10 6 L 1 10 z" fill="#FF5722"/>
+            </marker>
+          </defs>
+          <path d="${tInfo.pathD}" class="guidance-dashed-path" marker-end="url(#guidance-arrow)" />
+          ${tInfo.targetPoint ? `
+            <circle cx="${tInfo.targetPoint.x}" cy="${tInfo.targetPoint.y}" r="4" fill="#FF5722" stroke="#fff" stroke-width="1.5" />
+          ` : ''}
+        </svg>
+      ` : ''}
+
+      <!-- Main Guidance Card -->
+      <div class="guidance-card" onclick="event.stopPropagation()">
+        <button class="modal-close-icon-btn" onclick="closeShopperGuidance()" title="Close Tour">
+          ${svg('x')}
+        </button>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span class="guidance-badge">${current.badge}</span>
+          <span style="font-size:11px; font-weight:700; color:var(--muted);">${current.stepNumber}</span>
+        </div>
+
+        <div style="font-size:15px; font-weight:800; color:var(--primary); margin-bottom:5px; text-align:left; line-height:1.3;">
+          ${current.title}
+        </div>
+
+        <div style="font-size:11.5px; color:var(--muted); line-height:1.45; text-align:left; margin-bottom:10px;">
+          ${current.sub}
+        </div>
+
+        <div class="guidance-highlight-box">
+          ${current.highlights.map(h => `
+            <div class="guidance-highlight-item">
+              <div class="guidance-highlight-icon">${svg(h.icon)}</div>
+              <span>${h.text}</span>
+            </div>
+          `).join('')}
+        </div>
+
+        <!-- Step Dots (1 to 5) -->
+        <div class="guidance-dots">
+          ${[1,2,3,4,5].map(num => `
+            <div class="guidance-dot ${state.shopperGuidanceStep === num ? 'active' : ''}" onclick="jumpToShopperGuidanceStep(${num})"></div>
+          `).join('')}
+        </div>
+
+        <div class="guidance-actions">
+          <button class="guidance-btn-secondary" onclick="${state.shopperGuidanceStep === 1 ? 'closeShopperGuidance()' : 'prevShopperGuidanceStep()'}">
+            ${state.shopperGuidanceStep === 1 ? (state.lang === 'id' ? 'Lewati' : 'Skip') : (state.lang === 'id' ? '← Kembali' : '← Back')}
+          </button>
+          <button class="guidance-btn-primary" onclick="nextShopperGuidanceStep()">
+            <span>${current.btnPrimary}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function startShopperGuidanceTour(){
+  state.appMode = 'jastiper';
+  state.shopperGuidanceStep = 0;
+  state.guidanceStep = null;
+  state.tab = 'timeline';
+  resetSubScreens();
+  render();
+}
+
+function closeShopperGuidance(){
+  state.shopperGuidanceStep = null;
+  state.tab = 'timeline';
+  resetSubScreens();
+  render();
+}
+
+function nextShopperGuidanceStep(){
+  if(state.shopperGuidanceStep === null || state.shopperGuidanceStep === undefined) return;
+  if(state.shopperGuidanceStep >= 5){
+    closeShopperGuidance();
+    showToast(state.lang === 'id' ? '🎉 Selamat bergabung Jastiper! Siap terima pesanan di TitikTitip.' : '🎉 Welcome Shopper! Ready to accept orders on TitikTitip.');
+    return;
+  }
+  state.shopperGuidanceStep++;
+  const steps = getShopperGuidanceSteps();
+  const targetTab = steps[state.shopperGuidanceStep]?.tab;
+  if(targetTab){
+    state.tab = targetTab;
+    resetSubScreens();
+  }
+  render();
+}
+
+function prevShopperGuidanceStep(){
+  if(state.shopperGuidanceStep === null || state.shopperGuidanceStep === undefined) return;
+  if(state.shopperGuidanceStep <= 0) return;
+  state.shopperGuidanceStep--;
+  const steps = getShopperGuidanceSteps();
+  const targetTab = steps[state.shopperGuidanceStep]?.tab;
+  if(targetTab){
+    state.tab = targetTab;
+    resetSubScreens();
+  }
+  render();
+}
+
+function jumpToShopperGuidanceStep(stepNum){
+  if(stepNum < 1 || stepNum > 5) return;
+  state.shopperGuidanceStep = stepNum;
+  const steps = getShopperGuidanceSteps();
+  const targetTab = steps[state.shopperGuidanceStep]?.tab;
+  if(targetTab){
+    state.tab = targetTab;
+    resetSubScreens();
+  }
+  render();
+}
+
+/* ============ LANGUAGE SELECTION MODAL & ACTIONS ============ */
+function openLanguageSheet(){
+  state.showLanguageSheet = true;
+  render();
+}
+
+function closeLanguageSheet(){
+  state.showLanguageSheet = false;
+  render();
+}
+
+function selectLanguage(langCode){
+  state.lang = langCode;
+  state.showLanguageSheet = false;
+  showToast(langCode === 'id' ? '🇮🇩 Bahasa diubah ke Bahasa Indonesia' : '🇬🇧 Language switched to English');
+  render();
+}
+
+function renderLanguageSelectionModal(){
+  const isId = state.lang === 'id';
+  return `
+    <div class="modal-overlay" onclick="closeLanguageSheet()">
+      <div class="modal-card" onclick="event.stopPropagation()" style="max-width:330px; padding:20px 18px; border-radius:20px;">
+        
+        <button class="modal-close-icon-btn" onclick="closeLanguageSheet()" title="Close">
+          ${svg('x')}
+        </button>
+
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+          <div style="width:38px; height:38px; border-radius:50%; background:rgba(255,87,34,0.1); color:var(--secondary); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            ${svg('globe', 'style="width:20px;height:20px;stroke:var(--secondary);stroke-width:2.2;"')}
+          </div>
+          <div>
+            <div style="font-size:15px; font-weight:800; color:var(--primary);">${t('languageModal.title', 'Pilih Bahasa / Language')}</div>
+            <div style="font-size:11px; color:var(--muted);">${t('languageModal.sub', 'Pilih bahasa tampilan untuk aplikasi')}</div>
+          </div>
+        </div>
+
+        <div style="margin:14px 0 12px; display:flex; flex-direction:column; gap:9px;">
+          <!-- Option 1: Bahasa Indonesia -->
+          <div class="option-select-card ${isId ? 'active' : ''}" style="padding:12px 14px; border-radius:14px; cursor:pointer;" onclick="selectLanguage('id')">
+            <div class="option-select-left" style="gap:10px;">
+              <span style="font-size:22px;">🇮🇩</span>
+              <div>
+                <div class="option-select-title" style="font-size:13px; font-weight:700;">Bahasa Indonesia</div>
+                <div class="option-select-sub" style="font-size:10.5px;">Bahasa default & lokal Indonesia</div>
+              </div>
+            </div>
+            ${isId ? svg('check', 'style="width:18px;height:18px;stroke:var(--secondary);stroke-width:2.5;"') : ''}
+          </div>
+
+          <!-- Option 2: English -->
+          <div class="option-select-card ${!isId ? 'active' : ''}" style="padding:12px 14px; border-radius:14px; cursor:pointer;" onclick="selectLanguage('en')">
+            <div class="option-select-left" style="gap:10px;">
+              <span style="font-size:22px;">🇬🇧</span>
+              <div>
+                <div class="option-select-title" style="font-size:13px; font-weight:700;">English</div>
+                <div class="option-select-sub" style="font-size:10.5px;">International standard English</div>
+              </div>
+            </div>
+            ${!isId ? svg('check', 'style="width:18px;height:18px;stroke:var(--secondary);stroke-width:2.5;"') : ''}
+          </div>
+        </div>
+
+        <div style="background:var(--neutral); border:1px solid var(--border); border-radius:10px; padding:8px 10px; font-size:10.5px; color:var(--muted); line-height:1.4; margin-bottom:14px; text-align:center;">
+          ${t('languageModal.note', 'Perubahan bahasa akan langsung diterapkan pada seluruh halaman aplikasi.')}
+        </div>
+
+        <button class="modal-btn-primary" onclick="closeLanguageSheet()">
+          ${t('languageModal.doneBtn', 'Selesai / Done')}
+        </button>
+      </div>
+    </div>
+  `;
 }
 
 function checkAndInjectModal(){
@@ -4189,9 +5364,21 @@ function checkAndInjectModal(){
   if(!modalRoot) return;
   modalRoot.innerHTML = '';
 
-  // 0. Onboarding Guidance Tour Modal (Highest priority overlay on app load or from Profile)
+  // 0a. Language Selection Modal / Bottom Sheet
+  if(state.showLanguageSheet){
+    modalRoot.innerHTML = renderLanguageSelectionModal();
+    return;
+  }
+
+  // 0b. Buyer Guidance Tour Modal (Highest priority overlay on app load or from Profile)
   if(state.guidanceStep !== null && state.guidanceStep !== undefined){
     modalRoot.innerHTML = renderGuidanceModal();
+    return;
+  }
+
+  // 0c. Shopper Guidance Tour & Welcome Board Modal (When switching to Shopper Mode)
+  if(state.shopperGuidanceStep !== null && state.shopperGuidanceStep !== undefined){
+    modalRoot.innerHTML = renderShopperGuidanceModal();
     return;
   }
 
@@ -4713,11 +5900,78 @@ function checkAndInjectModal(){
     }
   }
 
-  // 7. Modal Join Hadir ke Event sebagai Jastiper
+  // 7. Modal Pilih Alamat Penjemputan (Tersimpan + Titik Koordinat GPS untuk Kurir Instant)
+  if(state.showSelectPickupAddressSheet){
+    const selectedId = state.jastiperEventJoinData?.selectedAddressId || 'addr-event-1';
+    modalRoot.innerHTML = `
+      <div class="filter-sheet-overlay" onclick="closeSelectPickupAddressSheet()">
+        <div class="filter-sheet" onclick="event.stopPropagation()" style="max-height:85vh; overflow-y:auto;">
+          <div class="filter-sheet-handle"></div>
+          <div class="filter-sheet-header">
+            <div class="filter-sheet-title">
+              ${svg('mapPin', 'style="width:16px;height:16px;stroke:var(--secondary);stroke-width:2.2;"')}
+              <span>Select Pickup Address</span>
+            </div>
+            <button class="filter-sheet-close-btn" onclick="closeSelectPickupAddressSheet()" title="Close">
+              ${svg('x', 'style="width:18px;height:18px;"')}
+            </button>
+          </div>
+
+          <div class="filter-sheet-body" style="padding:14px 16px;">
+            <div style="font-size:11px; color:var(--muted); margin-bottom:12px; line-height:1.4;">
+              Pilih alamat penjemputan paket untuk kurir. Data alamat tersimpan menyimpan <strong>titik koordinat GPS</strong> yang langsung siap dipakai untuk layanan <strong>Instant Delivery (GoSend / GrabExpress)</strong> & Ekspedisi Reguler.
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;">
+              ${savedPickupAddresses.map(addr => {
+                const isSelected = selectedId === addr.id;
+                return `
+                  <div 
+                    onclick="selectPickupAddress('${addr.id}')"
+                    style="border:1.5px solid ${isSelected ? 'var(--secondary)' : '#E2E8F0'}; background:${isSelected ? '#FFF7ED' : '#fff'}; border-radius:14px; padding:12px 14px; cursor:pointer; transition:all 0.15s ease;"
+                  >
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                      <div style="display:flex; align-items:center; gap:6px;">
+                        <strong style="font-size:12.5px; color:var(--primary);">${addr.label}</strong>
+                        <span style="font-size:9.5px; font-weight:700; background:#E0F2FE; color:#0369A1; padding:2px 6px; border-radius:5px;">${addr.tag}</span>
+                      </div>
+                      <input type="radio" name="pickup_addr_radio" ${isSelected ? 'checked' : ''} style="accent-color:var(--secondary); cursor:pointer;">
+                    </div>
+
+                    <div style="font-size:11px; color:var(--tertiary); line-height:1.4; margin-bottom:6px;">
+                      ${addr.address}
+                    </div>
+
+                    <div style="display:flex; align-items:center; justify-content:space-between; font-size:10px; background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:4px 8px;">
+                      <span style="color:#15803D; font-weight:700; display:flex; align-items:center; gap:4px;">
+                        ${svg('mapPin', 'style="width:11px;height:11px;stroke:#16A34A;"')}
+                        <span>GPS: ${addr.coords.lat}, ${addr.coords.lng}</span>
+                      </span>
+                      <span style="color:#16A34A; font-weight:800; font-size:9.5px; background:#DCFCE7; padding:2px 6px; border-radius:4px;">⚡ Instant Ready</span>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+
+            <button class="modal-btn-secondary" style="width:100%; padding:11px 0; font-size:12px; display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:6px;" onclick="addNewPinpointAddress()">
+              ${svg('mapPin', 'style="width:14px;height:14px;stroke:var(--primary);"') }
+              <span>+ Pinpoint New Address on Map</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  // 8. Modal Join Hadir ke Event sebagai Jastiper
   if(state.showJastiperEventJoinModalId){
     const ev = events.find(e => e.id === state.showJastiperEventJoinModalId);
     if(ev){
       const joinData = state.jastiperEventJoinData || {};
+      const currAddr = savedPickupAddresses.find(a => a.id === (joinData.selectedAddressId || 'addr-event-1')) || savedPickupAddresses[0];
+
       modalRoot.innerHTML = `
         <div class="filter-sheet-overlay" onclick="closeJastiperEventJoinModal()">
           <div class="filter-sheet" onclick="event.stopPropagation()" style="max-height:85vh; overflow-y:auto;">
@@ -4763,6 +6017,38 @@ function checkAndInjectModal(){
                   oninput="state.jastiperEventJoinData.roomDesc = this.value"
                   placeholder="e.g. Ready to queue for official booth merch. 100% authentic with protective packaging."
                 >${joinData.roomDesc || ''}</textarea>
+              </div>
+
+              <!-- Unified Single Pickup Address Selector with GPS Coordinates & Instant Readiness -->
+              <div class="form-group" style="margin-bottom:14px;">
+                <div class="form-label" style="display:flex; justify-content:space-between; align-items:center;">
+                  <span>Pickup Address (Alamat Penjemputan) <span class="required-mark">*</span></span>
+                  <span style="font-size:11px; color:var(--secondary); font-weight:700; cursor:pointer;" onclick="openSelectPickupAddressSheet()">Change Address →</span>
+                </div>
+
+                <div style="background:#F8FAFC; border:1.5px solid #E2E8F0; border-radius:12px; padding:11px 12px; cursor:pointer;" onclick="openSelectPickupAddressSheet()">
+                  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <span style="font-size:12.5px; font-weight:800; color:var(--primary);">${currAddr.label}</span>
+                      <span style="font-size:9.5px; font-weight:700; background:#E0F2FE; color:#0369A1; padding:2px 7px; border-radius:6px;">${currAddr.tag}</span>
+                    </div>
+                    <span style="font-size:11px; color:var(--secondary); font-weight:700;">Edit / Select</span>
+                  </div>
+
+                  <div style="font-size:11px; color:var(--tertiary); line-height:1.4; margin-bottom:6px;">
+                    ${currAddr.address}
+                  </div>
+
+                  <!-- GPS Pinpoint Coordinate Badge for Instant Delivery -->
+                  <div style="display:flex; align-items:center; justify-content:space-between; font-size:10px; background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:4px 8px;">
+                    <span style="color:#15803D; font-weight:700; display:flex; align-items:center; gap:4px;">
+                      ${svg('mapPin', 'style="width:11px;height:11px;stroke:#16A34A;"')}
+                      <span>GPS Pinpoint Saved (${currAddr.coords.lat}, ${currAddr.coords.lng})</span>
+                    </span>
+                    <span style="color:#16A34A; font-weight:800; font-size:9.5px; background:#DCFCE7; padding:2px 6px; border-radius:4px;">⚡ Instant Ready</span>
+                  </div>
+                </div>
+                <div class="form-hint" style="margin-top:4px;">Titik koordinat tersimpan otomatis untuk kurir Instant (GoSend/GrabExpress) & Ekspedisi Reguler.</div>
               </div>
 
               <div class="form-group" style="margin-bottom:12px;">
@@ -5048,66 +6334,162 @@ function renderJastiperTimeline(){
 }
 
 function renderBuyerRequestCard(req){
+  const hasOffers = (req.offersCount || 0) > 0;
   return `
-    <div class="buyer-request-card">
+    <div class="buyer-request-card" onclick="openPublicBuyerRequestDetail('${req.id}')">
+      <!-- 1. Header: Buyer Info & Time Ago -->
       <div class="buyer-req-header">
         <div class="buyer-req-user">
-          <div class="avatar-mini" style="background:var(--secondary); color:#fff; font-weight:700; font-size:11px; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center;">${req.buyer.initials}</div>
+          <div class="buyer-req-avatar">${req.buyer.initials}</div>
           <div>
-            <div style="font-size:12px; font-weight:700; color:var(--primary); display:flex; align-items:center; gap:4px;">
+            <div class="buyer-req-user-name">
               ${req.buyer.name}
               ${renderVerifiedBadge(req.buyer.verified, true)}
             </div>
-            <div style="font-size:10px; color:var(--muted); display:flex; align-items:center; gap:3px;">
-              ${svg('mapPin','style="width:9.5px;height:9.5px;"')} Ship to: ${req.shippingCity}
+            <div class="buyer-req-user-city">
+              ${svg('mapPin','style="width:9px;height:9px;"')} Ship to: ${req.shippingCity}
             </div>
           </div>
         </div>
-        <span class="feed-time-badge" style="position:static; background:var(--neutral); color:var(--muted); border:1px solid var(--border); font-size:10.5px;">
-          ${svg('clock','style="width:10px;height:10px;"')} ${req.postedAgo}
+        <span class="buyer-req-posted-pill">
+          ${svg('clock','style="width:9.5px;height:9.5px;"')} ${req.postedAgo}
         </span>
       </div>
 
-      <div>
-        <span class="feed-tag-category" style="margin-bottom:5px; display:inline-flex;">${svg('tag')} ${req.category}</span>
-        <div class="buyer-req-title">${req.title} <span style="color:var(--secondary); font-weight:700;">(Qty: ${req.qty})</span></div>
+      <!-- 2. Product Name & Category Tags -->
+      <div class="buyer-req-main">
+        <div class="buyer-req-tags-row">
+          <span class="buyer-req-category-badge">${svg('tag','style="width:9px;height:9px;"')} ${req.category}</span>
+          <span class="buyer-req-qty-badge">Qty: ${req.qty}</span>
+        </div>
+        <div class="buyer-req-title">${req.title}</div>
       </div>
 
-      <div class="buyer-req-budget-box">
-        <div>
-          <div class="buyer-req-budget-label">Buyer's Max Budget:</div>
-          <div class="buyer-req-budget-val">Rp ${req.budget.toLocaleString('id-ID')}</div>
+      <!-- 3. Simplified Route & Budget Strip -->
+      <div class="buyer-req-simple-strip">
+        <div class="buyer-req-simple-route" title="${req.targetLocation}">
+          <span>🎯 ${req.targetLocation.split('(')[0].trim()}</span>
         </div>
-        <div style="text-align:right;">
-          <div style="font-size:10px; color:#9A3412; font-weight:600;">Shopping Target:</div>
-          <div style="font-size:11.5px; font-weight:700; color:var(--primary);">${req.targetLocation}</div>
+        <div class="buyer-req-budget-val">
+          Rp ${req.budget.toLocaleString('id-ID')}
         </div>
       </div>
 
-      ${req.desc ? `
-        <div style="font-size:11px; color:var(--tertiary); line-height:1.45; background:#F8FAFC; border-radius:10px; padding:7px 10px; border:1px solid #F1F5F9;">
-          "${req.desc}"
-        </div>
-      ` : ''}
-
+      <!-- 4. Footer: Offers Count & Tap to View CTA -->
       <div class="buyer-req-footer">
-        <div class="buyer-req-meta-row">
-          <div class="buyer-req-meta-item">
-            ${svg('calendar','style="width:11.5px;height:11.5px;stroke:var(--muted);"') }
-            <span>Deadline: <strong>${req.deadline}</strong></span>
+        <span style="font-size:10.5px; font-weight:600; color:${hasOffers ? 'var(--primary)' : '#059669'}; display:flex; align-items:center; gap:4px;">
+          ${hasOffers ? `${svg('users','style="width:11px;height:11px;stroke:var(--secondary);"') } ${req.offersCount} offers` : `<span style="width:6px;height:6px;border-radius:50%;background:#10B981;display:inline-block;"></span> New Request`}
+        </span>
+        <span style="font-size:11px; font-weight:700; color:var(--secondary); display:flex; align-items:center; gap:2px;">
+          View Details ${svg('chevron','style="width:12px;height:12px;stroke:var(--secondary);margin-top:-1px;"')}
+        </span>
+      </div>
+    </div>
+  `;
+}
+
+function renderPublicBuyerRequestDetailPage(){
+  const req = publicBuyerRequests.find(r => r.id === state.publicBuyerRequestDetailId);
+  if(!req) return '';
+
+  const hasOffers = (req.offersCount || 0) > 0;
+
+  return `
+    <div class="detail-back-row">
+      <button class="back-btn" onclick="closePublicBuyerRequestDetail()">${svg('arrowLeft')}</button>
+      <div class="detail-back-title">Buyer Request Details</div>
+    </div>
+
+    <div class="detail-body" style="padding-bottom:90px;">
+      <!-- 1. Buyer Profile Card -->
+      <div class="jastiper-card-full" style="margin-bottom:12px;">
+        <div class="jastiper-card-top" style="cursor:default;">
+          <div class="avatar-full" style="background:var(--primary); font-size:13px;">${req.buyer.initials}</div>
+          <div class="jastiper-card-info">
+            <div class="jastiper-card-name" style="display:flex; align-items:center; gap:6px;">
+              ${req.buyer.name}
+              ${renderVerifiedBadge(req.buyer.verified, false)}
+            </div>
+            <div class="jastiper-card-sub">${svg('mapPin','style="width:11px;height:11px;"')} Destination: ${req.shippingCity}</div>
           </div>
-          <div class="buyer-req-meta-item">
-            ${svg('users','style="width:11.5px;height:11.5px;stroke:var(--muted);"') }
-            <span style="font-weight:600; color:${req.offersCount > 0 ? 'var(--primary)' : 'var(--muted)'};">
-              ${req.offersCount > 0 ? `${req.offersCount} offers received` : 'No offers yet'}
-            </span>
+          <span class="buyer-req-posted-pill">
+            ${svg('clock','style="width:10px;height:10px;"')} ${req.postedAgo}
+          </span>
+        </div>
+      </div>
+
+      <!-- 2. Request Main Card -->
+      <div class="request-detail-hero" style="margin-bottom:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span class="category-tag" style="margin:0;">${svg('tag')} ${req.category}</span>
+          <span style="background:#F1F5F9; color:#475569; font-weight:700; font-size:11px; padding:3px 8px; border-radius:6px; border:1px solid #CBD5E1;">Quantity: ${req.qty} pcs</span>
+        </div>
+
+        <div style="font-size:16px; font-weight:800; color:var(--primary); line-height:1.35; margin-bottom:10px;">
+          ${req.title}
+        </div>
+
+        ${req.desc ? `
+          <div style="background:#F8FAFC; border-left:3px solid var(--secondary); border-radius:0 8px 8px 0; padding:9px 12px; font-size:12px; color:var(--tertiary); line-height:1.5; margin-bottom:12px;">
+            <strong>Buyer's Notes:</strong><br>
+            "${req.desc}"
+          </div>
+        ` : ''}
+
+        <!-- Logistics & Spec Details -->
+        <div class="request-meta-grid" style="margin-top:8px;">
+          <div class="request-meta-box">
+            <span class="request-meta-label">🎯 Target Purchase Store</span>
+            <span class="request-meta-val">${req.targetLocation}</span>
+          </div>
+          <div class="request-meta-box">
+            <span class="request-meta-label">📦 Delivery Location</span>
+            <span class="request-meta-val">${req.shippingCity}</span>
+          </div>
+          <div class="request-meta-box">
+            <span class="request-meta-label">💰 Buyer's Max Budget</span>
+            <span class="request-meta-val" style="color:var(--secondary); font-size:14px;">Rp ${req.budget.toLocaleString('id-ID')}</span>
+          </div>
+          <div class="request-meta-box">
+            <span class="request-meta-label">⏳ Required Deadline</span>
+            <span class="request-meta-val">${req.deadline}</span>
           </div>
         </div>
-        <button class="offer-submit-btn" onclick="openOfferModal('${req.id}')">
-          ${svg('plus','style="width:12px;height:12px;stroke:#fff;"')}
-          <span>Submit Offer</span>
-        </button>
       </div>
+
+      <!-- 3. Escrow Guarantee & Bidding Status Banner -->
+      <div style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:14px; padding:12px 14px; margin-bottom:14px; display:flex; align-items:center; gap:10px;">
+        <div style="width:32px; height:32px; border-radius:50%; background:#22C55E; color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+          ${svg('shield','style="width:16px;height:16px;stroke:#fff;"')}
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:12px; font-weight:800; color:#15803D;">100% Escrow Fund Security</div>
+          <div style="font-size:11px; color:#166534; line-height:1.35;">Buyer deposits funds into TitikTitip before you purchase. Zero fraud risk for shoppers.</div>
+        </div>
+      </div>
+
+      <!-- 4. Offer Status Box -->
+      <div style="background:#fff; border:1px solid var(--border); border-radius:14px; padding:12px 14px; margin-bottom:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div style="font-size:12.5px; font-weight:700; color:var(--primary);">Bidding Status</div>
+          <span style="font-size:11.5px; font-weight:700; color:var(--secondary);">${hasOffers ? `${req.offersCount} shoppers submitted offers` : 'No offers yet — be first!'}</span>
+        </div>
+        <div style="font-size:11px; color:var(--muted); margin-top:4px;">
+          Submit your product price estimation and shopping fee. Buyer will review and accept your offer.
+        </div>
+      </div>
+    </div>
+
+    <!-- Sticky Bottom Bar -->
+    <div class="checkout-bottom-bar">
+      <div class="checkout-total-wrap">
+        <div class="checkout-total-label">Buyer's Max Budget</div>
+        <div class="checkout-total-val">Rp ${req.budget.toLocaleString('id-ID')}</div>
+      </div>
+      <button class="checkout-pay-btn" onclick="openOfferModal('${req.id}')" style="background:var(--secondary);">
+        ${svg('plus','style="width:14px;height:14px;stroke:#fff;"')}
+        <span>Submit Offer Now</span>
+      </button>
     </div>
   `;
 }
@@ -5188,7 +6570,7 @@ function submitOfferToBuyer(requestId){
     etaDate: (state.offerModalData && state.offerModalData.etaDate) || 'Aug 25, 2026',
     notes: (state.offerModalData && state.offerModalData.notes) || 'Ready to purchase authentic.',
     status: 'pending',
-    statusLabel: 'Awaiting Buyer Response',
+    statusLabel: 'Awaiting Response',
     createdAt: 'Just now'
   };
 
@@ -5204,12 +6586,53 @@ function submitOfferToBuyer(requestId){
   render();
 }
 
+function openSelectPickupAddressSheet(){
+  state.showSelectPickupAddressSheet = true;
+  render();
+}
+
+function closeSelectPickupAddressSheet(){
+  state.showSelectPickupAddressSheet = false;
+  render();
+}
+
+function selectPickupAddress(addrId){
+  if(!state.jastiperEventJoinData) state.jastiperEventJoinData = {};
+  state.jastiperEventJoinData.selectedAddressId = addrId;
+  state.showSelectPickupAddressSheet = false;
+  render();
+}
+
+function addNewPinpointAddress(){
+  const newId = 'addr-' + Date.now();
+  const newAddr = {
+    id: newId,
+    label: 'JIEXPO Kemayoran Gate 3 (Custom Pin)',
+    tag: 'Custom Pin',
+    address: 'Arena JIEXPO Kemayoran Gate 3 Hall B, Jakarta Pusat 10620',
+    city: 'Jakarta Pusat',
+    contactName: 'Raka Pratama (0812-9876-5432)',
+    coords: { lat: -6.1488, lng: 106.8462 },
+    coordsVerified: true,
+    isDefault: false
+  };
+  savedPickupAddresses.unshift(newAddr);
+  if(!state.jastiperEventJoinData) state.jastiperEventJoinData = {};
+  state.jastiperEventJoinData.selectedAddressId = newId;
+  state.showSelectPickupAddressSheet = false;
+  showToast('📍 New location pinned with GPS coordinates!');
+  render();
+}
+
 function openJastiperEventJoinModal(eventId){
   state.showJastiperEventJoinModalId = eventId;
   const ev = events.find(e => e.id === eventId);
+  const matchingEventAddr = savedPickupAddresses.find(a => a.id === 'addr-event-1') || savedPickupAddresses[0];
+
   state.jastiperEventJoinData = {
     roomTitle: `Official ${ev ? ev.title : 'Event'} Merchandise Room`,
     roomDesc: `Ready to queue at official booths for ${ev ? ev.title : 'event'}. 100% authentic items with official receipts.`,
+    selectedAddressId: matchingEventAddr ? matchingEventAddr.id : 'addr-event-1',
     paymentScheme: 'dp',
     dpPercent: 50,
     slot: 15
@@ -5219,6 +6642,7 @@ function openJastiperEventJoinModal(eventId){
 
 function closeJastiperEventJoinModal(){
   state.showJastiperEventJoinModalId = null;
+  state.showSelectPickupAddressSheet = false;
   render();
 }
 
@@ -5232,6 +6656,8 @@ function submitJastiperEventJoin(eventId){
     return;
   }
 
+  const selectedAddr = savedPickupAddresses.find(a => a.id === (data.selectedAddressId || 'addr-event-1')) || savedPickupAddresses[0];
+
   const newParticipant = {
     name: user.name,
     initials: user.initials,
@@ -5243,6 +6669,7 @@ function submitJastiperEventJoin(eventId){
     dpPercent: data.dpPercent || 50,
     roomTitle: data.roomTitle,
     roomDesc: data.roomDesc,
+    pickupAddress: selectedAddr,
     catalog: [
       { name: 'Official Limited Event Tote Bag & Keychain', priceProduct: 150000, fee: 35000, feeType: 'terpisah', desc: 'Exclusive event merchandise.' },
       { name: 'Official Event Graphic T-Shirt', priceProduct: 350000, fee: 50000, feeType: 'terpisah', desc: '100% authentic event tee with official logo.' }
@@ -5255,6 +6682,7 @@ function submitJastiperEventJoin(eventId){
   state.jastiperJoinedEvents[eventId] = {
     roomTitle: data.roomTitle,
     roomDesc: data.roomDesc,
+    pickupAddress: selectedAddr,
     paymentScheme: data.paymentScheme,
     dpPercent: data.dpPercent
   };
@@ -5681,7 +7109,12 @@ function renderNewsList(){
 /* ---- DETAIL: EVENT ---- */
 function renderEventDetailPage(){
   const ev = events.find(e => e.id === state.eventDetailId);
+  if(!ev) return '';
   const pct = Math.round((ev.slotFilled / ev.slotTotal) * 100);
+  const isJastiperMode = state.appMode === 'jastiper';
+  const isJoined = isJastiperMode && state.jastiperJoinedEvents && state.jastiperJoinedEvents[ev.id];
+  const totalBuyersInterested = (ev.slotFilled * 35) + 115;
+
   return `
     <div class="detail-back-row">
       <button class="back-btn" onclick="closeEventDetail()">${svg('arrowLeft')}</button>
@@ -5696,84 +7129,151 @@ function renderEventDetailPage(){
       <div class="location-line" style="margin-top:2px;">${svg('calendar')} ${ev.dateRange}</div>
       <div class="event-desc">${ev.description}</div>
 
+      <!-- Shopper Slots Progress -->
       <div class="slot-progress-card">
         <div class="slot-progress-top">
           <span class="slot-progress-label">Shopper slots filled</span>
-          <span class="slot-progress-num">${ev.slotFilled}/${ev.slotTotal}</span>
+          <span class="slot-progress-num">${ev.slotFilled}/${ev.slotTotal} slots</span>
         </div>
         <div class="slot-progress-bar"><div class="slot-progress-fill" style="width:${pct}%;"></div></div>
       </div>
 
-      ${state.appMode === 'jastiper' ? (
-        state.jastiperJoinedEvents && state.jastiperJoinedEvents[ev.id] ? `
+      ${isJastiperMode ? `
+        <!-- JASTIPER MODE VIEW -->
+        <!-- 1. Event Total Community Stats (Total Jastipers & Total Buyers) -->
+        <div style="background:#F8FAFC; border:1px solid var(--border); border-radius:14px; padding:12px 14px; margin-bottom:14px; display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div style="background:#fff; border:1px solid #E2E8F0; border-radius:10px; padding:9px 10px;">
+            <div style="font-size:10px; color:var(--muted); font-weight:600; display:flex; align-items:center; gap:3px;">
+              ${svg('users','style="width:11px;height:11px;stroke:#0284C7;"')} Active Shoppers
+            </div>
+            <div style="font-size:15px; font-weight:800; color:var(--primary); margin-top:2px;">
+              ${ev.slotFilled} Shoppers
+            </div>
+            <div style="font-size:9.5px; color:#0284C7; font-weight:600; margin-top:1px;">
+              ${ev.slotTotal - ev.slotFilled} slots remaining
+            </div>
+          </div>
+
+          <div style="background:#fff; border:1px solid #E2E8F0; border-radius:10px; padding:9px 10px;">
+            <div style="font-size:10px; color:var(--muted); font-weight:600; display:flex; align-items:center; gap:3px;">
+              ${svg('star','style="width:11px;height:11px;stroke:#EA580C;fill:#EA580C;"')} Interested Buyers
+            </div>
+            <div style="font-size:15px; font-weight:800; color:var(--secondary); margin-top:2px;">
+              ${totalBuyersInterested}+ Buyers
+            </div>
+            <div style="font-size:9.5px; color:#15803D; font-weight:600; margin-top:1px;">
+              ⚡ High demand
+            </div>
+          </div>
+        </div>
+
+        ${isJoined ? `
+          <!-- Jastiper's Own Active Event Room (Appears automatically after joining) -->
           <div style="background:#F0FDF4; border:1.5px solid #86EFAC; border-radius:16px; padding:14px; margin-bottom:16px;">
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
               <span style="font-size:10px; font-weight:700; background:#22C55E; color:#fff; padding:2px 8px; border-radius:100px;">REGISTERED AS SHOPPER</span>
-              <span style="font-size:11px; color:#15803D; font-weight:700;">Active Room</span>
+              <span style="font-size:11px; color:#15803D; font-weight:700; display:flex; align-items:center; gap:3px;">
+                <span style="width:6px; height:6px; border-radius:50%; background:#22C55E;"></span>
+                My Event Room
+              </span>
             </div>
-            <div style="font-size:13.5px; font-weight:800; color:var(--primary); margin-bottom:2px;">${state.jastiperJoinedEvents[ev.id].roomTitle}</div>
-            <div style="font-size:11px; color:var(--tertiary); line-height:1.4; margin-bottom:8px;">${state.jastiperJoinedEvents[ev.id].roomDesc}</div>
+            <div style="font-size:14px; font-weight:800; color:var(--primary); margin-bottom:3px;">
+              ${state.jastiperJoinedEvents[ev.id].roomTitle || `${user.name}'s Event Room`}
+            </div>
+            <div style="font-size:11.5px; color:var(--tertiary); line-height:1.45; margin-bottom:8px;">
+              ${state.jastiperJoinedEvents[ev.id].roomDesc || 'Official live shopping catalog from this venue.'}
+            </div>
+
+            <!-- Pickup Address with GPS Pinpoint Badge for Instant Courier -->
+            ${(() => {
+              const pAddr = state.jastiperJoinedEvents[ev.id].pickupAddress || savedPickupAddresses[0];
+              return `
+                <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:8px 10px; font-size:11px; margin-bottom:10px; color:var(--tertiary);">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
+                    <strong style="color:var(--primary); font-size:11.5px; display:flex; align-items:center; gap:4px;">
+                      ${svg('mapPin','style="width:12px;height:12px;stroke:var(--secondary);flex-shrink:0;"')}
+                      <span>${pAddr.label}</span>
+                    </strong>
+                    <span style="font-size:9.5px; font-weight:800; background:#DCFCE7; color:#15803D; padding:2px 6px; border-radius:4px;">⚡ Instant Ready</span>
+                  </div>
+                  <div style="font-size:10.5px; line-height:1.35; color:var(--muted); margin-bottom:3px;">
+                    ${pAddr.address}
+                  </div>
+                  <div style="font-size:9.5px; color:#15803D; font-weight:600;">
+                    📍 GPS Coordinates Saved (${pAddr.coords ? `${pAddr.coords.lat}, ${pAddr.coords.lng}` : '-6.1495, 106.8456'})
+                  </div>
+                </div>
+              `;
+            })()}
+
+            <div style="background:#fff; border:1px solid #BBF7D0; border-radius:10px; padding:8px 10px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; font-size:11px;">
+              <span style="color:var(--muted); display:flex; align-items:center; gap:4px;">${svg('users','style="width:12px;height:12px;stroke:var(--secondary);"') } Buyers in your room:</span>
+              <strong style="color:var(--primary); font-size:12px;">32 members joined</strong>
+            </div>
+
             <div style="display:flex; gap:8px;">
-              <button class="btn-primary" style="flex:1; padding:8px 0; font-size:11px;" onclick="showToast('Room product catalog updated')">
-                + Add Catalog Items
+              <button class="btn-primary" style="flex:1; padding:9px 0; font-size:11.5px; margin:0;" onclick="showToast('📸 Open camera to add live item to catalog')">
+                + Add Live Catalog Item
               </button>
-              <button style="background:#DCFCE7; color:#15803D; border:none; border-radius:10px; padding:8px 12px; font-size:11px; font-weight:700; cursor:pointer;" onclick="showToast('Room ready to accept orders')">
-                Manage Room
+              <button style="background:#DCFCE7; color:#15803D; border:1px solid #86EFAC; border-radius:12px; padding:9px 14px; font-size:11.5px; font-weight:700; cursor:pointer;" onclick="showToast('💬 Room chat opened for buyer inquiries')">
+                💬 Room Chat
               </button>
             </div>
           </div>
         ` : `
-          <div class="jastiper-event-join-banner">
+          <!-- CTA to Join Event as Shopper -->
+          <div class="jastiper-event-join-banner" style="margin-bottom:16px;">
             <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
-              <div style="width:34px; height:34px; border-radius:10px; background:#FF5722; color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                ${svg('plane')}
+              <div style="width:36px; height:36px; border-radius:10px; background:#FF5722; color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                ${svg('plane','style="width:18px;height:18px;stroke:#fff;"')}
               </div>
               <div>
                 <div style="font-size:13px; font-weight:800; color:var(--primary);">Attend & Offer Shopping Service at This Event?</div>
-                <div style="font-size:11px; color:#7C2D12;">Register yourself to collect item requests from attendees and buyers.</div>
+                <div style="font-size:11px; color:#7C2D12;">Join to open your personal live room and collect orders from ${totalBuyersInterested}+ interested buyers.</div>
               </div>
             </div>
-            <button class="btn-primary" style="width:100%; margin-top:6px; padding:10px 0; font-size:12px;" onclick="openJastiperEventJoinModal('${ev.id}')">
-              + Join as Shopper
+            <button class="btn-primary" style="width:100%; margin:6px 0 0; padding:10.5px 0; font-size:12.5px;" onclick="openJastiperEventJoinModal('${ev.id}')">
+              + Join as Shopper & Create Room
             </button>
           </div>
-        `
-      ) : ''}
-
-      <div class="section-head" style="padding:0 0 10px;">
-        <div class="section-title">Shoppers Joining</div>
-        <div class="section-link">${ev.participants.length} shoppers</div>
-      </div>
-      ${ev.participants.map((p, idx) => {
-        const roomId = 'e:'+ev.id+':'+idx;
-        const joined = !!joinedRooms[roomId];
-        const count = roomMembersCount[roomId] || 0;
-        return `
-        <div class="participant-item">
-          <div class="participant-item-top" onclick="openEventParticipant(${idx})">
-            <div class="avatar-full">${p.initials}</div>
-            <div class="participant-info">
-              <div class="participant-name" style="display:flex; align-items:center; gap:5px;">
-                ${p.name}
-                ${renderVerifiedBadge(p.verified, true)}
-              </div>
-              <div class="participant-sub">${svg('star','style="width:11px;height:11px;stroke:#FF5722;fill:#FF5722;"')} ${p.rating} (${p.ratingCount} reviews) • ${p.itemsSold} sold</div>
-            </div>
-            ${svg('chevron','style="width:16px;height:16px;stroke:#94A3B8;flex-shrink:0;"')}
-          </div>
-          <div class="participant-room-box">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
-              <div class="participant-room-title">${p.roomTitle}</div>
-              <div class="room-member-tag" style="margin:0;">${svg('users')} <span>${count} members</span></div>
-            </div>
-            <div class="participant-room-desc">${p.roomDesc}</div>
-          </div>
-          <button class="join-btn-mini ${joined ? 'joined' : ''}" onclick="event.stopPropagation(); handleRoomJoinClick('${roomId}')">
-            ${joined ? svg('check','style="width:13px;height:13px;"') : svg('userPlus','style="width:13px;height:13px;"')}
-            ${joined ? 'Joined Room' : 'Join Room'}
-          </button>
+        `}
+      ` : `
+        <!-- BUYER MODE VIEW: List of All Shoppers & Rooms -->
+        <div class="section-head" style="padding:0 0 10px;">
+          <div class="section-title">Shoppers Joining</div>
+          <div class="section-link">${ev.participants.length} shoppers</div>
         </div>
-      `;}).join('')}
+        ${ev.participants.map((p, idx) => {
+          const roomId = 'e:'+ev.id+':'+idx;
+          const joined = !!joinedRooms[roomId];
+          const count = roomMembersCount[roomId] || 0;
+          return `
+          <div class="participant-item">
+            <div class="participant-item-top" onclick="openEventParticipant(${idx})">
+              <div class="avatar-full">${p.initials}</div>
+              <div class="participant-info">
+                <div class="participant-name" style="display:flex; align-items:center; gap:5px;">
+                  ${p.name}
+                  ${renderVerifiedBadge(p.verified, true)}
+                </div>
+                <div class="participant-sub">${svg('star','style="width:11px;height:11px;stroke:#FF5722;fill:#FF5722;"')} ${p.rating} (${p.ratingCount} reviews) • ${p.itemsSold} sold</div>
+              </div>
+              ${svg('chevron','style="width:16px;height:16px;stroke:#94A3B8;flex-shrink:0;"')}
+            </div>
+            <div class="participant-room-box">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
+                <div class="participant-room-title">${p.roomTitle}</div>
+                <div class="room-member-tag" style="margin:0;">${svg('users')} <span>${count} members</span></div>
+              </div>
+              <div class="participant-room-desc">${p.roomDesc}</div>
+            </div>
+            <button class="join-btn-mini ${joined ? 'joined' : ''}" onclick="event.stopPropagation(); handleRoomJoinClick('${roomId}')">
+              ${joined ? svg('check','style="width:13px;height:13px;"') : svg('userPlus','style="width:13px;height:13px;"')}
+              ${joined ? 'Joined Room' : 'Join Room'}
+            </button>
+          </div>
+        `;}).join('')}
+      `}
     </div>
   `;
 }
@@ -5855,10 +7355,10 @@ function renderTitipFormPage(){
           <button type="button" class="filter-pill" style="font-size:11px; white-space:nowrap; opacity:0.65; cursor:pointer; padding:6px 12px;" onclick="showToast('🧳 TitipBagasi is coming soon!')">
             🧳 TitipBagasi <span style="font-size:8.5px; background:#F1F5F9; color:#64748B; padding:1px 4px; border-radius:4px; margin-left:2px;">SOON</span>
           </button>
-          <button type="button" class="filter-pill" style="font-size:11px; white-space:nowrap; opacity:0.65; cursor:pointer; padding:6px 12px;" onclick="showToast('🐾 TitipAnabul is coming soon!')">
+          <button type="button" class="filter-pill" style="font-size:11px; white-space:nowrap; opacity:0.65; cursor:pointer; padding:6px 12px;" onclick="showToast('🐾 TitipAnabul is coming soon! Pet hotel & boarding care.')">
             🐾 TitipAnabul <span style="font-size:8.5px; background:#F1F5F9; color:#64748B; padding:1px 4px; border-radius:4px; margin-left:2px;">SOON</span>
           </button>
-          <button type="button" class="filter-pill" style="font-size:11px; white-space:nowrap; opacity:0.65; cursor:pointer; padding:6px 12px;" onclick="showToast('🎟️ TitipAntre is coming soon!')">
+          <button type="button" class="filter-pill" style="font-size:11px; white-space:nowrap; opacity:0.65; cursor:pointer; padding:6px 12px;" onclick="showToast('🎟️ TitipAntre is coming soon! On-site queue sitting.')">
             🎟️ TitipAntre <span style="font-size:8.5px; background:#F1F5F9; color:#64748B; padding:1px 4px; border-radius:4px; margin-left:2px;">SOON</span>
           </button>
         </div>
@@ -6097,11 +7597,11 @@ function renderJastiperOrdersList(){
           No incoming orders at this stage
         </div>
       ` : filteredOrders.map(o => `
-        <div class="order-item" style="flex-direction:column; gap:10px; padding:14px;">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; width:100%;">
-            <div>
+        <div class="order-item">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; width:100%;">
+            <div style="flex:1; min-width:0;">
               <div style="font-size:10.5px; color:var(--muted); font-weight:600;">Order ID: <strong>${o.id}</strong> • ${o.createdAt}</div>
-              <div class="order-title" style="font-size:13.5px; margin-top:2px;">${o.productName} (x${o.qty})</div>
+              <div class="order-title" style="margin-top:2px;">${o.productName} (x${o.qty})</div>
             </div>
             <span class="status-pill status-${o.status==='to_buy'?'processing':(o.status==='bought'?'warning':'completed')}">${o.statusLabel}</span>
           </div>
@@ -6126,7 +7626,7 @@ function renderJastiperOrdersList(){
           </div>
 
           ${o.notes ? `
-            <div style="font-size:11px; color:var(--tertiary); background:#FFFBEB; border-left:3px solid #F59E0B; padding:6px 8px; border-radius:4px;">
+            <div style="font-size:11px; color:var(--tertiary); background:#FFFBEB; border-left:3px solid #F59E0B; padding:6px 9px; border-radius:0 6px 6px 0;">
               <strong>Buyer Note:</strong> ${o.notes}
             </div>
           ` : ''}
@@ -6136,19 +7636,46 @@ function renderJastiperOrdersList(){
               <span style="color:#DC2626; font-weight:700; display:flex; align-items:center; gap:4px;">${svg('clock','style="width:12px;height:12px;stroke:#DC2626;"')} Purchase SLA: ${o.slaCountdown}</span>
               <span style="color:#991B1B; font-weight:600;">Deadline: ${o.slaDate}</span>
             </div>
-            <button class="btn-primary" style="width:100%; font-size:12px; padding:9px 0;" onclick="markOrderBought('${o.id}')">
+            <button class="btn-primary" style="width:100%; margin:0; font-size:12px; padding:9px 0;" onclick="markOrderBought('${o.id}')">
               📸 Upload Receipt & Confirm Purchase
             </button>
           ` : (o.status === 'bought' ? `
-            <div style="background:#F0FDF4; border:1px solid #86EFAC; border-radius:8px; padding:6px 10px; font-size:11px; color:#15803D; font-weight:600; display:flex; align-items:center; gap:4px;">
-              ${svg('check','style="width:12px;height:12px;stroke:#15803D;"')} Purchase receipt verified. Ready to ship to buyer address.
+            <div style="background:#F0FDF4; border:1px solid #86EFAC; border-radius:8px; padding:7px 10px; font-size:11px; color:#15803D; line-height:1.4;">
+              <div style="font-weight:700; display:flex; align-items:center; gap:4px; margin-bottom:2px;">
+                ${svg('check','style="width:12px;height:12px;stroke:#15803D;"')} Purchase Verified • Ready for Shipping
+              </div>
+              <div style="color:#166534; font-size:10.5px;">Delivery handled via Logistics Aggregator. Resi & courier pickup booked automatically.</div>
             </div>
-            <button class="btn-primary" style="width:100%; font-size:12px; padding:9px 0; background:#0284C7;" onclick="markOrderShipped('${o.id}')">
-              🚚 Input Tracking Number
+            <button class="btn-primary" style="width:100%; margin:0; font-size:12px; padding:9.5px 0; background:#0284C7; display:flex; align-items:center; justify-content:center; gap:6px;" onclick="requestCourierPickup('${o.id}')">
+              ${svg('truck','style="width:14px;height:14px;stroke:#fff;"')}
+              <span>Request Courier Pickup & Auto AWB</span>
             </button>
           ` : `
-            <div style="font-size:11px; color:var(--muted); text-align:center; padding:4px 0;">
-              Order in transit to ${o.buyer.city}
+            <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:8px 10px; font-size:11px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                <span style="color:var(--muted); font-size:10.5px;">Courier (Aggregator):</span>
+                <span style="font-weight:700; color:#0284C7; display:flex; align-items:center; gap:3px;">
+                  ${svg('truck','style="width:11px;height:11px;stroke:#0284C7;"')} ${o.courier || 'JNE Reguler'}
+                </span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                <span style="color:var(--muted); font-size:10.5px;">Auto Tracking (AWB):</span>
+                <span style="font-weight:800; color:var(--primary); font-family:monospace; font-size:11.5px; letter-spacing:0.3px;">
+                  ${o.awb || 'JNE8829103948'}
+                </span>
+              </div>
+              <div style="font-size:10px; color:#166534; background:#DCFCE7; padding:3px 7px; border-radius:4px; font-weight:600; display:flex; align-items:center; gap:4px;">
+                <span style="width:5px; height:5px; border-radius:50%; background:#16A34A;"></span>
+                Courier Scheduled • Live Tracking Synced Automatically
+              </div>
+            </div>
+            <div style="display:flex; gap:6px; margin-top:2px;">
+              <button class="modal-btn-secondary" style="flex:1; padding:7px 0; font-size:11px; display:flex; align-items:center; justify-content:center; gap:4px;" onclick="showToast('🖨️ Shipping label downloaded with barcode: ${o.awb || 'JNE8829103948'}')">
+                🖨️ Print Label
+              </button>
+              <button class="modal-btn-secondary" style="flex:1; padding:7px 0; font-size:11px; display:flex; align-items:center; justify-content:center; gap:4px; color:var(--secondary); border-color:var(--secondary);" onclick="showToast('📍 Live GPS Tracking: Courier heading to destination hub')">
+                📍 Track Live
+              </button>
             </div>
           `)}
         </div>
@@ -6165,13 +7692,15 @@ function renderJastiperOffersList(){
           No sent offers yet. Explore the Buyer Requests tab to start bidding.
         </div>
       ` : mySentOffers.map(off => `
-        <div class="order-item" style="flex-direction:column; gap:10px; padding:14px;">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; width:100%;">
-            <div>
+        <div class="order-item">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; width:100%;">
+            <div style="flex:1; min-width:0;">
               <div style="font-size:10.5px; color:var(--muted); font-weight:600;">Offered to: <strong>${off.buyer.name}</strong> • ${off.createdAt}</div>
-              <div class="order-title" style="font-size:13.5px; margin-top:2px;">${off.requestTitle}</div>
+              <div class="order-title" style="margin-top:2px;">${off.requestTitle}</div>
             </div>
-            <span class="status-pill status-${off.status==='accepted'?'completed':(off.status==='rejected'?'danger':'warning')}">${off.statusLabel}</span>
+            <span class="status-pill status-${off.status==='accepted'?'completed':(off.status==='rejected'?'danger':'warning')}">
+              ${off.status === 'pending' ? 'Awaiting Response' : off.statusLabel}
+            </span>
           </div>
 
           <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:8px 10px; font-size:11.5px; line-height:1.45;">
@@ -6190,7 +7719,7 @@ function renderJastiperOffersList(){
           </div>
 
           ${off.notes ? `
-            <div style="font-size:11px; color:var(--tertiary); background:#F1F5F9; padding:6px 8px; border-radius:6px;">
+            <div style="font-size:11px; color:var(--tertiary); background:#F8FAFC; border-left:3px solid #CBD5E1; padding:6px 9px; border-radius:0 6px 6px 0;">
               <strong>Offer Note:</strong> "${off.notes}"
             </div>
           ` : ''}
@@ -6205,17 +7734,28 @@ function markOrderBought(orderId){
   if(!ord) return;
   ord.status = 'bought';
   ord.statusLabel = 'Purchasing';
-  showToast(`📸 Receipt uploaded successfully! Order status updated.`);
+  showToast(`📸 Receipt uploaded successfully! Order verified.`);
+  render();
+}
+
+function requestCourierPickup(orderId){
+  const ord = jastiperIncomingOrders.find(o => o.id === orderId);
+  if(!ord) return;
+  const courierPrefix = ord.courier ? ord.courier.split(' ')[0].toUpperCase() : 'JNE';
+  const randomAwb = courierPrefix + Math.floor(1000000000 + Math.random() * 9000000000);
+  
+  ord.status = 'shipped';
+  ord.statusLabel = 'Shipped';
+  ord.awb = randomAwb;
+  ord.courier = ord.courier || 'JNE Reguler';
+  ord.shippedAt = 'Just now';
+  
+  showToast(`🚚 Courier pickup requested via Aggregator! AWB: ${randomAwb}`);
   render();
 }
 
 function markOrderShipped(orderId){
-  const ord = jastiperIncomingOrders.find(o => o.id === orderId);
-  if(!ord) return;
-  ord.status = 'shipped';
-  ord.statusLabel = 'Shipped';
-  showToast(`🚚 Tracking number saved! Order is on the way.`);
-  render();
+  requestCourierPickup(orderId);
 }
 
 function renderActivity(){
@@ -7686,13 +9226,26 @@ function toggleUserKyc(){
 }
 
 function toggleAppMode(){
-  state.appMode = state.appMode === 'buyer' ? 'jastiper' : 'buyer';
-  showToast(state.appMode === 'jastiper' ? '✈️ Switched to Shopper Mode' : '🛍️ Switched to Buyer Mode');
+  if(state.appMode === 'buyer'){
+    state.appMode = 'jastiper';
+    state.tab = 'timeline'; // Directly navigate to Explore page
+    resetSubScreens();
+    state.shopperGuidanceStep = 0; // Trigger Shopper Welcome Board & Guidance
+    state.guidanceStep = null;
+    showToast('✈️ Switched to Shopper Mode');
+  } else {
+    state.appMode = 'buyer';
+    state.tab = 'timeline'; // Navigate to Explore page
+    resetSubScreens();
+    state.shopperGuidanceStep = null;
+    showToast('🛍️ Switched to Buyer Mode');
+  }
   render();
 }
 
 function renderProfile(){
   const isJastiper = state.appMode === 'jastiper';
+  const isId = state.lang === 'id';
 
   return `
     <div style="padding:16px;">
@@ -7713,7 +9266,7 @@ function renderProfile(){
               </div>
             </div>
           </div>
-          <button class="icon-btn" onclick="showToast('Edit Profile')" title="Edit Profile">
+          <button class="icon-btn" onclick="showToast(state.lang === 'id' ? 'Ubah Profil' : 'Edit Profile')" title="Edit Profile">
             ${svg('edit')}
           </button>
         </div>
@@ -7726,15 +9279,15 @@ function renderProfile(){
             </div>
             <div>
               <div style="font-size:12.5px; font-weight:700; color:${user.verified ? '#15803D' : '#B45309'};">
-                ${user.verified ? 'Verified Account' : 'Unverified Account'}
+                ${user.verified ? t('profile.verifiedTitle', 'Akun Terverifikasi') : t('profile.unverifiedTitle', 'Akun Belum Verifikasi')}
               </div>
               <div style="font-size:10.5px; color:${user.verified ? '#166534' : '#92400E'}; line-height:1.35;">
-                ${user.verified ? 'Your account identity is officially verified' : 'Verify your account to boost transaction security'}
+                ${user.verified ? t('profile.verifiedSub', 'Identitas akun Anda telah resmi diverifikasi') : t('profile.unverifiedSub', 'Verifikasi akun Anda untuk meningkatkan keamanan transaksi')}
               </div>
             </div>
           </div>
           <button class="join-btn-mini" style="background:${user.verified ? '#DCFCE7' : '#F59E0B'}; color:${user.verified ? '#15803D' : '#fff'}; border:none; padding:6px 12px; font-size:11px; font-weight:700; white-space:nowrap;" onclick="toggleUserKyc()">
-            ${user.verified ? 'Reset Simulation' : 'Verify Now'}
+            ${user.verified ? t('profile.resetSim', 'Reset Simulasi') : t('profile.verifyNow', 'Verifikasi Sekarang')}
           </button>
         </div>
       </div>
@@ -7744,7 +9297,7 @@ function renderProfile(){
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
           <div style="display:flex; align-items:center; gap:6px; font-size:11.5px; color:#94A3B8; font-weight:600;">
             ${svg('wallet','style="width:14px;height:14px;stroke:#94A3B8;"')}
-            <span>${isJastiper ? 'Shopper Earnings' : 'TitikTitip Balance'}</span>
+            <span>${isJastiper ? t('profile.shopperEarnings', 'Penghasilan Jastiper') : t('profile.balance', 'Saldo TitikTitip')}</span>
           </div>
           <span class="badge" style="background:rgba(255,255,255,0.12); color:#fff; font-size:9px; border:1px solid rgba(255,255,255,0.2);">${isJastiper ? 'READY TO WITHDRAW' : 'ACTIVE'}</span>
         </div>
@@ -7753,18 +9306,18 @@ function renderProfile(){
         </div>
         <div style="display:flex; gap:8px;">
           ${isJastiper ? `
-            <button style="flex:1; background:var(--secondary); color:#fff; border:none; border-radius:10px; padding:8px 0; font-size:11.5px; font-weight:700; cursor:pointer;" onclick="showToast('Open new trip schedule')">
-              + Post New Trip
+            <button style="flex:1; background:var(--secondary); color:#fff; border:none; border-radius:10px; padding:8px 0; font-size:11.5px; font-weight:700; cursor:pointer;" onclick="showToast(state.lang === 'id' ? 'Buka jadwal trip baru' : 'Open new trip schedule')">
+              ${isId ? '+ Buka Trip Baru' : '+ Post New Trip'}
             </button>
-            <button style="flex:1; background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2); border-radius:10px; padding:8px 0; font-size:11.5px; font-weight:600; cursor:pointer;" onclick="showToast('Withdraw earnings to bank account')">
-              Withdraw Earnings
+            <button style="flex:1; background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2); border-radius:10px; padding:8px 0; font-size:11.5px; font-weight:600; cursor:pointer;" onclick="showToast(state.lang === 'id' ? 'Tarik penghasilan ke rekening bank' : 'Withdraw earnings to bank account')">
+              ${t('profile.withdraw', 'Tarik Dana')}
             </button>
           ` : `
-            <button style="flex:1; background:var(--secondary); color:#fff; border:none; border-radius:10px; padding:8px 0; font-size:11.5px; font-weight:700; cursor:pointer;" onclick="showToast('Top up balance')">
-              + Top Up Balance
+            <button style="flex:1; background:var(--secondary); color:#fff; border:none; border-radius:10px; padding:8px 0; font-size:11.5px; font-weight:700; cursor:pointer;" onclick="showToast(state.lang === 'id' ? 'Isi saldo dompet' : 'Top up balance')">
+              ${t('profile.topUp', '+ Isi Saldo')}
             </button>
-            <button style="flex:1; background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2); border-radius:10px; padding:8px 0; font-size:11.5px; font-weight:600; cursor:pointer;" onclick="showToast('Withdraw funds to bank account')">
-              Withdraw Funds
+            <button style="flex:1; background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2); border-radius:10px; padding:8px 0; font-size:11.5px; font-weight:600; cursor:pointer;" onclick="showToast(state.lang === 'id' ? 'Tarik dana ke rekening bank' : 'Withdraw funds to bank account')">
+              ${t('profile.withdraw', 'Tarik Dana')}
             </button>
           `}
         </div>
@@ -7776,7 +9329,7 @@ function renderProfile(){
           <div class="meta-row" style="cursor:pointer; border-bottom:1px solid var(--border); padding:13px 16px;" onclick="showToast('Manage trips and stalls')">
             ${svg('trip')}
             <div style="flex:1;">
-              <div class="meta-row-label">Manage My Trips & Stalls</div>
+              <div class="meta-row-label">${t('profile.manageTrips', 'Kelola Jadwal Trip & Lapak')}</div>
               <div class="meta-row-value" style="font-size:11.5px;">3 Active Listings (Bangkok, Tokyo, Bandung)</div>
             </div>
             ${svg('chevron','style="width:14px;height:14px;stroke:var(--muted);"') }
@@ -7784,7 +9337,7 @@ function renderProfile(){
           <div class="meta-row" style="cursor:pointer; border-bottom:1px solid var(--border); padding:13px 16px;" onclick="showToast('Open incoming orders')">
             ${svg('cart')}
             <div style="flex:1;">
-              <div class="meta-row-label">Incoming Orders</div>
+              <div class="meta-row-label">${t('profile.incomingOrders', 'Pesanan Masuk')}</div>
               <div class="meta-row-value" style="font-size:11.5px;">4 Awaiting Purchase</div>
             </div>
             ${svg('chevron','style="width:14px;height:14px;stroke:var(--muted);"') }
@@ -7792,7 +9345,7 @@ function renderProfile(){
           <div class="meta-row" style="cursor:pointer; border-bottom:1px solid var(--border); padding:13px 16px;" onclick="showToast('Open sent offers')">
             ${svg('activity')}
             <div style="flex:1;">
-              <div class="meta-row-label">Sent Buyer Request Offers</div>
+              <div class="meta-row-label">${t('profile.sentOffers', 'Penawaran ke Pembeli')}</div>
               <div class="meta-row-value" style="font-size:11.5px;">2 Active Offers</div>
             </div>
             ${svg('chevron','style="width:14px;height:14px;stroke:var(--muted);"') }
@@ -7800,7 +9353,7 @@ function renderProfile(){
           <div class="meta-row" style="cursor:pointer; border-bottom:1px solid var(--border); padding:13px 16px;" onclick="showToast('Open bank account settings')">
             ${svg('creditCard')}
             <div style="flex:1;">
-              <div class="meta-row-label">Payout Bank Account</div>
+              <div class="meta-row-label">${t('profile.payoutBank', 'Rekening Bank Pencairan')}</div>
               <div class="meta-row-value" style="font-size:11.5px;">BCA •••••• 4321</div>
             </div>
             ${svg('chevron','style="width:14px;height:14px;stroke:var(--muted);"') }
@@ -7808,7 +9361,7 @@ function renderProfile(){
           <div class="meta-row" style="cursor:pointer; border-bottom:1px solid var(--border); padding:13px 16px;" onclick="showToast('Open shopper help center')">
             ${svg('shield')}
             <div style="flex:1;">
-              <div class="meta-row-label">Shopper Help Center & Guidelines</div>
+              <div class="meta-row-label">${t('profile.shopperHelp', 'Pusat Bantuan Jastiper')}</div>
               <div class="meta-row-value" style="font-size:11.5px;">Safe Shopping Tips & Service Standards</div>
             </div>
             ${svg('chevron','style="width:14px;height:14px;stroke:var(--muted);"') }
@@ -7833,19 +9386,34 @@ function renderProfile(){
           <div class="meta-row" style="cursor:pointer; border-bottom:1px solid var(--border); padding:13px 16px;" onclick="showToast('Open help center')">
             ${svg('shield')}
             <div style="flex:1;">
-              <div class="meta-row-label">Help Center & Security Guarantee</div>
+              <div class="meta-row-label">${t('profile.helpCenter', 'Pusat Bantuan & Jaminan Aman')}</div>
               <div class="meta-row-value" style="font-size:11.5px;">100% Purchase Guarantee & 48-Hour SLA</div>
             </div>
             ${svg('chevron','style="width:14px;height:14px;stroke:var(--muted);"') }
           </div>
         `}
 
+        <!-- Language Selection Menu Row -->
+        <div class="meta-row" style="cursor:pointer; border-bottom:1px solid var(--border); padding:13px 16px;" onclick="openLanguageSheet()">
+          ${svg('globe', 'style="width:18px;height:18px;stroke:var(--primary);"') }
+          <div style="flex:1;">
+            <div class="meta-row-label" style="font-weight:700;">${t('profile.language', 'Pilihan Bahasa / Language')}</div>
+            <div class="meta-row-value" style="font-size:11.5px;">${isId ? '🇮🇩 Bahasa Indonesia (Aktif)' : '🇬🇧 English (Active)'}</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span style="font-size:10.5px; font-weight:700; background:var(--neutral); color:var(--primary); padding:3px 8px; border-radius:100px; border:1px solid var(--border);">
+              ${isId ? '🇮🇩 ID' : '🇬🇧 EN'}
+            </span>
+            ${svg('chevron','style="width:14px;height:14px;stroke:var(--muted);"') }
+          </div>
+        </div>
+
         <!-- App Guidance Tour Button -->
-        <div class="meta-row" style="cursor:pointer; border-bottom:1px solid var(--border); padding:13px 16px;" onclick="startGuidanceTour()">
+        <div class="meta-row" style="cursor:pointer; border-bottom:1px solid var(--border); padding:13px 16px;" onclick="${isJastiper ? 'startShopperGuidanceTour()' : 'startGuidanceTour()'}">
           ${svg('sparkles', 'style="width:18px;height:18px;stroke:var(--secondary);"') }
           <div style="flex:1;">
-            <div class="meta-row-label" style="color:var(--primary); font-weight:700;">App Guide & Walkthrough</div>
-            <div class="meta-row-value" style="font-size:11.5px;">Quick 1-minute tutorial for new buyers</div>
+            <div class="meta-row-label" style="color:var(--primary); font-weight:700;">${isJastiper ? t('profile.shopperGuide', 'Panduan Jastiper & Tutorial') : t('profile.appGuide', 'Panduan Aplikasi & Tutorial')}</div>
+            <div class="meta-row-value" style="font-size:11.5px;">${isJastiper ? (isId ? 'Tutorial cara ambil titipan, room event & resi otomatis' : 'Tutorial on taking requests, event rooms & auto AWB') : (isId ? 'Panduan kilat 1 menit untuk pengguna baru' : 'Quick 1-minute tutorial for new buyers')}</div>
           </div>
           ${svg('chevron','style="width:14px;height:14px;stroke:var(--muted);"') }
         </div>
@@ -7858,19 +9426,19 @@ function renderProfile(){
           }
           <div style="flex:1;">
             <div class="meta-row-label" style="color:var(--secondary); font-weight:800; font-size:13px;">
-              ${isJastiper ? 'Switch to Buyer Mode' : 'Switch to Shopper Mode'}
+              ${isJastiper ? t('profile.switchToBuyer', 'Beralih ke Mode Pembeli') : t('profile.switchToShopper', 'Beralih ke Mode Jastiper')}
             </div>
             <div class="meta-row-value" style="font-size:11px;">
-              ${isJastiper ? 'Switch to shop & post item requests' : 'Switch to post shopping services & accept orders'}
+              ${isJastiper ? t('profile.switchToBuyerSub', 'Belanja & ajukan permintaan titip barang') : t('profile.switchToShopperSub', 'Buka layanan jastip & terima pesanan')}
             </div>
           </div>
           ${svg('chevron','style="width:14px;height:14px;stroke:var(--secondary);"') }
         </div>
 
-        <div class="meta-row" style="cursor:pointer; padding:13px 16px;" onclick="showToast('Logged out successfully')">
+        <div class="meta-row" style="cursor:pointer; padding:13px 16px;" onclick="showToast(state.lang === 'id' ? 'Berhasil keluar akun' : 'Logged out successfully')">
           ${svg('logout','style="stroke:#EF4444;"')}
           <div style="flex:1;">
-            <div class="meta-row-label" style="color:#EF4444; font-weight:700;">Log Out</div>
+            <div class="meta-row-label" style="color:#EF4444; font-weight:700;">${t('profile.logout', 'Keluar Akun')}</div>
           </div>
         </div>
       </div>
