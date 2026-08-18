@@ -2020,10 +2020,11 @@
     justify-content:center;
     animation:fadeIn .2s ease;
     box-sizing:border-box;
+    padding-top:44px;
   }
   .filter-sheet{
     width:100%;
-    max-height:85%;
+    max-height:100%;
     background:#fff;
     border-radius:24px 24px 0 0;
     display:flex;
@@ -3437,6 +3438,41 @@ const i18n = {
       autoAWB: 'Resi Otomatis (AWB)',
       reqPickup: '1-Klik Request Pickup Kurir',
       printLabel: 'Cetak Label Pengiriman'
+    },
+    catalog: {
+      uploadTitle: 'Upload Item ke Katalog',
+      uploadSub: 'Tambahkan produk yang siap kamu belikan untuk pembeli',
+      targetLabel: 'Menambahkan ke:',
+      photoUpload: 'Foto Produk',
+      photoUploadHint: 'Klik untuk upload foto sampel produk (opsional)',
+      productName: 'Nama Produk / Barang',
+      productNamePlaceholder: 'contoh: Labubu The Monsters Vinyl Plush / SK-II Essence',
+      category: 'Kategori Produk',
+      productPrice: 'Harga Asli Barang',
+      productPriceHint: 'Harga beli barang di toko / ritel asal',
+      jastipFee: 'Biaya Jasa Jastip (Fee)',
+      jastipFeeHint: 'Keuntungan / tip jasa titip per item',
+      feeScheme: 'Skema Biaya Jastip',
+      feeInclude: 'Include (Sudah di dalam harga)',
+      feeSeparate: 'Terpisah (Biaya jasa ditambahkan)',
+      stockStatus: 'Status Stok',
+      stockReady: 'Ready Stock (Siap Kirim)',
+      stockPO: 'Pre-Order (PO)',
+      productDesc: 'Deskripsi & Catatan Varian',
+      productDescPlaceholder: 'Jelaskan varian warna, ukuran, tanggal kadaluarsa, atau catatan kemasan...',
+      uploadBtn: 'Simpan & Upload ke Katalog',
+      cancelBtn: 'Batal',
+      manageTitle: 'Kelola Jadwal Trip, Lapak & Katalog',
+      manageSub: 'Pantau listing jastip dan kelola barang katalog aktifmu',
+      addItemBtn: '+ Tambah Barang ke Katalog',
+      removeItemBtn: 'Hapus',
+      emptyCatalog: 'Belum ada barang di katalog ini',
+      emptyCatalogSub: 'Upload barang pertama untuk mulai menerima pesanan dari pembeli',
+      activeListings: 'Listing Aktif',
+      totalItemsInCatalog: 'Barang di Katalog',
+      tripListing: 'Jadwal Trip',
+      lapakListing: 'Lapak Pre-Order',
+      eventListing: 'Live Event Room'
     }
   },
   en: {
@@ -3538,6 +3574,41 @@ const i18n = {
       autoAWB: 'Auto Tracking (AWB)',
       reqPickup: '1-Click Request Courier Pickup',
       printLabel: 'Print Shipping Label'
+    },
+    catalog: {
+      uploadTitle: 'Upload Item to Catalog',
+      uploadSub: 'Add products you are ready to shop for buyers',
+      targetLabel: 'Adding item to:',
+      photoUpload: 'Product Photo',
+      photoUploadHint: 'Click to upload product sample photo (optional)',
+      productName: 'Product Name',
+      productNamePlaceholder: 'e.g. Labubu The Monsters Vinyl Plush / SK-II Essence',
+      category: 'Product Category',
+      productPrice: 'Retail Item Price',
+      productPriceHint: 'Purchase price at official origin store',
+      jastipFee: 'Shopper Service Fee (Tip)',
+      jastipFeeHint: 'Your personal shopper fee per item',
+      feeScheme: 'Fee Scheme',
+      feeInclude: 'Included (Built into item price)',
+      feeSeparate: 'Separate (Added at checkout)',
+      stockStatus: 'Stock Availability',
+      stockReady: 'Ready Stock (Immediate Dispatch)',
+      stockPO: 'Pre-Order (PO)',
+      productDesc: 'Description & Variant Notes',
+      productDescPlaceholder: 'Describe available colors, sizing, expiration date, or packaging notes...',
+      uploadBtn: 'Save & Upload to Catalog',
+      cancelBtn: 'Cancel',
+      manageTitle: 'Manage Trips, Stalls & Catalogs',
+      manageSub: 'Monitor your active shopping listings and product catalogs',
+      addItemBtn: '+ Add Item to Catalog',
+      removeItemBtn: 'Delete',
+      emptyCatalog: 'No items in this catalog yet',
+      emptyCatalogSub: 'Upload your first item to start collecting orders from buyers',
+      activeListings: 'Active Listings',
+      totalItemsInCatalog: 'Items in Catalog',
+      tripListing: 'Travel Trip',
+      lapakListing: 'Pre-Order Stall',
+      eventListing: 'Live Event Room'
     }
   }
 };
@@ -3592,6 +3663,72 @@ let state = {
   checkoutData:null,
   orderSuccessData:null,
   pendingRoomJoinAction:null,
+  showAddCatalogModal: false,
+  showEditCatalogModal: false,
+  addCatalogTarget: null, // { type: 'trip'|'lapak'|'event', id: '...', title: '...' }
+  editCatalogTarget: null, // { type: 'trip'|'lapak'|'event', id: '...', index: 0, item: {...} }
+  catalogPhotoData: null,
+  addCatalogFeeType: 'terpisah',
+  addCatalogStock: 'ready',
+  catalogBulkMode: false,
+  selectedCatalogIndices: [],
+  showMyTripsManage: false,
+  myTripsManageFilter: 'all',
+  showCreateTripModal: false,
+  createTripForm: {
+    banner: null,
+    dest: '',
+    dates: '',
+    shippingDate: '',
+    selectedAddressId: 'addr-home-1',
+    categories: ['Fashion & Sneakers'],
+    desc: ''
+  },
+  jastiperJoinedEvents: {
+    'ev1': {
+      roomTitle: 'Official Jakarta Fair 2026 Merchandise Room',
+      roomDesc: 'Ready to queue at official booths for Jakarta Fair 2026. 100% authentic items with official receipts.',
+      pickupAddress: null,
+      catalog: [
+        {
+          id: 'c_jf01',
+          name: 'Mascot Plush Doll Jakarta Fair 2026 (Limited Edition)',
+          category: 'Hobbies & Collectibles',
+          priceProduct: 175000,
+          fee: 25000,
+          feeType: 'terpisah',
+          stock: 'ready',
+          desc: 'Official mascot doll, height 30cm with official hologram certificate.',
+          photo: 'https://images.unsplash.com/photo-1558877385-81a1c7e67d72?w=150&auto=format&fit=crop&q=80',
+          addedAgo: '10 mnt lalu'
+        },
+        {
+          id: 'c_jf02',
+          name: 'Kerak Telor Khas Betawi Spesial Telur Bebek (Vacuum Pack)',
+          category: 'Food & Snacks',
+          priceProduct: 45000,
+          fee: 10000,
+          feeType: 'terpisah',
+          stock: 'ready',
+          desc: 'Freshly made from authentic master booth, packaged in high-barrier vacuum seal.',
+          photo: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=150&auto=format&fit=crop&q=80',
+          addedAgo: '25 mnt lalu'
+        },
+        {
+          id: 'c_jf03',
+          name: 'Jakcloth x Jakarta Fair Limited Edition Heavyweight Hoodie',
+          category: 'Fashion & Sneakers',
+          priceProduct: 320000,
+          fee: 40000,
+          feeType: 'terpisah',
+          stock: 'preorder',
+          desc: 'Exclusive collaboration hoodie. Heavyweight cotton 330gsm. Available Size S-XXL.',
+          photo: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=150&auto=format&fit=crop&q=80',
+          addedAgo: '45 mnt lalu'
+        }
+      ]
+    }
+  },
   exploreFilters: {
     homebase: '',
     destination: '',
@@ -4050,6 +4187,7 @@ function resetSubScreens(){
   state.eventDetailId = null;
   state.eventParticipantIdx = null;
   state.checkoutData = null;
+  state.showMyTripsManage = false;
 }
 
 function setTab(tab){
@@ -4133,7 +4271,8 @@ function render(){
     : (state.requestDetailId ? 'request_' + state.requestDetailId
     : (state.publicBuyerRequestDetailId ? 'pub_request_' + state.publicBuyerRequestDetailId
     : (state.eventDetailId ? 'event_' + state.eventDetailId + '_' + state.eventParticipantIdx 
-    : 'tab_' + state.tab))))));
+    : (state.showMyTripsManage ? 'my_trips_manage'
+    : 'tab_' + state.tab)))))));
 
   const isNewScreen = state._lastScreenKey !== currentScreenKey;
   state._lastScreenKey = currentScreenKey;
@@ -4150,6 +4289,15 @@ function render(){
   if(state.checkoutData){
     c.innerHTML = renderDirectCheckoutPage();
     c.style.paddingBottom = '0';
+    nav.classList.add('hidden');
+    if(isNewScreen) c.scrollTop = 0;
+    checkAndInjectModal();
+    return;
+  }
+
+  if(state.showMyTripsManage){
+    c.innerHTML = renderMyTripsManagePage();
+    c.style.paddingBottom = '24px';
     nav.classList.add('hidden');
     if(isNewScreen) c.scrollTop = 0;
     checkAndInjectModal();
@@ -5359,6 +5507,940 @@ function renderLanguageSelectionModal(){
   `;
 }
 
+/* ============ JASTIPER CATALOG UPLOAD & MANAGEMENT ============ */
+function openAddCatalogModal(targetType = 'trip', targetId = '', targetTitle = ''){
+  // Default to first trip/lapak/event if not provided
+  if(!targetId){
+    if(targetType === 'trip'){
+      targetId = feedItems.find(f => f.type === 'trip')?.id || 't1';
+    } else if(targetType === 'lapak'){
+      targetId = feedItems.find(f => f.type === 'lapak')?.id || 'l1';
+    } else if(targetType === 'event'){
+      targetId = events[0]?.id || 'ev1';
+    }
+  }
+  
+  if(!targetTitle){
+    if(targetType === 'trip' || targetType === 'lapak'){
+      const item = feedItems.find(f => f.id === targetId);
+      targetTitle = item ? item.title : (targetType === 'trip' ? 'Shopping Trip' : 'Shopping Stall');
+    } else if(targetType === 'event'){
+      const ev = events.find(e => e.id === targetId);
+      targetTitle = ev ? ev.title : 'Live Event Room';
+    }
+  }
+
+  state.addCatalogTarget = {
+    type: targetType,
+    id: targetId,
+    title: targetTitle
+  };
+  state.catalogPhotoData = null;
+  state.addCatalogFeeType = 'terpisah'; // 'include' | 'terpisah'
+  state.addCatalogStock = 'ready'; // 'ready' | 'preorder'
+  state.showAddCatalogModal = true;
+  render();
+}
+
+function closeAddCatalogModal(){
+  state.showAddCatalogModal = false;
+  state.catalogPhotoData = null;
+  render();
+}
+
+/* ============ CURRENCY FORMATTER ============ */
+function formatCurrencyInput(input){
+  if(!input) return;
+  let val = input.value.replace(/\D/g, '');
+  if(val){
+    input.value = val.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  } else {
+    input.value = '';
+  }
+}
+
+function handleCatalogPhotoUpload(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    state.catalogPhotoData = e.target.result;
+    render();
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeCatalogPhoto(e){
+  if(e) e.stopPropagation();
+  state.catalogPhotoData = null;
+  render();
+}
+
+function setCatalogFeeType(type){
+  state.addCatalogFeeType = type;
+  render();
+}
+
+function setCatalogStock(stock){
+  state.addCatalogStock = stock;
+  render();
+}
+
+function submitAddCatalogItem(){
+  const nameEl = document.getElementById('cat-item-name');
+  const catEl = document.getElementById('cat-item-cat');
+  const priceEl = document.getElementById('cat-item-price');
+  const feeEl = document.getElementById('cat-item-fee');
+  const descEl = document.getElementById('cat-item-desc');
+
+  const name = nameEl ? nameEl.value.trim() : '';
+  if(!name){
+    showToast(state.lang === 'id' ? 'Masukkan nama produk / barang' : 'Please enter product name');
+    if(nameEl) nameEl.focus();
+    return;
+  }
+
+  const priceRaw = priceEl ? priceEl.value.replace(/\D/g, '') : '';
+  const priceNum = priceRaw ? parseInt(priceRaw, 10) : 0;
+  if(priceNum <= 0){
+    showToast(state.lang === 'id' ? 'Masukkan harga barang yang valid' : 'Please enter a valid item price');
+    if(priceEl) priceEl.focus();
+    return;
+  }
+
+  const feeRaw = feeEl ? feeEl.value.replace(/\D/g, '') : '';
+  const feeNum = feeRaw ? parseInt(feeRaw, 10) : 0;
+  const category = catEl ? catEl.value : 'Others';
+  const desc = descEl ? descEl.value.trim() : '';
+  const feeType = state.addCatalogFeeType || 'terpisah';
+  const stock = state.addCatalogStock || 'ready';
+
+  const newItem = {
+    id: 'c_' + Date.now().toString().slice(-6),
+    name: name,
+    category: category,
+    priceProduct: priceNum,
+    fee: feeNum,
+    feeType: feeType,
+    stock: stock,
+    desc: desc || (state.lang === 'id' ? '100% original, dibeli langsung dari toko resmi.' : '100% authentic, purchased directly from official stores.'),
+    photo: state.catalogPhotoData || null,
+    addedAgo: state.lang === 'id' ? 'Baru saja' : 'Just now',
+    postedAgo: state.lang === 'id' ? 'Baru saja' : 'Just now'
+  };
+
+  const target = state.addCatalogTarget || { type: 'trip', id: 't1' };
+
+  if(target.type === 'trip'){
+    if(!tripCatalogs[target.id]) tripCatalogs[target.id] = [];
+    tripCatalogs[target.id].unshift(newItem);
+    const feedObj = feedItems.find(f => f.id === target.id);
+    if(feedObj && feedObj.catalog) feedObj.catalog.unshift(newItem);
+  } else if(target.type === 'lapak'){
+    if(!lapakCatalogs[target.id]) lapakCatalogs[target.id] = [];
+    lapakCatalogs[target.id].unshift(newItem);
+    const feedObj = feedItems.find(f => f.id === target.id);
+    if(feedObj && feedObj.catalog) feedObj.catalog.unshift(newItem);
+  } else if(target.type === 'event'){
+    const ev = events.find(e => e.id === target.id);
+    if(ev){
+      if(!state.jastiperJoinedEvents) state.jastiperJoinedEvents = {};
+      if(!state.jastiperJoinedEvents[target.id]) {
+        state.jastiperJoinedEvents[target.id] = {
+          roomTitle: `Official ${ev.title} Shopper Room`,
+          roomDesc: `Live shopping catalog from ${ev.title}`,
+          catalog: []
+        };
+      }
+      if(!state.jastiperJoinedEvents[target.id].catalog){
+        state.jastiperJoinedEvents[target.id].catalog = [];
+      }
+      state.jastiperJoinedEvents[target.id].catalog.unshift(newItem);
+      
+      const userPart = ev.participants.find(p => p.name === user.name) || ev.participants[0];
+      if(userPart){
+        if(!userPart.catalog) userPart.catalog = [];
+        userPart.catalog.unshift(newItem);
+      }
+    }
+  }
+
+  state.showAddCatalogModal = false;
+  state.catalogPhotoData = null;
+  showToast(state.lang === 'id' ? `🎉 "${name}" berhasil ditambahkan ke katalog!` : `🎉 "${name}" uploaded to catalog!`);
+  render();
+}
+
+/* ============ EDIT CATALOG ITEM ============ */
+function openEditCatalogModal(targetType, targetId, itemIndex){
+  let item = null;
+  if(targetType === 'trip' && tripCatalogs[targetId]){
+    item = tripCatalogs[targetId][itemIndex];
+  } else if(targetType === 'lapak' && lapakCatalogs[targetId]){
+    item = lapakCatalogs[targetId][itemIndex];
+  } else if(targetType === 'event' && state.jastiperJoinedEvents && state.jastiperJoinedEvents[targetId] && state.jastiperJoinedEvents[targetId].catalog){
+    item = state.jastiperJoinedEvents[targetId].catalog[itemIndex];
+  }
+
+  if(!item) {
+    showToast('Produk tidak ditemukan');
+    return;
+  }
+
+  state.editCatalogTarget = {
+    type: targetType,
+    id: targetId,
+    index: itemIndex,
+    item: { ...item }
+  };
+  state.catalogPhotoData = item.photo || null;
+  state.addCatalogFeeType = item.feeType || 'terpisah';
+  state.addCatalogStock = item.stock || 'ready';
+  state.showEditCatalogModal = true;
+  render();
+}
+
+function closeEditCatalogModal(){
+  state.showEditCatalogModal = false;
+  state.editCatalogTarget = null;
+  state.catalogPhotoData = null;
+  render();
+}
+
+function submitEditCatalogItem(){
+  if(!state.editCatalogTarget) return;
+  const { type, id, index } = state.editCatalogTarget;
+  const isId = state.lang === 'id';
+
+  const nameEl = document.getElementById('cat-edit-name');
+  const catEl = document.getElementById('cat-edit-cat');
+  const priceEl = document.getElementById('cat-edit-price');
+  const feeEl = document.getElementById('cat-edit-fee');
+  const descEl = document.getElementById('cat-edit-desc');
+
+  const name = nameEl ? nameEl.value.trim() : '';
+  if(!name){
+    showToast(isId ? 'Masukkan nama produk / barang' : 'Please enter product name');
+    if(nameEl) nameEl.focus();
+    return;
+  }
+
+  const priceRaw = priceEl ? priceEl.value.replace(/\D/g, '') : '';
+  const priceNum = priceRaw ? parseInt(priceRaw, 10) : 0;
+  if(priceNum <= 0){
+    showToast(isId ? 'Masukkan harga barang yang valid' : 'Please enter a valid item price');
+    if(priceEl) priceEl.focus();
+    return;
+  }
+
+  const feeRaw = feeEl ? feeEl.value.replace(/\D/g, '') : '';
+  const feeNum = feeRaw ? parseInt(feeRaw, 10) : 0;
+  const category = catEl ? catEl.value : 'Others';
+  const desc = descEl ? descEl.value.trim() : '';
+  const feeType = state.addCatalogFeeType || 'terpisah';
+  const stock = state.addCatalogStock || 'ready';
+
+  let targetList = null;
+  if(type === 'trip' && tripCatalogs[id]) targetList = tripCatalogs[id];
+  else if(type === 'lapak' && lapakCatalogs[id]) targetList = lapakCatalogs[id];
+  else if(type === 'event' && state.jastiperJoinedEvents && state.jastiperJoinedEvents[id]) targetList = state.jastiperJoinedEvents[id].catalog;
+
+  if(targetList && targetList[index]){
+    targetList[index].name = name;
+    targetList[index].category = category;
+    targetList[index].priceProduct = priceNum;
+    targetList[index].fee = feeNum;
+    targetList[index].feeType = feeType;
+    targetList[index].stock = stock;
+    targetList[index].desc = desc;
+    if(state.catalogPhotoData !== undefined){
+      targetList[index].photo = state.catalogPhotoData;
+    }
+  }
+
+  state.showEditCatalogModal = false;
+  state.editCatalogTarget = null;
+  state.catalogPhotoData = null;
+  showToast(isId ? `🎉 Perubahan "${name}" berhasil disimpan!` : `🎉 Changes to "${name}" saved!`);
+  render();
+}
+
+/* ============ TOGGLE SOLD OUT / READY ============ */
+function toggleCatalogItemSoldOut(targetType, targetId, itemIndex){
+  const isId = state.lang === 'id';
+  let targetList = null;
+  if(targetType === 'trip' && tripCatalogs[targetId]) targetList = tripCatalogs[targetId];
+  else if(targetType === 'lapak' && lapakCatalogs[targetId]) targetList = lapakCatalogs[targetId];
+  else if(targetType === 'event' && state.jastiperJoinedEvents && state.jastiperJoinedEvents[targetId]) targetList = state.jastiperJoinedEvents[targetId].catalog;
+
+  if(targetList && targetList[itemIndex]){
+    const prod = targetList[itemIndex];
+    if(prod.stock === 'soldout'){
+      prod.stock = prod.prevStock || 'ready';
+      showToast(isId ? `✅ "${prod.name}" diaktifkan kembali (In Stock)` : `✅ "${prod.name}" marked In Stock`);
+    } else {
+      prod.prevStock = prod.stock || 'ready';
+      prod.stock = 'soldout';
+      showToast(isId ? `🔴 "${prod.name}" ditandai Sold Out (Habis)` : `🔴 "${prod.name}" marked as Sold Out`);
+    }
+    render();
+  }
+}
+
+/* ============ BULK ACTION MANAGEMENT ============ */
+function toggleCatalogBulkMode(){
+  state.catalogBulkMode = !state.catalogBulkMode;
+  state.selectedCatalogIndices = [];
+  render();
+}
+
+function toggleSelectCatalogItem(itemIndex){
+  const idx = state.selectedCatalogIndices.indexOf(itemIndex);
+  if(idx > -1){
+    state.selectedCatalogIndices.splice(idx, 1);
+  } else {
+    state.selectedCatalogIndices.push(itemIndex);
+  }
+  render();
+}
+
+function toggleSelectAllCatalog(totalCount){
+  if(state.selectedCatalogIndices.length === totalCount){
+    state.selectedCatalogIndices = [];
+  } else {
+    state.selectedCatalogIndices = Array.from({ length: totalCount }, (_, i) => i);
+  }
+  render();
+}
+
+function bulkMarkCatalogSoldOut(targetType, targetId, isSoldOut){
+  const isId = state.lang === 'id';
+  let targetList = null;
+  if(targetType === 'trip' && tripCatalogs[targetId]) targetList = tripCatalogs[targetId];
+  else if(targetType === 'lapak' && lapakCatalogs[targetId]) targetList = lapakCatalogs[targetId];
+  else if(targetType === 'event' && state.jastiperJoinedEvents && state.jastiperJoinedEvents[targetId]) targetList = state.jastiperJoinedEvents[targetId].catalog;
+
+  if(targetList && state.selectedCatalogIndices.length > 0){
+    state.selectedCatalogIndices.forEach(idx => {
+      if(targetList[idx]){
+        if(isSoldOut){
+          targetList[idx].prevStock = targetList[idx].stock || 'ready';
+          targetList[idx].stock = 'soldout';
+        } else {
+          targetList[idx].stock = targetList[idx].prevStock || 'ready';
+        }
+      }
+    });
+    const count = state.selectedCatalogIndices.length;
+    state.selectedCatalogIndices = [];
+    state.catalogBulkMode = false;
+    showToast(isSoldOut 
+      ? (isId ? `🔴 ${count} barang ditandai Sold Out` : `🔴 ${count} items marked as Sold Out`)
+      : (isId ? `✅ ${count} barang diaktifkan kembali` : `✅ ${count} items marked In Stock`)
+    );
+    render();
+  }
+}
+
+function bulkDeleteCatalogItems(targetType, targetId){
+  const isId = state.lang === 'id';
+  let targetList = null;
+  if(targetType === 'trip' && tripCatalogs[targetId]) targetList = tripCatalogs[targetId];
+  else if(targetType === 'lapak' && lapakCatalogs[targetId]) targetList = lapakCatalogs[targetId];
+  else if(targetType === 'event' && state.jastiperJoinedEvents && state.jastiperJoinedEvents[targetId]) targetList = state.jastiperJoinedEvents[targetId].catalog;
+
+  if(targetList && state.selectedCatalogIndices.length > 0){
+    const count = state.selectedCatalogIndices.length;
+    const sorted = [...state.selectedCatalogIndices].sort((a, b) => b - a);
+    sorted.forEach(idx => {
+      if(targetList[idx]) targetList.splice(idx, 1);
+    });
+    state.selectedCatalogIndices = [];
+    state.catalogBulkMode = false;
+    showToast(isId ? `🗑️ ${count} barang berhasil dihapus dari katalog` : `🗑️ ${count} items deleted from catalog`);
+    render();
+  }
+}
+
+function removeCatalogItem(targetType, targetId, itemIndex){
+  let name = 'Produk';
+  if(targetType === 'trip' && tripCatalogs[targetId]){
+    name = tripCatalogs[targetId][itemIndex]?.name || name;
+    tripCatalogs[targetId].splice(itemIndex, 1);
+  } else if(targetType === 'lapak' && lapakCatalogs[targetId]){
+    name = lapakCatalogs[targetId][itemIndex]?.name || name;
+    lapakCatalogs[targetId].splice(itemIndex, 1);
+  } else if(targetType === 'event'){
+    if(state.jastiperJoinedEvents && state.jastiperJoinedEvents[targetId] && state.jastiperJoinedEvents[targetId].catalog){
+      name = state.jastiperJoinedEvents[targetId].catalog[itemIndex]?.name || name;
+      state.jastiperJoinedEvents[targetId].catalog.splice(itemIndex, 1);
+    }
+    const ev = events.find(e => e.id === targetId);
+    if(ev){
+      const userPart = ev.participants.find(p => p.name === user.name) || ev.participants[0];
+      if(userPart && userPart.catalog && userPart.catalog[itemIndex]){
+        userPart.catalog.splice(itemIndex, 1);
+      }
+    }
+  }
+  showToast(state.lang === 'id' ? `🗑️ "${name}" dihapus dari katalog` : `🗑️ "${name}" removed from catalog`);
+  render();
+}
+
+function renderAddCatalogModal(){
+  const target = state.addCatalogTarget || { type: 'trip', id: 't1', title: 'Shopping Trip' };
+  const isId = state.lang === 'id';
+  const feeType = state.addCatalogFeeType || 'terpisah';
+  const stock = state.addCatalogStock || 'ready';
+
+  return `
+    <div class="filter-sheet-overlay" onclick="closeAddCatalogModal()">
+      <div class="filter-sheet" onclick="event.stopPropagation()" style="max-height:88vh; overflow-y:auto;">
+        <div class="filter-sheet-handle"></div>
+        <div class="filter-sheet-header">
+          <div class="filter-sheet-title">
+            <span style="font-size:18px;">📸</span>
+            <span>${t('catalog.uploadTitle', 'Upload Item ke Katalog')}</span>
+          </div>
+          <button class="filter-sheet-close-btn" onclick="closeAddCatalogModal()" title="Close">
+            ${svg('x', 'style="width:18px;height:18px;"')}
+          </button>
+        </div>
+
+        <div class="filter-sheet-body" style="padding:14px 16px 24px;">
+          <!-- Target Context Card -->
+          <div style="background:#FFF7ED; border:1px solid #FFEDD5; border-radius:12px; padding:9px 12px; margin-bottom:14px; display:flex; align-items:center; justify-content:space-between;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:16px;">${target.type === 'trip' ? '✈️' : (target.type === 'lapak' ? '🏬' : '🎪')}</span>
+              <div>
+                <div style="font-size:10px; color:#C2410C; font-weight:700; text-transform:uppercase;">${t('catalog.targetLabel', 'Menambahkan ke:')}</div>
+                <div style="font-size:12.5px; font-weight:800; color:var(--primary);">${target.title}</div>
+              </div>
+            </div>
+            <span style="font-size:9.5px; font-weight:700; background:#EA580C; color:#fff; padding:2px 7px; border-radius:6px; text-transform:uppercase;">
+              ${target.type}
+            </span>
+          </div>
+
+          <!-- 1. Photo Upload Box -->
+          <div class="form-group" style="margin-bottom:12px;">
+            <div class="form-label">${t('catalog.photoUpload', 'Foto Produk')} <span class="optional">(${isId ? 'opsional' : 'optional'})</span></div>
+            <div class="photo-upload" onclick="document.getElementById('cat-photo-input').click()" style="cursor:pointer; min-height:90px;">
+              <input type="file" id="cat-photo-input" accept="image/*" style="display:none" onchange="handleCatalogPhotoUpload(event)">
+              ${state.catalogPhotoData ? `
+                <img src="${state.catalogPhotoData}" alt="preview" style="max-height:120px; object-fit:contain; border-radius:8px;">
+                <div class="photo-remove-btn" onclick="removeCatalogPhoto(event)">${svg('x')}</div>
+              ` : `
+                <div class="photo-upload-icon">${svg('camera')}</div>
+                <div class="photo-upload-text">${t('catalog.photoUploadHint', 'Klik untuk upload foto sampel produk')}</div>
+              `}
+            </div>
+          </div>
+
+          <!-- 2. Product Name -->
+          <div class="form-group" style="margin-bottom:12px;">
+            <div class="form-label">${t('catalog.productName', 'Nama Produk / Barang')} <span class="required-mark">*</span></div>
+            <input 
+              type="text" 
+              class="form-input" 
+              id="cat-item-name" 
+              placeholder="${t('catalog.productNamePlaceholder', 'contoh: Labubu The Monsters Vinyl Plush / SK-II Essence')}"
+            >
+          </div>
+
+          <!-- 3. Category -->
+          <div class="form-group" style="margin-bottom:12px;">
+            <div class="form-label">${t('catalog.category', 'Kategori Produk')} <span class="required-mark">*</span></div>
+            <select class="form-select" id="cat-item-cat">
+              <option value="Beauty & Skincare">Beauty & Skincare</option>
+              <option value="Fashion & Sneakers">Fashion & Sneakers</option>
+              <option value="Food & Snacks">Food & Snacks</option>
+              <option value="Pop Culture & Anime">Pop Culture & Anime</option>
+              <option value="Electronics & Gadgets">Electronics & Gadgets</option>
+              <option value="Hobbies & Collectibles">Hobbies & Collectibles</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
+
+          <!-- 4. Price and Shopper Fee -->
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <div class="form-label">${t('catalog.productPrice', 'Harga Asli Barang')} <span class="required-mark">*</span></div>
+              <div class="input-prefix-wrap">
+                <span class="input-prefix">Rp</span>
+                <input 
+                  type="text" 
+                  inputmode="numeric" 
+                  class="form-input" 
+                  id="cat-item-price" 
+                  placeholder="250.000"
+                  oninput="formatCurrencyInput(this)"
+                >
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:0;">
+              <div class="form-label">${t('catalog.jastipFee', 'Jasa Jastip (Fee)')} <span class="required-mark">*</span></div>
+              <div class="input-prefix-wrap">
+                <span class="input-prefix">Rp</span>
+                <input 
+                  type="text" 
+                  inputmode="numeric" 
+                  class="form-input" 
+                  id="cat-item-fee" 
+                  placeholder="25.000"
+                  oninput="formatCurrencyInput(this)"
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Fee Scheme (Include vs Terpisah) -->
+          <div class="form-group" style="margin-bottom:12px;">
+            <div class="form-label">${t('catalog.feeScheme', 'Skema Biaya Jastip')}</div>
+            <div style="display:flex; gap:8px; margin-top:4px;">
+              <button 
+                type="button" 
+                class="filter-pill ${feeType === 'terpisah' ? 'active' : ''}" 
+                style="flex:1; text-align:center; font-size:11px;" 
+                onclick="setCatalogFeeType('terpisah')"
+              >
+                ${isId ? 'Terpisah (+ Jasa Jastip)' : 'Separate Fee'}
+              </button>
+              <button 
+                type="button" 
+                class="filter-pill ${feeType === 'include' ? 'active' : ''}" 
+                style="flex:1; text-align:center; font-size:11px;" 
+                onclick="setCatalogFeeType('include')"
+              >
+                ${isId ? 'Include (Sudah di Harga)' : 'Included in Price'}
+              </button>
+            </div>
+          </div>
+
+          <!-- 6. Stock Type (Ready Stock vs PO ONLY when uploading) -->
+          <div class="form-group" style="margin-bottom:12px;">
+            <div class="form-label">${t('catalog.stockStatus', 'Status Stok')}</div>
+            <div style="display:flex; gap:8px; margin-top:4px;">
+              <button 
+                type="button" 
+                class="filter-pill ${stock === 'ready' ? 'active' : ''}" 
+                style="flex:1; text-align:center; font-size:11px;" 
+                onclick="setCatalogStock('ready')"
+              >
+                ⚡ Ready Stock
+              </button>
+              <button 
+                type="button" 
+                class="filter-pill ${stock === 'preorder' ? 'active' : ''}" 
+                style="flex:1; text-align:center; font-size:11px;" 
+                onclick="setCatalogStock('preorder')"
+              >
+                ⏳ Pre-Order (PO)
+              </button>
+            </div>
+          </div>
+
+          <!-- 7. Product Description & Variant Notes -->
+          <div class="form-group" style="margin-bottom:16px;">
+            <div class="form-label">${t('catalog.productDesc', 'Deskripsi & Catatan Varian')}</div>
+            <textarea 
+              class="form-textarea" 
+              id="cat-item-desc" 
+              placeholder="${t('catalog.productDescPlaceholder', 'Jelaskan varian warna, ukuran, tanggal kadaluarsa, atau catatan kemasan...')}"
+              style="min-height:60px;"
+            ></textarea>
+          </div>
+
+          <!-- Submit Buttons -->
+          <button class="btn-primary" style="width:100%; padding:12px 0; font-size:13px; margin-bottom:8px;" onclick="submitAddCatalogItem()">
+            ${t('catalog.uploadBtn', 'Simpan & Upload ke Katalog')}
+          </button>
+          <button class="modal-btn-secondary" style="width:100%; padding:9px 0; font-size:12px;" onclick="closeAddCatalogModal()">
+            ${t('catalog.cancelBtn', 'Batal')}
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* ============ RENDER EDIT CATALOG MODAL ============ */
+function renderEditCatalogModal(){
+  if(!state.editCatalogTarget || !state.editCatalogTarget.item) return '';
+  const item = state.editCatalogTarget.item;
+  const isId = state.lang === 'id';
+  const feeType = state.addCatalogFeeType || item.feeType || 'terpisah';
+  const stock = state.addCatalogStock || item.stock || 'ready';
+  const photo = state.catalogPhotoData !== undefined ? state.catalogPhotoData : item.photo;
+
+  return `
+    <div class="filter-sheet-overlay" onclick="closeEditCatalogModal()">
+      <div class="filter-sheet" onclick="event.stopPropagation()" style="max-height:88vh; overflow-y:auto;">
+        <div class="filter-sheet-handle"></div>
+        <div class="filter-sheet-header">
+          <div class="filter-sheet-title">
+            <span style="font-size:18px;">✏️</span>
+            <span>${isId ? 'Edit Item Katalog' : 'Edit Catalog Item'}</span>
+          </div>
+          <button class="filter-sheet-close-btn" onclick="closeEditCatalogModal()" title="Close">
+            ${svg('x', 'style="width:18px;height:18px;"')}
+          </button>
+        </div>
+
+        <div class="filter-sheet-body" style="padding:14px 16px 24px;">
+          <!-- 1. Photo Upload Box -->
+          <div class="form-group" style="margin-bottom:12px;">
+            <div class="form-label">${t('catalog.photoUpload', 'Foto Produk')} <span class="optional">(${isId ? 'opsional' : 'optional'})</span></div>
+            <div class="photo-upload" onclick="document.getElementById('cat-edit-photo-input').click()" style="cursor:pointer; min-height:90px;">
+              <input type="file" id="cat-edit-photo-input" accept="image/*" style="display:none" onchange="handleCatalogPhotoUpload(event)">
+              ${photo ? `
+                <img src="${photo}" alt="preview" style="max-height:120px; object-fit:contain; border-radius:8px;">
+                <div class="photo-remove-btn" onclick="removeCatalogPhoto(event)">${svg('x')}</div>
+              ` : `
+                <div class="photo-upload-icon">${svg('camera')}</div>
+                <div class="photo-upload-text">${t('catalog.photoUploadHint', 'Klik untuk ganti foto sampel produk')}</div>
+              `}
+            </div>
+          </div>
+
+          <!-- 2. Product Name -->
+          <div class="form-group" style="margin-bottom:12px;">
+            <div class="form-label">${t('catalog.productName', 'Nama Produk / Barang')} <span class="required-mark">*</span></div>
+            <input 
+              type="text" 
+              class="form-input" 
+              id="cat-edit-name" 
+              value="${(item.name || '').replace(/"/g, '&quot;')}"
+              placeholder="${t('catalog.productNamePlaceholder', 'contoh: Labubu / SK-II')}"
+            >
+          </div>
+
+          <!-- 3. Category -->
+          <div class="form-group" style="margin-bottom:12px;">
+            <div class="form-label">${t('catalog.category', 'Kategori Produk')} <span class="required-mark">*</span></div>
+            <select class="form-select" id="cat-edit-cat">
+              ${['Beauty & Skincare', 'Fashion & Sneakers', 'Food & Snacks', 'Pop Culture & Anime', 'Electronics & Gadgets', 'Hobbies & Collectibles', 'Others'].map(c => `
+                <option value="${c}" ${item.category === c ? 'selected' : ''}>${c}</option>
+              `).join('')}
+            </select>
+          </div>
+
+          <!-- 4. Price and Shopper Fee -->
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <div class="form-label">${t('catalog.productPrice', 'Harga Asli Barang')} <span class="required-mark">*</span></div>
+              <div class="input-prefix-wrap">
+                <span class="input-prefix">Rp</span>
+                <input 
+                  type="text" 
+                  inputmode="numeric" 
+                  class="form-input" 
+                  id="cat-edit-price" 
+                  value="${(item.priceProduct || 0).toLocaleString('id-ID')}"
+                  placeholder="250.000"
+                  oninput="formatCurrencyInput(this)"
+                >
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:0;">
+              <div class="form-label">${t('catalog.jastipFee', 'Jasa Jastip (Fee)')} <span class="required-mark">*</span></div>
+              <div class="input-prefix-wrap">
+                <span class="input-prefix">Rp</span>
+                <input 
+                  type="text" 
+                  inputmode="numeric" 
+                  class="form-input" 
+                  id="cat-edit-fee" 
+                  value="${(item.fee || 0).toLocaleString('id-ID')}"
+                  placeholder="25.000"
+                  oninput="formatCurrencyInput(this)"
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Fee Scheme (Include vs Terpisah) -->
+          <div class="form-group" style="margin-bottom:12px;">
+            <div class="form-label">${t('catalog.feeScheme', 'Skema Biaya Jastip')}</div>
+            <div style="display:flex; gap:8px; margin-top:4px;">
+              <button 
+                type="button" 
+                class="filter-pill ${feeType === 'terpisah' ? 'active' : ''}" 
+                style="flex:1; text-align:center; font-size:11px;" 
+                onclick="setCatalogFeeType('terpisah')"
+              >
+                ${isId ? 'Terpisah (+ Jasa Jastip)' : 'Separate Fee'}
+              </button>
+              <button 
+                type="button" 
+                class="filter-pill ${feeType === 'include' ? 'active' : ''}" 
+                style="flex:1; text-align:center; font-size:11px;" 
+                onclick="setCatalogFeeType('include')"
+              >
+                ${isId ? 'Include (Sudah di Harga)' : 'Included in Price'}
+              </button>
+            </div>
+          </div>
+
+          <!-- 6. Stock Status (Ready vs PO vs Sold Out in Edit) -->
+          <div class="form-group" style="margin-bottom:12px;">
+            <div class="form-label">${t('catalog.stockStatus', 'Status Stok')}</div>
+            <div style="display:flex; gap:6px; margin-top:4px;">
+              <button 
+                type="button" 
+                class="filter-pill ${stock === 'ready' ? 'active' : ''}" 
+                style="flex:1; text-align:center; font-size:10.5px; padding:7px 4px;" 
+                onclick="setCatalogStock('ready')"
+              >
+                ⚡ Ready Stock
+              </button>
+              <button 
+                type="button" 
+                class="filter-pill ${stock === 'preorder' ? 'active' : ''}" 
+                style="flex:1; text-align:center; font-size:10.5px; padding:7px 4px;" 
+                onclick="setCatalogStock('preorder')"
+              >
+                ⏳ Pre-Order (PO)
+              </button>
+              <button 
+                type="button" 
+                class="filter-pill ${stock === 'soldout' ? 'active' : ''}" 
+                style="flex:1; text-align:center; font-size:10.5px; padding:7px 4px; ${stock === 'soldout' ? 'background:#FEE2E2; color:#DC2626; border-color:#FCA5A5;' : ''}" 
+                onclick="setCatalogStock('soldout')"
+              >
+                🔴 Sold Out
+              </button>
+            </div>
+          </div>
+
+          <!-- 7. Product Description & Variant Notes -->
+          <div class="form-group" style="margin-bottom:16px;">
+            <div class="form-label">${t('catalog.productDesc', 'Deskripsi & Catatan Varian')}</div>
+            <textarea 
+              class="form-textarea" 
+              id="cat-edit-desc" 
+              placeholder="${t('catalog.productDescPlaceholder', 'Jelaskan varian warna, ukuran, atau catatan...')}"
+              style="min-height:60px;"
+            >${item.desc || ''}</textarea>
+          </div>
+
+          <!-- Submit Buttons -->
+          <button class="btn-primary" style="width:100%; padding:12px 0; font-size:13px; margin-bottom:8px;" onclick="submitEditCatalogItem()">
+            💾 ${isId ? 'Simpan Perubahan Produk' : 'Save Changes'}
+          </button>
+          <button class="modal-btn-secondary" style="width:100%; padding:9px 0; font-size:12px;" onclick="closeEditCatalogModal()">
+            ${t('catalog.cancelBtn', 'Batal')}
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* ============ SUB-SCREEN: MANAGE MY TRIPS, STALLS & CATALOGS ============ */
+function openMyTripsManage(){
+  resetSubScreens();
+  state.showMyTripsManage = true;
+  state.myTripsManageFilter = 'all';
+  render();
+}
+
+function closeMyTripsManage(){
+  state.showMyTripsManage = false;
+  render();
+}
+
+function setMyTripsManageFilter(f){
+  state.myTripsManageFilter = f;
+  render();
+}
+
+function renderMyTripsManagePage(){
+  const filter = state.myTripsManageFilter || 'all';
+  const isId = state.lang === 'id';
+
+  // Aggregate user's trips, lapaks, and event rooms
+  const allTrips = feedItems.filter(f => f.type === 'trip');
+  const allLapaks = feedItems.filter(f => f.type === 'lapak');
+  const joinedEventIds = Object.keys(state.jastiperJoinedEvents || {});
+  const userEvents = events.filter(e => joinedEventIds.includes(e.id) || e.participants.some(p => p.name === user.name));
+
+  let listings = [];
+  if(filter === 'all' || filter === 'trip'){
+    allTrips.forEach(t => {
+      const cat = tripCatalogs[t.id] || t.catalog || [];
+      listings.push({ type: 'trip', data: t, catalog: cat });
+    });
+  }
+  if(filter === 'all' || filter === 'lapak'){
+    allLapaks.forEach(l => {
+      const cat = lapakCatalogs[l.id] || l.catalog || [];
+      listings.push({ type: 'lapak', data: l, catalog: cat });
+    });
+  }
+  if(filter === 'all' || filter === 'event'){
+    userEvents.forEach(e => {
+      const roomData = (state.jastiperJoinedEvents && state.jastiperJoinedEvents[e.id]) || {};
+      const cat = roomData.catalog || (e.participants.find(p => p.name === user.name) || {}).catalog || [];
+      listings.push({ type: 'event', data: e, catalog: cat, roomTitle: roomData.roomTitle || e.title });
+    });
+  }
+
+  const totalCatalogsCount = listings.reduce((acc, l) => acc + (l.catalog ? l.catalog.length : 0), 0);
+
+  return `
+    <div class="detail-back-row">
+      <button class="back-btn" onclick="closeMyTripsManage()">${svg('arrowLeft')}</button>
+      <div class="detail-back-title">${t('catalog.manageTitle', 'Kelola Jadwal Trip, Lapak & Katalog')}</div>
+    </div>
+
+    <div style="padding:14px 16px 28px;">
+      <!-- Hero Banner -->
+      <div style="background:linear-gradient(135deg,#0F172A,#1E293B); border-radius:16px; padding:16px; color:#fff; margin-bottom:14px; box-shadow:0 4px 14px rgba(15,23,42,0.15);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span style="font-size:10.5px; font-weight:700; background:rgba(255,87,34,0.2); color:#FF5722; padding:2px 8px; border-radius:100px; border:1px solid rgba(255,87,34,0.4);">
+            ${isId ? 'PORTFOLIO KATALOG JASTIP' : 'SHOPPER CATALOG PORTFOLIO'}
+          </span>
+          <span style="font-size:11px; color:#94A3B8;">${listings.length} ${t('catalog.activeListings', 'Listing Aktif')}</span>
+        </div>
+        <div style="font-size:18px; font-weight:800; margin-bottom:4px;">
+          ${user.name} • ${totalCatalogsCount} ${t('catalog.totalItemsInCatalog', 'Barang di Katalog')}
+        </div>
+        <div style="font-size:11.5px; color:#CBD5E1; line-height:1.4; margin-bottom:12px;">
+          ${t('catalog.manageSub', 'Pantau listing jastip dan kelola barang katalog aktifmu')}
+        </div>
+
+        <div style="display:flex; gap:8px;">
+          <button style="flex:1; background:var(--secondary); color:#fff; border:none; border-radius:10px; padding:8px 0; font-size:11.5px; font-weight:700; cursor:pointer;" onclick="openCreateTripForm()">
+            ${isId ? '+ Buka Trip Baru' : '+ New Travel Trip'}
+          </button>
+          <button style="flex:1; background:rgba(255,255,255,0.12); color:#fff; border:1px solid rgba(255,255,255,0.2); border-radius:10px; padding:8px 0; font-size:11.5px; font-weight:700; cursor:pointer;" onclick="openCreateLapakForm()">
+            ${isId ? '+ Buka Lapak PO' : '+ New Pre-Order Stall'}
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter Chips -->
+      <div class="chip-row" style="padding-top:0; margin-bottom:12px;">
+        <div class="chip ${filter==='all'?'active':''}" onclick="setMyTripsManageFilter('all')">${isId ? 'Semua' : 'All'} (${allTrips.length + allLapaks.length + userEvents.length})</div>
+        <div class="chip ${filter==='trip'?'active':''}" onclick="setMyTripsManageFilter('trip')">✈️ ${t('catalog.tripListing', 'Jadwal Trip')} (${allTrips.length})</div>
+        <div class="chip ${filter==='lapak'?'active':''}" onclick="setMyTripsManageFilter('lapak')">🏬 ${t('catalog.lapakListing', 'Lapak PO')} (${allLapaks.length})</div>
+        <div class="chip ${filter==='event'?'active':''}" onclick="setMyTripsManageFilter('event')">🎪 ${t('catalog.eventListing', 'Live Event Room')} (${userEvents.length})</div>
+      </div>
+
+      <!-- Listing Cards -->
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        ${listings.map(item => {
+          const isTrip = item.type === 'trip';
+          const isLapak = item.type === 'lapak';
+          const isEv = item.type === 'event';
+          const data = item.data;
+          const catItems = item.catalog || [];
+          const itemTitle = isEv ? (item.roomTitle || data.title) : data.title;
+          const locationText = isTrip ? data.country : (isLapak ? data.location : data.location);
+
+          return `
+            <div style="background:#fff; border:1px solid var(--border); border-radius:16px; padding:14px; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+              <!-- Top Info Bar -->
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span style="font-size:11px; font-weight:800; background:${isTrip ? '#EFF6FF' : (isLapak ? '#F0FDF4' : '#FAF5FF')}; color:${isTrip ? '#2563EB' : (isLapak ? '#16A34A' : '#9333EA')}; padding:3px 8px; border-radius:6px;">
+                    ${isTrip ? '✈️ TRIP' : (isLapak ? '🏬 LAPAK PO' : '🎪 EVENT ROOM')}
+                  </span>
+                  <span style="font-size:11px; color:var(--muted);">${locationText}</span>
+                </div>
+                <span style="font-size:11px; font-weight:700; color:var(--secondary); background:#FFF7ED; padding:2px 7px; border-radius:6px;">
+                  ${catItems.length} ${t('common.items', 'barang')}
+                </span>
+              </div>
+
+              <div style="font-size:14px; font-weight:800; color:var(--primary); margin-bottom:4px;">
+                ${itemTitle}
+              </div>
+
+              <div style="font-size:11px; color:var(--muted); line-height:1.4; margin-bottom:12px;">
+                ${data.dates || data.dateRange || data.desc || ''}
+              </div>
+
+              <!-- Quick Action: Upload to this listing -->
+              <div style="display:flex; gap:8px; margin-bottom:12px;">
+                <button 
+                  class="btn-primary" 
+                  style="flex:1; padding:8px 0; font-size:11.5px; margin:0;" 
+                  onclick="openAddCatalogModal('${item.type}', '${data.id}', '${itemTitle.replace(/'/g, "\\'")}')"
+                >
+                  📸 ${t('catalog.addItemBtn', '+ Tambah Barang ke Katalog')}
+                </button>
+              </div>
+
+              <!-- Nested Catalog Items List -->
+              <div style="background:var(--neutral); border:1px solid var(--border); border-radius:12px; padding:10px; display:flex; flex-direction:column; gap:8px;">
+                <div style="font-size:11px; font-weight:800; color:var(--primary); display:flex; justify-content:space-between; align-items:center;">
+                  <span>Daftar Barang di Katalog (${catItems.length})</span>
+                </div>
+
+                ${catItems.length === 0 ? `
+                  <div style="text-align:center; padding:14px 10px; color:var(--muted); font-size:11px;">
+                    <div>${t('catalog.emptyCatalog', 'Belum ada barang di katalog ini')}</div>
+                    <div style="font-size:10px; margin-top:2px;">${t('catalog.emptyCatalogSub', 'Upload barang pertama untuk mulai menerima pesanan dari pembeli')}</div>
+                  </div>
+                ` : catItems.map((prod, pIdx) => {
+                  const thumbStyle = prod.photo ? `background-image:url(${prod.photo}); background-size:cover; background-position:center;` : '';
+                  return `
+                    <div style="background:#fff; border:1px solid #E2E8F0; border-radius:10px; padding:8px 10px; display:flex; align-items:center; justify-content:space-between; gap:8px;">
+                      <div style="width:34px; height:34px; border-radius:8px; background:#F1F5F9; flex-shrink:0; display:flex; align-items:center; justify-content:center; ${thumbStyle}">
+                        ${!prod.photo ? svg('shoppingBag','style="width:16px;height:16px;stroke:#94A3B8;"') : ''}
+                      </div>
+                      <div style="flex:1; min-width:0;">
+                        <div style="font-size:11.5px; font-weight:700; color:var(--primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                          ${prod.name}
+                        </div>
+                        <div style="font-size:10px; color:var(--muted); display:flex; align-items:center; gap:4px; margin-top:1px;">
+                          <span>Rp ${prod.priceProduct.toLocaleString('id-ID')}</span>
+                          <span>• Fee: Rp ${(prod.fee || 0).toLocaleString('id-ID')} (${prod.feeType || 'terpisah'})</span>
+                          ${prod.stock === 'soldout' 
+                            ? `<span style="font-size:8.5px; font-weight:800; background:#FEE2E2; color:#DC2626; padding:1px 5px; border-radius:3px;">🔴 SOLDOUT</span>`
+                            : `<span style="font-size:8.5px; font-weight:700; background:#E2E8F0; padding:1px 4px; border-radius:3px;">${prod.stock || 'ready'}</span>`
+                          }
+                        </div>
+                      </div>
+                      <div style="display:flex; align-items:center; gap:4px; flex-shrink:0;">
+                        <button 
+                          style="background:${prod.stock === 'soldout' ? '#DCFCE7' : '#FFF1F2'}; color:${prod.stock === 'soldout' ? '#15803D' : '#E11D48'}; border:1px solid ${prod.stock === 'soldout' ? '#86EFAC' : '#FECDD3'}; border-radius:6px; font-size:9.5px; font-weight:700; padding:3px 6px; cursor:pointer;" 
+                          onclick="toggleCatalogItemSoldOut('${item.type}', '${data.id}', ${pIdx})"
+                          title="${prod.stock === 'soldout' ? 'Buka Stok Kembali' : 'Tandai Sold Out'}"
+                        >
+                          ${prod.stock === 'soldout' ? '✅ Buka' : '🔴 Sold'}
+                        </button>
+                        <button 
+                          style="background:#F1F5F9; border:1px solid #CBD5E1; color:var(--primary); font-size:11px; cursor:pointer; padding:4px 6px; border-radius:6px;" 
+                          onclick="openEditCatalogModal('${item.type}', '${data.id}', ${pIdx})"
+                          title="${isId ? 'Edit Produk' : 'Edit'}"
+                        >
+                          ${svg('edit', 'style="width:12px;height:12px;stroke:currentColor;"')}
+                        </button>
+                        <button 
+                          style="background:#FEE2E2; border:none; color:#EF4444; font-size:11px; cursor:pointer; padding:4px 6px; border-radius:6px;" 
+                          onclick="removeCatalogItem('${item.type}', '${data.id}', ${pIdx})"
+                          title="${t('catalog.removeItemBtn', 'Hapus')}"
+                        >
+                          ${svg('trash', 'style="width:12px;height:12px;stroke:#EF4444;"')}
+                        </button>
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
 function checkAndInjectModal(){
   const modalRoot = document.getElementById('modal-root');
   if(!modalRoot) return;
@@ -5379,6 +6461,18 @@ function checkAndInjectModal(){
   // 0c. Shopper Guidance Tour & Welcome Board Modal (When switching to Shopper Mode)
   if(state.shopperGuidanceStep !== null && state.shopperGuidanceStep !== undefined){
     modalRoot.innerHTML = renderShopperGuidanceModal();
+    return;
+  }
+
+  // 0d. Upload Catalog Item Modal (Mode Jastiper)
+  if(state.showAddCatalogModal){
+    modalRoot.innerHTML = renderAddCatalogModal();
+    return;
+  }
+
+  // 0e. Edit Catalog Item Modal (Mode Jastiper)
+  if(state.showEditCatalogModal){
+    modalRoot.innerHTML = renderEditCatalogModal();
     return;
   }
 
@@ -5902,10 +6996,10 @@ function checkAndInjectModal(){
 
   // 7. Modal Pilih Alamat Penjemputan (Tersimpan + Titik Koordinat GPS untuk Kurir Instant)
   if(state.showSelectPickupAddressSheet){
-    const selectedId = state.jastiperEventJoinData?.selectedAddressId || 'addr-event-1';
+    const selectedId = (state.showCreateTripModal && state.createTripForm && state.createTripForm.selectedAddressId) || state.jastiperEventJoinData?.selectedAddressId || 'addr-home-1';
     modalRoot.innerHTML = `
       <div class="filter-sheet-overlay" onclick="closeSelectPickupAddressSheet()">
-        <div class="filter-sheet" onclick="event.stopPropagation()" style="max-height:85vh; overflow-y:auto;">
+        <div class="filter-sheet" onclick="event.stopPropagation()" style="max-height:100%; display:flex; flex-direction:column; overflow:hidden;">
           <div class="filter-sheet-handle"></div>
           <div class="filter-sheet-header">
             <div class="filter-sheet-title">
@@ -5917,7 +7011,7 @@ function checkAndInjectModal(){
             </button>
           </div>
 
-          <div class="filter-sheet-body" style="padding:14px 16px;">
+          <div class="filter-sheet-body" style="padding:14px 16px; overflow-y:auto; flex:1;">
             <div style="font-size:11px; color:var(--muted); margin-bottom:12px; line-height:1.4;">
               Pilih alamat penjemputan paket untuk kurir. Data alamat tersimpan menyimpan <strong>titik koordinat GPS</strong> yang langsung siap dipakai untuk layanan <strong>Instant Delivery (GoSend / GrabExpress)</strong> & Ekspedisi Reguler.
             </div>
@@ -5974,7 +7068,7 @@ function checkAndInjectModal(){
 
       modalRoot.innerHTML = `
         <div class="filter-sheet-overlay" onclick="closeJastiperEventJoinModal()">
-          <div class="filter-sheet" onclick="event.stopPropagation()" style="max-height:85vh; overflow-y:auto;">
+          <div class="filter-sheet" onclick="event.stopPropagation()" style="max-height:100%; display:flex; flex-direction:column; overflow:hidden;">
             <div class="filter-sheet-handle"></div>
             <div class="filter-sheet-header">
               <div class="filter-sheet-title">
@@ -5986,7 +7080,7 @@ function checkAndInjectModal(){
               </button>
             </div>
 
-            <div class="filter-sheet-body" style="padding:14px 16px;">
+            <div class="filter-sheet-body" style="padding:14px 16px; overflow-y:auto; flex:1;">
               <!-- Event Header -->
               <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:10px 12px; margin-bottom:14px;">
                 <div style="font-size:10.5px; color:var(--muted); font-weight:600;">Event:</div>
@@ -6097,66 +7191,7 @@ function checkAndInjectModal(){
 
   // 8. Modal Buka Trip Baru (Mode Jastiper)
   if(state.showCreateTripModal){
-    modalRoot.innerHTML = `
-      <div class="filter-sheet-overlay" onclick="closeCreateTripModal()">
-        <div class="filter-sheet" onclick="event.stopPropagation()" style="max-height:85vh; overflow-y:auto;">
-          <div class="filter-sheet-handle"></div>
-          <div class="filter-sheet-header">
-            <div class="filter-sheet-title">
-              ${svg('plane', 'style="width:16px;height:16px;stroke:var(--secondary);stroke-width:2.2;"')}
-              <span>Create New Travel Trip</span>
-            </div>
-            <button class="filter-sheet-close-btn" onclick="closeCreateTripModal()" title="Close">
-              ${svg('x', 'style="width:18px;height:18px;"')}
-            </button>
-          </div>
-
-          <div class="filter-sheet-body" style="padding:14px 16px;">
-            <div class="form-group" style="margin-bottom:12px;">
-              <div class="form-label">Shopping Destination <span class="required-mark">*</span></div>
-              <input type="text" class="form-input" id="trip-dest-input" placeholder="e.g. Tokyo & Osaka, Japan">
-            </div>
-
-            <div class="form-group" style="margin-bottom:12px;">
-              <div class="form-label">Primary Category <span class="required-mark">*</span></div>
-              <select class="form-select" id="trip-cat-input">
-                <option>Beauty & Skincare</option>
-                <option>Fashion & Sneakers</option>
-                <option>Food & Snacks</option>
-                <option>Pop Culture & Anime</option>
-                <option>Electronics & Gadgets</option>
-              </select>
-            </div>
-
-            <div class="form-group" style="margin-bottom:12px;">
-              <div class="form-label">Travel Period (Dates) <span class="required-mark">*</span></div>
-              <input type="text" class="form-input" id="trip-dates-input" placeholder="e.g. Aug 20 - Aug 28, 2026">
-            </div>
-
-            <div class="form-group" style="margin-bottom:12px;">
-              <div class="form-label">Your Base Camp / Homebase <span class="required-mark">*</span></div>
-              <select class="form-select" id="trip-homebase-input">
-                <option>Jakarta Selatan</option>
-                <option>Jakarta Barat</option>
-                <option>Surabaya</option>
-                <option>Bandung</option>
-                <option>Yogyakarta</option>
-                <option>Balikpapan</option>
-              </select>
-            </div>
-
-            <div class="form-group" style="margin-bottom:12px;">
-              <div class="form-label">Description & Shopping Plan</div>
-              <textarea class="form-textarea" id="trip-desc-input" placeholder="e.g. Shopping at Don Quijote cosmetics, Shibuya apparel, and Tokyo Banana snacks. Hand-carried safely." style="min-height:60px;"></textarea>
-            </div>
-
-            <button class="btn-primary" style="width:100%; padding:12px 0; font-size:13px;" onclick="submitCreateTrip()">
-              Publish Trip Schedule
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
+    modalRoot.innerHTML = renderCreateTripModal();
     return;
   }
 
@@ -6597,8 +7632,13 @@ function closeSelectPickupAddressSheet(){
 }
 
 function selectPickupAddress(addrId){
-  if(!state.jastiperEventJoinData) state.jastiperEventJoinData = {};
-  state.jastiperEventJoinData.selectedAddressId = addrId;
+  if(state.showCreateTripModal){
+    if(!state.createTripForm) state.createTripForm = {};
+    state.createTripForm.selectedAddressId = addrId;
+  }
+  if(state.jastiperEventJoinData){
+    state.jastiperEventJoinData.selectedAddressId = addrId;
+  }
   state.showSelectPickupAddressSheet = false;
   render();
 }
@@ -6607,20 +7647,25 @@ function addNewPinpointAddress(){
   const newId = 'addr-' + Date.now();
   const newAddr = {
     id: newId,
-    label: 'JIEXPO Kemayoran Gate 3 (Custom Pin)',
+    label: 'Studio Dispatch Baru (Custom Pin GPS)',
     tag: 'Custom Pin',
-    address: 'Arena JIEXPO Kemayoran Gate 3 Hall B, Jakarta Pusat 10620',
-    city: 'Jakarta Pusat',
+    address: 'Jl. Senopati No. 88, Kebayoran Baru, Jakarta Selatan 12190',
+    city: 'Jakarta Selatan',
     contactName: 'Raka Pratama (0812-9876-5432)',
-    coords: { lat: -6.1488, lng: 106.8462 },
+    coords: { lat: -6.2297, lng: 106.8074 },
     coordsVerified: true,
     isDefault: false
   };
   savedPickupAddresses.unshift(newAddr);
-  if(!state.jastiperEventJoinData) state.jastiperEventJoinData = {};
-  state.jastiperEventJoinData.selectedAddressId = newId;
+  if(state.showCreateTripModal){
+    if(!state.createTripForm) state.createTripForm = {};
+    state.createTripForm.selectedAddressId = newId;
+  }
+  if(state.jastiperEventJoinData){
+    state.jastiperEventJoinData.selectedAddressId = newId;
+  }
   state.showSelectPickupAddressSheet = false;
-  showToast('📍 New location pinned with GPS coordinates!');
+  showToast('📍 Titik lokasi GPS berhasil disimpan untuk GoSend / Kurir!');
   render();
 }
 
@@ -6692,8 +7737,316 @@ function submitJastiperEventJoin(eventId){
   render();
 }
 
+/* ============ CREATE TRIP MODAL WITH BANNER UPLOAD, REORDERED FIELDS & MULTI-CATEGORY ============ */
+function handleTripBannerUpload(e){
+  const file = e.target.files && e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    if(!state.createTripForm) {
+      state.createTripForm = {
+        banner: null,
+        dest: '',
+        dates: '',
+        shippingDate: '',
+        homebase: 'Jakarta Selatan',
+        categories: ['Fashion & Sneakers'],
+        desc: ''
+      };
+    }
+    state.createTripForm.banner = ev.target.result;
+    render();
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeTripBanner(e){
+  if(e) e.stopPropagation();
+  if(state.createTripForm){
+    state.createTripForm.banner = null;
+  }
+  render();
+}
+
+function setTripBannerPreset(url){
+  if(!state.createTripForm) {
+    state.createTripForm = {
+      banner: null,
+      dest: '',
+      dates: '',
+      shippingDate: '',
+      homebase: 'Jakarta Selatan',
+      categories: ['Fashion & Sneakers'],
+      desc: ''
+    };
+  }
+  state.createTripForm.banner = url;
+  render();
+}
+
+function toggleCreateTripCategory(catId){
+  if(!state.createTripForm) {
+    state.createTripForm = { categories: [] };
+  }
+  if(!Array.isArray(state.createTripForm.categories)) {
+    state.createTripForm.categories = [];
+  }
+  
+  const idx = state.createTripForm.categories.indexOf(catId);
+  if(idx > -1){
+    if(state.createTripForm.categories.length > 1){
+      state.createTripForm.categories.splice(idx, 1);
+    } else {
+      showToast(state.lang === 'id' ? 'Pilih minimal 1 kategori' : 'Select at least 1 category');
+    }
+  } else {
+    state.createTripForm.categories.push(catId);
+  }
+  render();
+}
+
+function renderCreateTripModal(){
+  const isId = state.lang === 'id';
+  if(!state.createTripForm){
+    state.createTripForm = {
+      banner: null,
+      dest: '',
+      dates: '',
+      shippingDate: '',
+      selectedAddressId: 'addr-home-1',
+      categories: ['Fashion & Sneakers'],
+      desc: ''
+    };
+  }
+  const form = state.createTripForm;
+  const selectedAddrId = form.selectedAddressId || 'addr-home-1';
+  const currAddr = savedPickupAddresses.find(a => a.id === selectedAddrId) || savedPickupAddresses[0];
+
+  const allCategories = [
+    { id: 'Beauty & Skincare', icon: '💄', label: 'Beauty & Skincare' },
+    { id: 'Fashion & Sneakers', icon: '👟', label: 'Fashion & Sneakers' },
+    { id: 'Food & Snacks', icon: '🍪', label: 'Food & Snacks' },
+    { id: 'Pop Culture & Anime', icon: '🧸', label: 'Pop Culture & Anime' },
+    { id: 'Electronics & Gadgets', icon: '📱', label: 'Electronics & Gadgets' },
+    { id: 'Luxury & Branded', icon: '👜', label: 'Luxury & Branded' },
+    { id: 'Hobbies & Collectibles', icon: '🎨', label: 'Hobbies & Collectibles' },
+    { id: 'Others', icon: '📦', label: 'Others' }
+  ];
+  const selectedCount = (form.categories || []).length;
+
+  return `
+    <div class="filter-sheet-overlay" onclick="closeCreateTripModal()">
+      <div class="filter-sheet" onclick="event.stopPropagation()" style="max-height:100%; display:flex; flex-direction:column; overflow:hidden;">
+        <div class="filter-sheet-handle" style="margin:12px auto 6px; width:38px; height:4.5px; background:#CBD5E1; border-radius:100px; flex-shrink:0;"></div>
+        <div class="filter-sheet-header" style="padding:12px 18px 14px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-shrink:0; background:#fff;">
+          <div class="filter-sheet-title" style="display:flex; align-items:center; gap:8px; font-size:15.5px; font-weight:800; color:var(--primary); margin:0;">
+            <div style="width:28px; height:28px; border-radius:8px; background:#FFF7ED; color:#EA580C; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              ${svg('plane', 'style="width:16px;height:16px;stroke:#EA580C;stroke-width:2.2;"')}
+            </div>
+            <span>${isId ? 'Buka Jadwal Trip Baru' : 'Create New Travel Trip'}</span>
+          </div>
+          <button class="filter-sheet-close-btn" onclick="closeCreateTripModal()" title="Close" style="width:30px; height:30px; border-radius:50%; background:#F1F5F9; display:flex; align-items:center; justify-content:center; border:none; cursor:pointer;">
+            ${svg('x', 'style="width:16px;height:16px;stroke:#64748B;"')}
+          </button>
+        </div>
+
+        <div class="filter-sheet-body" style="padding:16px 18px 28px; overflow-y:auto; flex:1;">
+          <!-- 1. Banner / Cover Photo Upload (Compact) -->
+          <div class="form-group" style="margin-bottom:12px;">
+            <div class="form-label" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <span>${isId ? 'Foto Banner Cover Trip' : 'Trip Cover Banner Photo'} <span class="optional">(opsional)</span></span>
+            </div>
+            <input type="file" id="trip-banner-input" accept="image/*" style="display:none;" onchange="handleTripBannerUpload(event)">
+            ${form.banner ? `
+              <div style="position:relative; width:100%; height:88px; border-radius:10px; overflow:hidden; border:1.5px solid var(--secondary); margin-bottom:5px; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+                <img src="${form.banner}" alt="Trip Banner Preview" style="width:100%; height:100%; object-fit:cover;">
+                <div style="position:absolute; top:6px; right:6px; display:flex; gap:5px;">
+                  <button type="button" onclick="document.getElementById('trip-banner-input').click()" style="background:rgba(15,23,42,0.75); color:#fff; border:none; border-radius:6px; padding:4px 8px; font-size:10.5px; font-weight:700; cursor:pointer; backdrop-filter:blur(4px); display:flex; align-items:center; gap:4px;">
+                    ${svg('camera', 'style="width:11px;height:11px;stroke:#fff;"')}
+                    <span>${isId ? 'Ganti' : 'Change'}</span>
+                  </button>
+                  <button type="button" onclick="removeTripBanner(event)" style="background:rgba(239,68,68,0.85); color:#fff; border:none; border-radius:6px; padding:4px 8px; font-size:10.5px; font-weight:700; cursor:pointer; backdrop-filter:blur(4px);">
+                    ✕ ${isId ? 'Hapus' : 'Remove'}
+                  </button>
+                </div>
+              </div>
+            ` : `
+              <div 
+                onclick="document.getElementById('trip-banner-input').click()"
+                style="border:1.5px dashed #CBD5E1; border-radius:10px; background:#F8FAFC; display:flex; align-items:center; justify-content:space-between; cursor:pointer; padding:8px 12px; transition:all 0.15s ease;"
+              >
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <div style="width:30px; height:30px; border-radius:8px; background:#EFF6FF; display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0;">
+                    🖼️
+                  </div>
+                  <div>
+                    <div style="font-size:11.5px; font-weight:700; color:var(--primary); line-height:1.2;">${isId ? 'Upload Foto Banner Trip' : 'Upload Trip Banner Photo'}</div>
+                    <div style="font-size:9.5px; color:var(--muted); line-height:1.2; margin-top:2px;">${isId ? 'JPG, PNG, WebP (Rasio 16:9 disarankan)' : 'JPG, PNG, WebP (16:9 recommended)'}</div>
+                  </div>
+                </div>
+                <button type="button" style="background:#FFF7ED; color:var(--secondary); border:1px solid #FDBA74; border-radius:6px; padding:4px 8px; font-size:10.5px; font-weight:700; pointer-events:none; display:flex; align-items:center; gap:4px; flex-shrink:0;">
+                  ${svg('camera', 'style="width:11px;height:11px;stroke:var(--secondary);"') }
+                  <span>${isId ? 'Pilih' : 'Choose'}</span>
+                </button>
+              </div>
+            `}
+            <div style="display:flex; align-items:center; gap:4px; margin-top:5px; overflow-x:auto; padding-bottom:2px;">
+              <span style="font-size:9.5px; color:var(--muted); font-weight:600; white-space:nowrap;">Preset:</span>
+              <button type="button" class="filter-pill" style="font-size:9.5px; padding:2px 7px; white-space:nowrap;" onclick="setTripBannerPreset('https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=600&auto=format&fit=crop&q=80')">🇯🇵 Tokyo</button>
+              <button type="button" class="filter-pill" style="font-size:9.5px; padding:2px 7px; white-space:nowrap;" onclick="setTripBannerPreset('https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=600&auto=format&fit=crop&q=80')">🇹🇭 Bangkok</button>
+              <button type="button" class="filter-pill" style="font-size:9.5px; padding:2px 7px; white-space:nowrap;" onclick="setTripBannerPreset('https://images.unsplash.com/photo-1538485399081-7191377e8241?w=600&auto=format&fit=crop&q=80')">🇰🇷 Seoul</button>
+              <button type="button" class="filter-pill" style="font-size:9.5px; padding:2px 7px; white-space:nowrap;" onclick="setTripBannerPreset('https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=600&auto=format&fit=crop&q=80')">🇸🇬 Singapore</button>
+              <button type="button" class="filter-pill" style="font-size:9.5px; padding:2px 7px; white-space:nowrap;" onclick="setTripBannerPreset('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&auto=format&fit=crop&q=80')">🇫🇷 Paris</button>
+            </div>
+          </div>
+
+          <!-- 2. Shopping Destination -->
+          <div class="form-group" style="margin-bottom:14px;">
+            <div class="form-label">${isId ? 'Destinasi Belanja Trip' : 'Shopping Destination'} <span class="required-mark">*</span></div>
+            <input 
+              type="text" 
+              class="form-input" 
+              id="trip-dest-input" 
+              value="${(form.dest || '').replace(/"/g, '&quot;')}"
+              oninput="state.createTripForm.dest = this.value"
+              placeholder="${isId ? 'contoh: Tokyo & Osaka, Japan / Bangkok, Thailand' : 'e.g. Tokyo & Osaka, Japan / Bangkok, Thailand'}"
+            >
+          </div>
+
+          <!-- 3. Travel Period (Dates) -->
+          <div class="form-group" style="margin-bottom:14px;">
+            <div class="form-label">${isId ? 'Jadwal Periode Trip' : 'Travel Period (Dates)'} <span class="required-mark">*</span></div>
+            <input 
+              type="text" 
+              class="form-input" 
+              id="trip-dates-input" 
+              value="${(form.dates || '').replace(/"/g, '&quot;')}"
+              oninput="state.createTripForm.dates = this.value"
+              placeholder="e.g. 20 Agu - 28 Agu 2026"
+            >
+            <div class="form-hint">${isId ? 'Rentang tanggal keberangkatan hingga kepulangan belanja.' : 'Departure to return trip date range.'}</div>
+          </div>
+
+          <!-- 4. Estimated Shipping / Delivery Date -->
+          <div class="form-group" style="margin-bottom:14px;">
+            <div class="form-label">${isId ? 'Estimasi Pengiriman Barang' : 'Estimated Shipping Date'} <span class="required-mark">*</span></div>
+            <input 
+              type="date" 
+              class="form-input" 
+              id="trip-shipping-date-input" 
+              value="${form.shippingDate || ''}"
+              onchange="state.createTripForm.shippingDate = this.value"
+            >
+            <div class="form-hint" style="color:#0369A1; background:#F0F9FF; border:1px solid #BAE6FD; padding:6px 9px; border-radius:8px; margin-top:5px; line-height:1.4;">
+              📦 ${isId ? 'Tanggal perkiraan barang mulai dikirim / didistribusikan ke pembeli setelah trip selesai.' : 'Expected date when purchased items start being shipped to buyers.'}
+            </div>
+          </div>
+
+          <!-- 5. Pickup & Shipping Origin Address with GPS Coordinates for GoSend / Instant -->
+          <div class="form-group" style="margin-bottom:14px;">
+            <div class="form-label" style="display:flex; justify-content:space-between; align-items:center;">
+              <span>${isId ? 'Alamat Asal Pengiriman' : 'Pickup & Shipping Origin Address'} <span class="required-mark">*</span></span>
+              <span style="font-size:11px; color:var(--secondary); font-weight:700; cursor:pointer;" onclick="openSelectPickupAddressSheet()">${isId ? 'Ubah Alamat →' : 'Change Address →'}</span>
+            </div>
+
+            <div 
+              style="background:#F8FAFC; border:1.5px solid #E2E8F0; border-radius:14px; padding:12px 14px; cursor:pointer; transition:all 0.15s ease;" 
+              onclick="openSelectPickupAddressSheet()"
+            >
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span style="font-size:13px; font-weight:800; color:var(--primary);">${currAddr.label}</span>
+                  <span style="font-size:9.5px; font-weight:700; background:#E0F2FE; color:#0369A1; padding:2px 7px; border-radius:6px;">${currAddr.tag}</span>
+                </div>
+                <span style="font-size:11px; color:var(--secondary); font-weight:700;">${isId ? 'Pilih Alamat' : 'Select'}</span>
+              </div>
+
+              <div style="font-size:11px; color:var(--tertiary); line-height:1.45; margin-bottom:7px;">
+                ${currAddr.address}
+              </div>
+
+              <!-- GPS Pinpoint Coordinate Badge for GoSend & Instant Delivery -->
+              <div style="display:flex; align-items:center; justify-content:space-between; font-size:10px; background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:5px 9px;">
+                <span style="color:#15803D; font-weight:700; display:flex; align-items:center; gap:4px;">
+                  ${svg('mapPin', 'style="width:11px;height:11px;stroke:#16A34A;"')}
+                  <span>Titik GPS (${currAddr.coords.lat}, ${currAddr.coords.lng})</span>
+                </span>
+                <span style="color:#16A34A; font-weight:800; font-size:9.5px; background:#DCFCE7; padding:2px 6px; border-radius:4px;">⚡ Siap GoSend / Instant</span>
+              </div>
+            </div>
+            <div class="form-hint" style="margin-top:4px;">
+              ${isId ? 'Titik koordinat GPS tersimpan otomatis agar pembeli bisa memilih pengiriman Instant (GoSend/GrabExpress) maupun Ekspedisi Reguler.' : 'GPS pinpoint saved automatically so buyers can choose Instant Delivery (GoSend/GrabExpress) or Regular Courier.'}
+            </div>
+          </div>
+
+          <!-- 6. Multiple Category Selection -->
+          <div class="form-group" style="margin-bottom:14px;">
+            <div class="form-label" style="display:flex; justify-content:space-between; align-items:center;">
+              <span>${isId ? 'Kategori Barang Belanjaan' : 'Shopping Categories'} <span class="required-mark">*</span></span>
+              <span style="font-size:10.5px; font-weight:700; color:var(--secondary); background:#FFF7ED; padding:1px 7px; border-radius:4px; border:1px solid #FDBA74;">
+                ${selectedCount} ${isId ? 'Kategori Dipilih' : 'Selected'}
+              </span>
+            </div>
+            <div class="form-hint" style="margin-top:-2px; margin-bottom:7px;">
+              ${isId ? 'Pilih satu atau beberapa kategori barang yang siap kamu belikan (multi-select):' : 'Select one or multiple categories you are ready to purchase (multi-select):'}
+            </div>
+            
+            <div style="display:flex; flex-wrap:wrap; gap:6px;">
+              ${allCategories.map(cat => {
+                const isSelected = (form.categories || []).includes(cat.id);
+                return `
+                  <button 
+                    type="button" 
+                    class="filter-pill ${isSelected ? 'active' : ''}" 
+                    style="font-size:11px; padding:6px 10px; cursor:pointer; display:inline-flex; align-items:center; gap:4px; transition:all 0.15s ease;"
+                    onclick="toggleCreateTripCategory('${cat.id}')"
+                  >
+                    ${isSelected ? svg('check', 'style="width:11px;height:11px;stroke:currentColor;stroke-width:2.5;"') : ''}
+                    <span>${cat.icon} ${cat.label}</span>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          </div>
+
+          <!-- 7. Description & Shopping Plan -->
+          <div class="form-group" style="margin-bottom:16px;">
+            <div class="form-label">${isId ? 'Deskripsi & Rencana Belanja' : 'Description & Shopping Plan'}</div>
+            <textarea 
+              class="form-textarea" 
+              id="trip-desc-input" 
+              oninput="state.createTripForm.desc = this.value"
+              placeholder="${isId ? 'Contoh: Belanja di toko Don Quijote, outlet Shibuya, dan oleh-oleh Tokyo Banana. Barang dibawa hand-carry aman.' : 'e.g. Shopping at Don Quijote cosmetics, Shibuya apparel, and Tokyo Banana snacks. Hand-carried safely.'}" 
+              style="min-height:65px;"
+            >${form.desc || ''}</textarea>
+          </div>
+
+          <!-- Submit Action -->
+          <button class="btn-primary" style="width:100%; padding:12px 0; font-size:13px; margin-bottom:8px;" onclick="submitCreateTrip()">
+            ✈️ ${isId ? 'Publikasikan Jadwal Trip' : 'Publish Trip Schedule'}
+          </button>
+          <button class="modal-btn-secondary" style="width:100%; padding:9px 0; font-size:12px;" onclick="closeCreateTripModal()">
+            ${t('catalog.cancelBtn', 'Batal')}
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function openCreateTripForm(){
   state.showCreateTripModal = true;
+  if(!state.createTripForm){
+    state.createTripForm = {
+      banner: null,
+      dest: '',
+      dates: '',
+      shippingDate: '',
+      selectedAddressId: 'addr-home-1',
+      categories: ['Fashion & Sneakers'],
+      desc: ''
+    };
+  }
   render();
 }
 
@@ -6703,11 +8056,39 @@ function closeCreateTripModal(){
 }
 
 function submitCreateTrip(){
-  const dest = document.getElementById('trip-dest-input')?.value || 'Tokyo & Osaka, Japan';
-  const cat = document.getElementById('trip-cat-input')?.value || 'Fashion & Sneakers';
-  const dates = document.getElementById('trip-dates-input')?.value || 'Aug 20 - Aug 28, 2026';
-  const homebase = document.getElementById('trip-homebase-input')?.value || 'Jakarta Selatan';
-  const desc = document.getElementById('trip-desc-input')?.value || 'Accepting shopping requests from Japan.';
+  const form = state.createTripForm || {};
+  const isId = state.lang === 'id';
+  const destEl = document.getElementById('trip-dest-input');
+  const datesEl = document.getElementById('trip-dates-input');
+  const shippingDateEl = document.getElementById('trip-shipping-date-input');
+  const descEl = document.getElementById('trip-desc-input');
+
+  const dest = (destEl ? destEl.value.trim() : '') || form.dest || '';
+  if(!dest){
+    showToast(isId ? 'Masukkan destinasi belanja trip' : 'Please enter shopping destination');
+    if(destEl) destEl.focus();
+    return;
+  }
+
+  const selectedCats = (form.categories && form.categories.length > 0) ? form.categories : ['Fashion & Sneakers'];
+  const dates = (datesEl ? datesEl.value.trim() : '') || form.dates || 'Aug 20 - Aug 28, 2026';
+  const shippingDateRaw = (shippingDateEl ? shippingDateEl.value : '') || form.shippingDate || '';
+  
+  let formattedShippingDate = shippingDateRaw;
+  if(shippingDateRaw){
+    try {
+      const d = new Date(shippingDateRaw);
+      if(!isNaN(d.getTime())){
+        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        formattedShippingDate = `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+      }
+    } catch(e){}
+  }
+
+  const selectedAddrId = form.selectedAddressId || 'addr-home-1';
+  const selectedAddr = savedPickupAddresses.find(a => a.id === selectedAddrId) || savedPickupAddresses[0];
+  const homebase = selectedAddr ? (selectedAddr.city || selectedAddr.label) : 'Jakarta Selatan';
+  const desc = (descEl ? descEl.value.trim() : '') || form.desc || 'Accepting shopping requests from destination.';
 
   const newTrip = {
     id: 't' + Date.now(),
@@ -6715,9 +8096,12 @@ function submitCreateTrip(){
     badge: 'Trip • ' + dest,
     title: 'Shopping Trip from ' + dest,
     desc: desc,
-    category: cat,
+    banner: form.banner || null,
+    category: selectedCats.join(', '),
+    categories: selectedCats,
     dates: dates,
-    meta: 'Returns ' + dates.split('-').pop().trim() + ' • 10 slots left',
+    estimatedShippingDate: formattedShippingDate,
+    meta: (formattedShippingDate ? `Est. Kirim: ${formattedShippingDate}` : ('Returns ' + dates.split('-').pop().trim())) + ' • 10 slots left',
     jastiper: user.name,
     rating: user.rating,
     ratingCount: user.ratingCount,
@@ -6725,18 +8109,26 @@ function submitCreateTrip(){
     initials: user.initials,
     verified: user.verified,
     homebase: homebase,
+    pickupAddress: selectedAddr,
     postedAgo: 'Just now',
     timeAgo: 'Just now',
     paymentScheme: 'dp',
     dpPercent: 50,
+    slotTotal: 10,
+    slotFilled: 0,
+    cutoff: 'Orders close ' + dates.split('-')[0].trim(),
+    roomTitle: `${dest} Shopping Trip Room`,
+    roomDesc: `Exclusive catalog & direct live shopping from ${dest} by ${user.name}.`,
     catalog: [
       { name: 'Open Custom Request Catalog', desc: 'Attach photos and details of your desired items.', priceProduct: 100000, fee: 25000, feeType: 'terpisah', timeAgo: 'Just now' }
     ]
   };
 
   feedItems.unshift(newTrip);
-  closeCreateTripModal();
-  showToast('✈️ Travel trip schedule published successfully!');
+  tripCatalogs[newTrip.id] = [...newTrip.catalog];
+  state.showCreateTripModal = false;
+  state.createTripForm = null;
+  showToast(isId ? '✈️ Jadwal trip berhasil dipublikasikan!' : '✈️ Travel trip schedule published successfully!');
   state.tab = 'timeline';
   render();
 }
@@ -6783,8 +8175,9 @@ function submitCreateLapak(){
   };
 
   feedItems.unshift(newLapak);
+  lapakCatalogs[newLapak.id] = [...newLapak.catalog];
   closeCreateLapakModal();
-  showToast('🏬 Shopping stall opened successfully!');
+  showToast(state.lang === 'id' ? '🏬 Lapak PO berhasil dibuka!' : '🏬 Shopping stall opened successfully!');
   state.tab = 'timeline';
   render();
 }
@@ -6932,7 +8325,7 @@ function renderFeedCard(item){
 
   return `
     <div class="feed-card" onclick="openDetail('${item.id}')">
-      <div class="feed-card-img">
+      <div class="feed-card-img" style="${item.banner ? `background-image:url('${item.banner}'); background-size:cover; background-position:center;` : ''}">
         <span class="badge ${badgeClass(item.type)} badge-abs">${item.badge}</span>
         <span class="feed-time-badge">${svg('clock', 'style="width:10px;height:10px;stroke:currentColor;"')} ${timeAgo}</span>
       </div>
@@ -6942,13 +8335,25 @@ function renderFeedCard(item){
         
         ${item.desc ? `<div class="feed-card-desc">${item.desc}</div>` : ''}
         
-        <div class="feed-card-tags-row">
-          ${item.category ? `
-            <span class="feed-tag-category">
-              ${svg('tag', 'style="width:10.5px;height:10.5px;stroke:currentColor;"')} ${item.category}
+        <div class="feed-card-tags-row" style="display:flex; flex-wrap:wrap; gap:4px;">
+          ${item.categories && item.categories.length > 0
+            ? item.categories.map(c => `
+                <span class="feed-tag-category">
+                  ${svg('tag', 'style="width:10.5px;height:10.5px;stroke:currentColor;"')} ${c}
+                </span>
+              `).join('')
+            : (item.category ? `
+                <span class="feed-tag-category">
+                  ${svg('tag', 'style="width:10.5px;height:10.5px;stroke:currentColor;"')} ${item.category}
+                </span>
+              ` : '')
+          }
+          ${periodTagHTML}
+          ${item.estimatedShippingDate ? `
+            <span class="feed-tag-period" style="background:#F0FDF4; color:#15803D; border:1px solid #BBF7D0; font-weight:700;">
+              ${svg('truck', 'style="width:10.5px;height:10.5px;stroke:#16A34A;"')} Est. Kirim: ${item.estimatedShippingDate}
             </span>
           ` : ''}
-          ${periodTagHTML}
         </div>
 
         <div class="feed-card-foot">
@@ -7114,7 +8519,233 @@ function renderEventDetailPage(){
   const isJastiperMode = state.appMode === 'jastiper';
   const isJoined = isJastiperMode && state.jastiperJoinedEvents && state.jastiperJoinedEvents[ev.id];
   const totalBuyersInterested = (ev.slotFilled * 35) + 115;
+  const isId = state.lang === 'id';
 
+  // 1. JASTIPER MODE: DEDICATED "MY EVENT ROOM" VIEW (WHEN ALREADY JOINED)
+  if(isJoined){
+    const roomData = state.jastiperJoinedEvents[ev.id];
+    const liveCat = roomData.catalog || [];
+    const pAddr = roomData.pickupAddress || savedPickupAddresses[0];
+
+    return `
+      <div class="detail-back-row">
+        <button class="back-btn" onclick="closeEventDetail()">${svg('arrowLeft')}</button>
+        <div class="detail-back-title">${isId ? 'Room Event Saya' : 'My Event Room'}</div>
+      </div>
+
+      <!-- Top Header / Banner: Context of Event & Room -->
+      <div style="background:linear-gradient(135deg,#0F172A,#1E293B); border-radius:0 0 20px 20px; padding:16px 18px; color:#fff; margin-bottom:14px; box-shadow:0 4px 14px rgba(15,23,42,0.12);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span style="font-size:10px; font-weight:800; background:#22C55E; color:#fff; padding:2px 8px; border-radius:100px; display:inline-flex; align-items:center; gap:4px;">
+            <span style="width:5px; height:5px; border-radius:50%; background:#fff;"></span>
+            ${isId ? 'LIVE SHOPPING ROOM' : 'LIVE SHOPPING ROOM'}
+          </span>
+          <span style="font-size:11px; color:#94A3B8;">${ev.dateRange}</span>
+        </div>
+        <div style="font-size:16.5px; font-weight:800; color:#fff; margin-bottom:3px;">
+          ${roomData.roomTitle || `${user.name}'s Event Room`}
+        </div>
+        <div style="font-size:11.5px; color:#CBD5E1; display:flex; align-items:center; gap:4px; margin-bottom:12px;">
+          ${svg('mapPin', 'style="width:12px;height:12px;stroke:#CBD5E1;"')}
+          <span>${ev.title} • ${ev.location}</span>
+        </div>
+
+        <!-- Room Key Stats Bar -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:8px 12px;">
+          <div>
+            <div style="font-size:9.5px; color:#94A3B8;">${isId ? 'Pembeli Bergabung' : 'Buyers in Room'}</div>
+            <div style="font-size:14px; font-weight:800; color:#fff; margin-top:1px;">32 members</div>
+          </div>
+          <div>
+            <div style="font-size:9.5px; color:#94A3B8;">${isId ? 'Item Live Diunggah' : 'Live Items in Catalog'}</div>
+            <div style="font-size:14px; font-weight:800; color:#FDBA74; margin-top:1px;">${liveCat.length} ${isId ? 'barang' : 'items'}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-body" style="padding-top:0;">
+        <!-- Pickup Address Card with GPS Coordinates & Instant Ready -->
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:14px; padding:10px 12px; margin-bottom:12px; font-size:11px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
+            <strong style="color:var(--primary); font-size:11.5px; display:flex; align-items:center; gap:4px;">
+              ${svg('mapPin','style="width:13px;height:13px;stroke:var(--secondary);flex-shrink:0;"')}
+              <span>${pAddr.label}</span>
+            </strong>
+            <span style="font-size:9.5px; font-weight:800; background:#DCFCE7; color:#15803D; padding:2px 6px; border-radius:4px;">⚡ Instant Ready</span>
+          </div>
+          <div style="font-size:10.5px; line-height:1.35; color:var(--muted); margin-bottom:3px;">
+            ${pAddr.address}
+          </div>
+          <div style="font-size:9.5px; color:#15803D; font-weight:600;">
+            📍 GPS Coordinates Saved (${pAddr.coords ? `${pAddr.coords.lat}, ${pAddr.coords.lng}` : '-6.1495, 106.8456'})
+          </div>
+        </div>
+
+        <!-- Room Description & Instructions -->
+        <div style="background:#FFF7ED; border:1px solid #FFEDD5; border-radius:12px; padding:9px 12px; margin-bottom:14px;">
+          <div style="font-size:10px; font-weight:700; color:#C2410C; text-transform:uppercase; margin-bottom:2px;">
+            ${isId ? 'Catatan & Layanan Jastip Kamu' : 'Your Shopping Room Notes'}
+          </div>
+          <div style="font-size:11.5px; color:var(--tertiary); line-height:1.4;">
+            ${roomData.roomDesc || (isId ? 'Katalog live belanja resmi langsung dari booth event.' : 'Official live shopping catalog from this venue.')}
+          </div>
+        </div>
+
+        <!-- Action Button when Catalog already has items -->
+        ${liveCat.length > 0 ? `
+          <button class="btn-primary" style="width:100%; padding:11px 0; font-size:12.5px; margin:0 0 16px;" onclick="openAddCatalogModal('event', '${ev.id}', '${ev.title.replace(/'/g, "\\'")}')">
+            📸 + ${isId ? 'Upload Item Live ke Katalog' : 'Upload Live Item to Catalog'}
+          </button>
+        ` : ''}
+
+        <!-- Live Event Catalog Items List -->
+        <div class="section-head" style="padding:0 0 10px; display:flex; justify-content:space-between; align-items:center;">
+          <div class="section-title" style="font-size:13px; font-weight:800; color:var(--primary);">
+            ${isId ? 'Katalog Live dari Venue' : 'Live Venue Catalog'} (${liveCat.length})
+          </div>
+          ${liveCat.length > 0 ? `
+            <button 
+              style="background:${state.catalogBulkMode ? '#0F172A' : '#F1F5F9'}; color:${state.catalogBulkMode ? '#fff' : 'var(--primary)'}; border:1px solid #CBD5E1; border-radius:8px; font-size:11px; font-weight:700; padding:5px 10px; cursor:pointer;" 
+              onclick="toggleCatalogBulkMode()"
+            >
+              ${state.catalogBulkMode ? (isId ? '✓ Selesai' : '✓ Done') : (isId ? '⚡ Kelola Masal' : '⚡ Bulk Edit')}
+            </button>
+          ` : ''}
+        </div>
+
+        ${state.catalogBulkMode && liveCat.length > 0 ? `
+          <!-- Bulk Action Control Bar -->
+          <div style="background:#FFF7ED; border:1.5px solid #FDBA74; border-radius:14px; padding:10px 12px; margin-bottom:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <label style="display:flex; align-items:center; gap:6px; font-size:11.5px; font-weight:700; color:var(--primary); cursor:pointer;">
+                <input 
+                  type="checkbox" 
+                  style="accent-color:var(--secondary); width:16px; height:16px;" 
+                  ${state.selectedCatalogIndices.length === liveCat.length ? 'checked' : ''} 
+                  onchange="toggleSelectAllCatalog(${liveCat.length})"
+                >
+                <span>${isId ? 'Pilih Semua' : 'Select All'} (${state.selectedCatalogIndices.length}/${liveCat.length})</span>
+              </label>
+              <span style="font-size:10.5px; color:#C2410C; font-weight:600;">
+                ${state.selectedCatalogIndices.length} ${isId ? 'dipilih' : 'selected'}
+              </span>
+            </div>
+
+            <!-- Batch Action Buttons -->
+            <div style="display:flex; gap:6px;">
+              <button 
+                style="flex:1; background:#FFF1F2; color:#E11D48; border:1px solid #FECDD3; border-radius:8px; padding:7px 4px; font-size:10.5px; font-weight:700; cursor:pointer;" 
+                ${state.selectedCatalogIndices.length === 0 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''} 
+                onclick="bulkMarkCatalogSoldOut('event', '${ev.id}', true)"
+              >
+                🔴 Sold Out
+              </button>
+              <button 
+                style="flex:1; background:#DCFCE7; color:#15803D; border:1px solid #86EFAC; border-radius:8px; padding:7px 4px; font-size:10.5px; font-weight:700; cursor:pointer;" 
+                ${state.selectedCatalogIndices.length === 0 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''} 
+                onclick="bulkMarkCatalogSoldOut('event', '${ev.id}', false)"
+              >
+                ✅ In Stock
+              </button>
+              <button 
+                style="flex:0.9; background:#FEE2E2; color:#DC2626; border:1px solid #FCA5A5; border-radius:8px; padding:7px 4px; font-size:10.5px; font-weight:700; cursor:pointer;" 
+                ${state.selectedCatalogIndices.length === 0 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''} 
+                onclick="bulkDeleteCatalogItems('event', '${ev.id}')"
+              >
+                🗑️ ${isId ? 'Hapus' : 'Delete'}
+              </button>
+            </div>
+          </div>
+        ` : ''}
+
+        ${liveCat.length === 0 ? `
+          <div style="background:#fff; border:1.5px dashed #CBD5E1; border-radius:16px; padding:24px 18px; text-align:center; color:var(--muted); margin-bottom:14px;">
+            <div style="font-size:32px; margin-bottom:8px;">📸</div>
+            <div style="font-size:13px; font-weight:800; color:var(--primary);">${isId ? 'Belum Ada Barang di Katalog Live' : 'No Live Items in Catalog Yet'}</div>
+            <div style="font-size:11px; margin:4px 0 16px; color:var(--muted); line-height:1.45;">
+              ${isId ? 'Ambil foto barang atau merchandise langsung dari venue event agar pembeli dapat langsung memesan.' : 'Snap photos of items directly from the venue so buyers can order immediately.'}
+            </div>
+            <button class="btn-primary" style="width:100%; padding:11px 0; font-size:12.5px; margin:0 auto;" onclick="openAddCatalogModal('event', '${ev.id}', '${ev.title.replace(/'/g, "\\'")}')">
+              📸 + ${isId ? 'Upload Item Live Pertama' : 'Upload First Live Item'}
+            </button>
+          </div>
+        ` : `
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            ${liveCat.map((p, idx) => {
+              const isSoldOut = p.stock === 'soldout';
+              const isSelected = state.selectedCatalogIndices.includes(idx);
+              const thumbStyle = p.photo ? `background-image:url(${p.photo}); background-size:cover; background-position:center;` : '';
+              return `
+                <div style="background:${isSoldOut ? '#FFF1F2' : '#fff'}; border:1px solid ${isSelected ? 'var(--secondary)' : (isSoldOut ? '#FECDD3' : '#BBF7D0')}; border-radius:14px; padding:10px 12px; display:flex; align-items:center; justify-content:space-between; gap:10px; box-shadow:0 2px 6px rgba(0,0,0,0.02); transition:all 0.15s ease;">
+                  ${state.catalogBulkMode ? `
+                    <input 
+                      type="checkbox" 
+                      style="accent-color:var(--secondary); width:17px; height:17px; flex-shrink:0; cursor:pointer;" 
+                      ${isSelected ? 'checked' : ''} 
+                      onchange="toggleSelectCatalogItem(${idx})"
+                    >
+                  ` : ''}
+                  <div style="width:44px; height:44px; border-radius:10px; background:#F1F5F9; flex-shrink:0; display:flex; align-items:center; justify-content:center; position:relative; ${thumbStyle}">
+                    ${!p.photo ? svg('shoppingBag','style="width:18px;height:18px;stroke:#94A3B8;"') : ''}
+                    ${isSoldOut ? `
+                      <div style="position:absolute; inset:0; background:rgba(239,68,68,0.7); border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                        <span style="font-size:7.5px; font-weight:900; color:#fff; letter-spacing:0.5px;">SOLD</span>
+                      </div>
+                    ` : ''}
+                  </div>
+                  <div style="flex:1; min-width:0;">
+                    <div style="display:flex; align-items:center; gap:4px;">
+                      <div style="font-size:12px; font-weight:800; color:var(--primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; ${isSoldOut ? 'text-decoration:line-through; color:var(--muted);' : ''}">
+                        ${p.name}
+                      </div>
+                      ${isSoldOut ? `
+                        <span style="font-size:8.5px; font-weight:800; background:#FEE2E2; color:#DC2626; padding:1px 5px; border-radius:4px; flex-shrink:0;">🔴 SOLDOUT</span>
+                      ` : (p.stock === 'preorder' ? `
+                        <span style="font-size:8.5px; font-weight:700; background:#E0F2FE; color:#0369A1; padding:1px 5px; border-radius:4px; flex-shrink:0;">⏳ PO</span>
+                      ` : `
+                        <span style="font-size:8.5px; font-weight:700; background:#DCFCE7; color:#15803D; padding:1px 5px; border-radius:4px; flex-shrink:0;">⚡ Ready</span>
+                      `)}
+                    </div>
+                    <div style="font-size:10.5px; color:var(--muted); margin-top:2px;">
+                      <strong style="color:var(--primary);">Rp ${p.priceProduct.toLocaleString('id-ID')}</strong>
+                      <span> • Fee: Rp ${(p.fee || 0).toLocaleString('id-ID')} (${p.feeType || 'terpisah'})</span>
+                    </div>
+                  </div>
+                  
+                  <!-- Card Action Buttons -->
+                  <div style="display:flex; align-items:center; gap:4px; flex-shrink:0;">
+                    <button 
+                      style="background:${isSoldOut ? '#DCFCE7' : '#FFF1F2'}; color:${isSoldOut ? '#15803D' : '#E11D48'}; border:1px solid ${isSoldOut ? '#86EFAC' : '#FECDD3'}; border-radius:6px; font-size:10px; font-weight:700; padding:4px 6px; cursor:pointer;" 
+                      onclick="toggleCatalogItemSoldOut('event', '${ev.id}', ${idx})"
+                      title="${isSoldOut ? (isId ? 'Buka Stok Kembali' : 'Mark In Stock') : (isId ? 'Tandai Sold Out' : 'Mark Sold Out')}"
+                    >
+                      ${isSoldOut ? '✅ Buka' : '🔴 Sold'}
+                    </button>
+                    <button 
+                      style="background:#F1F5F9; border:1px solid #CBD5E1; color:var(--primary); font-size:11px; cursor:pointer; padding:5px 6px; border-radius:6px;" 
+                      onclick="openEditCatalogModal('event', '${ev.id}', ${idx})"
+                      title="${isId ? 'Edit Produk' : 'Edit'}"
+                    >
+                      ${svg('edit', 'style="width:12px;height:12px;stroke:currentColor;"')}
+                    </button>
+                    <button 
+                      style="background:#FEE2E2; border:none; color:#EF4444; border-radius:6px; font-size:11px; cursor:pointer; padding:5px 6px;" 
+                      onclick="removeCatalogItem('event', '${ev.id}', ${idx})"
+                      title="${isId ? 'Hapus' : 'Delete'}"
+                    >
+                      ${svg('trash', 'style="width:13px;height:13px;stroke:#EF4444;"')}
+                    </button>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `}
+      </div>
+    `;
+  }
+
+  // 2. DISCOVERY VIEW: WHEN NOT JOINED YET (OR IN BUYER MODE)
   return `
     <div class="detail-back-row">
       <button class="back-btn" onclick="closeEventDetail()">${svg('arrowLeft')}</button>
@@ -7139,8 +8770,8 @@ function renderEventDetailPage(){
       </div>
 
       ${isJastiperMode ? `
-        <!-- JASTIPER MODE VIEW -->
-        <!-- 1. Event Total Community Stats (Total Jastipers & Total Buyers) -->
+        <!-- JASTIPER MODE VIEW (NOT JOINED YET) -->
+        <!-- Event Total Community Stats (Total Jastipers & Total Buyers) -->
         <div style="background:#F8FAFC; border:1px solid var(--border); border-radius:14px; padding:12px 14px; margin-bottom:14px; display:grid; grid-template-columns:1fr 1fr; gap:10px;">
           <div style="background:#fff; border:1px solid #E2E8F0; border-radius:10px; padding:9px 10px;">
             <div style="font-size:10px; color:var(--muted); font-weight:600; display:flex; align-items:center; gap:3px;">
@@ -7167,76 +8798,21 @@ function renderEventDetailPage(){
           </div>
         </div>
 
-        ${isJoined ? `
-          <!-- Jastiper's Own Active Event Room (Appears automatically after joining) -->
-          <div style="background:#F0FDF4; border:1.5px solid #86EFAC; border-radius:16px; padding:14px; margin-bottom:16px;">
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
-              <span style="font-size:10px; font-weight:700; background:#22C55E; color:#fff; padding:2px 8px; border-radius:100px;">REGISTERED AS SHOPPER</span>
-              <span style="font-size:11px; color:#15803D; font-weight:700; display:flex; align-items:center; gap:3px;">
-                <span style="width:6px; height:6px; border-radius:50%; background:#22C55E;"></span>
-                My Event Room
-              </span>
+        <!-- CTA to Join Event as Shopper -->
+        <div class="jastiper-event-join-banner" style="margin-bottom:16px;">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+            <div style="width:36px; height:36px; border-radius:10px; background:#FF5722; color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              ${svg('plane','style="width:18px;height:18px;stroke:#fff;"')}
             </div>
-            <div style="font-size:14px; font-weight:800; color:var(--primary); margin-bottom:3px;">
-              ${state.jastiperJoinedEvents[ev.id].roomTitle || `${user.name}'s Event Room`}
-            </div>
-            <div style="font-size:11.5px; color:var(--tertiary); line-height:1.45; margin-bottom:8px;">
-              ${state.jastiperJoinedEvents[ev.id].roomDesc || 'Official live shopping catalog from this venue.'}
-            </div>
-
-            <!-- Pickup Address with GPS Pinpoint Badge for Instant Courier -->
-            ${(() => {
-              const pAddr = state.jastiperJoinedEvents[ev.id].pickupAddress || savedPickupAddresses[0];
-              return `
-                <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:8px 10px; font-size:11px; margin-bottom:10px; color:var(--tertiary);">
-                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
-                    <strong style="color:var(--primary); font-size:11.5px; display:flex; align-items:center; gap:4px;">
-                      ${svg('mapPin','style="width:12px;height:12px;stroke:var(--secondary);flex-shrink:0;"')}
-                      <span>${pAddr.label}</span>
-                    </strong>
-                    <span style="font-size:9.5px; font-weight:800; background:#DCFCE7; color:#15803D; padding:2px 6px; border-radius:4px;">⚡ Instant Ready</span>
-                  </div>
-                  <div style="font-size:10.5px; line-height:1.35; color:var(--muted); margin-bottom:3px;">
-                    ${pAddr.address}
-                  </div>
-                  <div style="font-size:9.5px; color:#15803D; font-weight:600;">
-                    📍 GPS Coordinates Saved (${pAddr.coords ? `${pAddr.coords.lat}, ${pAddr.coords.lng}` : '-6.1495, 106.8456'})
-                  </div>
-                </div>
-              `;
-            })()}
-
-            <div style="background:#fff; border:1px solid #BBF7D0; border-radius:10px; padding:8px 10px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; font-size:11px;">
-              <span style="color:var(--muted); display:flex; align-items:center; gap:4px;">${svg('users','style="width:12px;height:12px;stroke:var(--secondary);"') } Buyers in your room:</span>
-              <strong style="color:var(--primary); font-size:12px;">32 members joined</strong>
-            </div>
-
-            <div style="display:flex; gap:8px;">
-              <button class="btn-primary" style="flex:1; padding:9px 0; font-size:11.5px; margin:0;" onclick="showToast('📸 Open camera to add live item to catalog')">
-                + Add Live Catalog Item
-              </button>
-              <button style="background:#DCFCE7; color:#15803D; border:1px solid #86EFAC; border-radius:12px; padding:9px 14px; font-size:11.5px; font-weight:700; cursor:pointer;" onclick="showToast('💬 Room chat opened for buyer inquiries')">
-                💬 Room Chat
-              </button>
+            <div>
+              <div style="font-size:13px; font-weight:800; color:var(--primary);">Attend & Offer Shopping Service at This Event?</div>
+              <div style="font-size:11px; color:#7C2D12;">Join to open your personal live room and collect orders from ${totalBuyersInterested}+ interested buyers.</div>
             </div>
           </div>
-        ` : `
-          <!-- CTA to Join Event as Shopper -->
-          <div class="jastiper-event-join-banner" style="margin-bottom:16px;">
-            <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
-              <div style="width:36px; height:36px; border-radius:10px; background:#FF5722; color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                ${svg('plane','style="width:18px;height:18px;stroke:#fff;"')}
-              </div>
-              <div>
-                <div style="font-size:13px; font-weight:800; color:var(--primary);">Attend & Offer Shopping Service at This Event?</div>
-                <div style="font-size:11px; color:#7C2D12;">Join to open your personal live room and collect orders from ${totalBuyersInterested}+ interested buyers.</div>
-              </div>
-            </div>
-            <button class="btn-primary" style="width:100%; margin:6px 0 0; padding:10.5px 0; font-size:12.5px;" onclick="openJastiperEventJoinModal('${ev.id}')">
-              + Join as Shopper & Create Room
-            </button>
-          </div>
-        `}
+          <button class="btn-primary" style="width:100%; margin:6px 0 0; padding:10.5px 0; font-size:12.5px;" onclick="openJastiperEventJoinModal('${ev.id}')">
+            + Join as Shopper & Create Room
+          </button>
+        </div>
       ` : `
         <!-- BUYER MODE VIEW: List of All Shoppers & Rooms -->
         <div class="section-head" style="padding:0 0 10px;">
@@ -8182,20 +9758,24 @@ function changeFormQty(delta){
 function formatCurrencyInput(el){
   if(!el) return;
   const cursorPosition = el.selectionStart || 0;
-  const originalLength = el.value.length;
+  const originalLength = (el.value || '').length;
   
   // Strip non-digits
-  const raw = el.value.replace(/\D/g, '');
+  const raw = (el.value || '').replace(/\D/g, '');
   if(!raw){
     el.value = '';
     return;
   }
   
+  el.value = raw.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  
   // Preserve cursor placement
   const newLength = el.value.length;
   const newCursorPos = Math.max(0, cursorPosition + (newLength - originalLength));
   try {
-    el.setSelectionRange(newCursorPos, newCursorPos);
+    if(typeof el.setSelectionRange === 'function'){
+      el.setSelectionRange(newCursorPos, newCursorPos);
+    }
   } catch(e) {}
 }
 
@@ -8291,39 +9871,57 @@ function renderLockedPrompt(roomId, remaining){
 }
 
 function renderProductCard(p, jastiperData = {}, sourceData = {}){
+  const isSoldOut = p.stock === 'soldout';
   const total = p.priceProduct + (p.feeType === 'include' ? 0 : p.fee);
   const pSafe = encodeURIComponent(JSON.stringify(p));
   const jSafe = encodeURIComponent(JSON.stringify(jastiperData));
   const sSafe = encodeURIComponent(JSON.stringify(sourceData));
-  const timeAgo = p.addedAgo || p.postedAgo || '15 mins ago';
+  const timeAgo = p.addedAgo || p.postedAgo || (state.lang === 'id' ? '15 mnt lalu' : '15 mins ago');
+  const thumbStyle = p.photo ? `background-image:url(${p.photo}); background-size:cover; background-position:center;` : '';
 
   return `
-    <div class="catalog-item">
+    <div class="catalog-item ${isSoldOut ? 'catalog-item-soldout' : ''}" style="${isSoldOut ? 'opacity:0.75;' : ''}">
       <div class="catalog-item-top">
-        <div class="catalog-thumb"></div>
+        <div class="catalog-thumb" style="${thumbStyle}; position:relative;">
+          ${!p.photo ? svg('shoppingBag','style="width:20px;height:20px;stroke:#94A3B8;"') : ''}
+          ${isSoldOut ? `
+            <div style="position:absolute; inset:0; background:rgba(239,68,68,0.75); border-radius:10px; display:flex; align-items:center; justify-content:center;">
+              <span style="font-size:8px; font-weight:900; color:#fff; letter-spacing:0.5px;">SOLD</span>
+            </div>
+          ` : ''}
+        </div>
         <div class="catalog-info">
           <div class="catalog-badges">
-            ${p.stock ? `<span class="stock-badge stock-${p.stock}">${p.stock === 'ready' ? 'Ready Stock' : 'Pre-Order'}</span>` : ''}
+            ${isSoldOut 
+              ? `<span class="stock-badge" style="background:#FEE2E2; color:#DC2626; border:1px solid #FCA5A5; font-weight:800;">🔴 Sold Out (Habis)</span>`
+              : (p.stock ? `<span class="stock-badge stock-${p.stock}">${p.stock === 'ready' ? (state.lang === 'id' ? '⚡ Ready Stock' : '⚡ Ready Stock') : (state.lang === 'id' ? '⏳ Pre-Order (PO)' : '⏳ Pre-Order')}</span>` : '')
+            }
             <span class="catalog-time-badge">${svg('clock', 'style="width:9px;height:9px;stroke:currentColor;"')} ${timeAgo}</span>
           </div>
-          <div class="catalog-name">${p.name}</div>
+          <div class="catalog-name" style="${isSoldOut ? 'text-decoration:line-through; color:var(--muted);' : ''}">${p.name}</div>
           <div class="catalog-desc">${p.desc}</div>
         </div>
       </div>
       <div class="catalog-price-block">
-        <div class="catalog-price-line"><span>Item price</span><span>Rp ${p.priceProduct.toLocaleString('id-ID')}</span></div>
+        <div class="catalog-price-line"><span>${state.lang === 'id' ? 'Harga barang' : 'Item price'}</span><span>Rp ${p.priceProduct.toLocaleString('id-ID')}</span></div>
         ${p.feeType === 'include'
-          ? `<div class="catalog-price-line included"><span>Shopper fee</span><span>Included</span></div>`
-          : `<div class="catalog-price-line"><span>Shopper fee</span><span>Rp ${p.fee.toLocaleString('id-ID')}</span></div>`
+          ? `<div class="catalog-price-line included"><span>${state.lang === 'id' ? 'Jasa jastip' : 'Shopper fee'}</span><span>${state.lang === 'id' ? 'Termasuk' : 'Included'}</span></div>`
+          : `<div class="catalog-price-line"><span>${state.lang === 'id' ? 'Jasa jastip' : 'Shopper fee'}</span><span>Rp ${p.fee.toLocaleString('id-ID')}</span></div>`
         }
         <div class="catalog-price-line total"><span>Total</span><span>Rp ${total.toLocaleString('id-ID')}</span></div>
       </div>
       <div class="catalog-actions">
-        <button class="icon-mini-btn" onclick="handleProductAction('chat', '${pSafe}', '${jSafe}', '${sSafe}')" title="Chat Shopper">
+        <button class="icon-mini-btn" onclick="handleProductAction('chat', '${pSafe}', '${jSafe}', '${sSafe}')" title="${state.lang === 'id' ? 'Chat Jastiper' : 'Chat Shopper'}">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
         </button>
-        <button class="cart-btn-mini" onclick="handleProductAction('cart', '${pSafe}', '${jSafe}', '${sSafe}')">+ Cart</button>
-        <button class="buy-btn-mini" onclick="handleProductAction('buy', '${pSafe}', '${jSafe}', '${sSafe}')">Buy Now</button>
+        ${isSoldOut ? `
+          <button class="buy-btn-mini" style="flex:2; background:#E2E8F0; color:#64748B; border:none; cursor:not-allowed;" disabled>
+            ${state.lang === 'id' ? 'Stok Habis (Sold Out)' : 'Sold Out'}
+          </button>
+        ` : `
+          <button class="cart-btn-mini" onclick="handleProductAction('cart', '${pSafe}', '${jSafe}', '${sSafe}')">+ Cart</button>
+          <button class="buy-btn-mini" onclick="handleProductAction('buy', '${pSafe}', '${jSafe}', '${sSafe}')">${state.lang === 'id' ? 'Beli Sekarang' : 'Buy Now'}</button>
+        `}
       </div>
     </div>
   `;
@@ -8333,7 +9931,8 @@ function renderProductCard(p, jastiperData = {}, sourceData = {}){
 function renderTripDetail(item){
   const roomId = 't:' + item.id;
   const slotSisa = item.slotTotal - item.slotFilled;
-  const catalog = tripCatalogs[item.id] || [];
+  const catalog = tripCatalogs[item.id] || item.catalog || [];
+  const isShopperMode = state.appMode === 'jastiper';
   const jastiperData = { name: item.jastiper, initials: item.initials, rating: item.rating, ratingCount: item.ratingCount, homebase: item.homebase, itemsSold: item.itemsSold, verified: item.verified, paymentScheme: item.paymentScheme || 'full', dpPercent: item.dpPercent || 50 };
   const sourceData = { type: 'trip', title: item.title, location: item.country, roomTitle: item.roomTitle, roomId: roomId, paymentScheme: item.paymentScheme || 'full', dpPercent: item.dpPercent || 50 };
   const jSafe = encodeURIComponent(JSON.stringify(jastiperData));
@@ -8344,7 +9943,7 @@ function renderTripDetail(item){
       <button class="back-btn" onclick="closeDetail()">${svg('arrowLeft')}</button>
       <div class="detail-back-title">Trip Details</div>
     </div>
-    <div class="detail-banner">
+    <div class="detail-banner" style="${item.banner ? `background-image:url('${item.banner}'); background-size:cover; background-position:center; min-height:140px;` : ''}">
       <span class="badge ${badgeClass(item.type)}">${item.badge}</span>
       <span class="feed-time-badge">${svg('clock', 'style="width:10px;height:10px;stroke:currentColor;"')} ${item.postedAgo || '2 hrs ago'}</span>
     </div>
@@ -8386,25 +9985,77 @@ function renderTripDetail(item){
         <div class="meta-row">
           ${svg('calendar')}
           <div style="flex:1;">
-            <div class="meta-row-label">Travel itinerary</div>
+            <div class="meta-row-label">${state.lang === 'id' ? 'Jadwal perjalanan trip' : 'Travel itinerary'}</div>
             <div class="meta-row-value">${item.dates}</div>
+          </div>
+        </div>
+        ${item.estimatedShippingDate ? `
+          <div class="meta-row" style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:10px; padding:9px 12px; margin:4px 0;">
+            ${svg('truck', 'style="width:16px;height:16px;stroke:#16A34A;"')}
+            <div style="flex:1;">
+              <div class="meta-row-label" style="color:#15803D; font-weight:700;">${state.lang === 'id' ? 'Estimasi Pengiriman Barang' : 'Estimated Shipping Date'}</div>
+              <div class="meta-row-value" style="color:#166534; font-weight:800; font-size:12.5px;">📦 ${item.estimatedShippingDate}</div>
+            </div>
+            <span style="font-size:9.5px; font-weight:700; background:#DCFCE7; color:#15803D; padding:2px 7px; border-radius:4px;">Auto AWB</span>
+          </div>
+        ` : ''}
+        <div class="meta-row">
+          ${svg('tag')}
+          <div style="flex:1;">
+            <div class="meta-row-label">${state.lang === 'id' ? 'Kategori barang belanjaan' : 'Product categories'}</div>
+            <div class="meta-row-value" style="display:flex; flex-wrap:wrap; gap:4px; margin-top:2px;">
+              ${(item.categories || (item.category ? item.category.split(', ') : ['General'])).map(c => `
+                <span style="font-size:10px; font-weight:700; background:#EFF6FF; color:#2563EB; padding:2px 7px; border-radius:6px;">${c}</span>
+              `).join('')}
+            </div>
           </div>
         </div>
         <div class="meta-row">
           ${svg('clock')}
           <div style="flex:1;">
-            <div class="meta-row-label">Order cut-off</div>
-            <div class="meta-row-value">${item.cutoff}</div>
+            <div class="meta-row-label">${state.lang === 'id' ? 'Batas akhir pesanan' : 'Order cut-off'}</div>
+            <div class="meta-row-value">${item.cutoff || 'Close 2 days before return'}</div>
           </div>
         </div>
         <div class="meta-row">
           ${svg('users')}
           <div style="flex:1;">
-            <div class="meta-row-label">Shopping capacity</div>
-            <div class="meta-row-value">${item.slotFilled}/${item.slotTotal} filled • ${slotSisa} slots left</div>
+            <div class="meta-row-label">${state.lang === 'id' ? 'Kapasitas bagasi titipan' : 'Shopping capacity'}</div>
+            <div class="meta-row-value">${item.slotFilled || 0}/${item.slotTotal || 10} filled • ${slotSisa} slots left</div>
           </div>
         </div>
+        ${item.pickupAddress ? `
+          <div class="meta-row" style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:9px 12px; margin:4px 0;">
+            ${svg('mapPin', 'style="width:16px;height:16px;stroke:#0284C7;"')}
+            <div style="flex:1;">
+              <div class="meta-row-label" style="color:#0369A1; font-weight:700;">${state.lang === 'id' ? 'Alamat Asal Dikirim (Hub Penjemputan)' : 'Shipping Origin & Pickup Hub'}</div>
+              <div class="meta-row-value" style="font-size:11.5px; font-weight:700; color:var(--primary); display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:2px;">
+                <span>${item.pickupAddress.label}</span>
+                <span style="font-size:9.5px; font-weight:800; background:#DCFCE7; color:#15803D; padding:2px 6px; border-radius:4px;">⚡ Siap GoSend / Instant</span>
+              </div>
+              <div style="font-size:10.5px; color:var(--muted); margin-top:2px; line-height:1.35;">
+                ${item.pickupAddress.address}
+              </div>
+            </div>
+          </div>
+        ` : ''}
       </div>
+
+      ${isShopperMode ? `
+        <div style="background:#FFF7ED; border:1.5px solid #FDBA74; border-radius:14px; padding:12px 14px; margin-bottom:14px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+          <div>
+            <div style="font-size:12.5px; font-weight:800; color:var(--primary); display:flex; align-items:center; gap:5px;">
+              <span>📸 ${state.lang === 'id' ? 'Kelola Katalog Trip' : 'Manage Trip Catalog'}</span>
+            </div>
+            <div style="font-size:10.5px; color:var(--tertiary); margin-top:2px;">
+              ${state.lang === 'id' ? 'Tambah koleksi barang belanjaan untuk trip ini.' : 'Add items to this trip catalog for buyers to buy.'}
+            </div>
+          </div>
+          <button class="btn-primary" style="padding:7px 12px; font-size:11px; margin:0; white-space:nowrap; flex-shrink:0;" onclick="openAddCatalogModal('trip', '${item.id}', '${item.title.replace(/'/g, "\\'")}')">
+            + Upload Item
+          </button>
+        </div>
+      ` : ''}
 
       <div class="section-head" style="padding:6px 0 10px;">
         <div class="section-title">Product Catalog</div>
@@ -8413,9 +10064,9 @@ function renderTripDetail(item){
       ${renderRoomCard(roomId, item.roomTitle, item.roomDesc)}
       ${(() => {
         const joined = !!joinedRooms[roomId];
-        const visible = joined ? catalog : catalog.slice(0,3);
+        const visible = (joined || isShopperMode) ? catalog : catalog.slice(0,3);
         const remaining = catalog.length - visible.length;
-        return visible.map(prod => renderProductCard(prod, jastiperData, sourceData)).join('') + (remaining > 0 ? renderLockedPrompt(roomId, remaining) : '');
+        return visible.map(prod => renderProductCard(prod, jastiperData, sourceData)).join('') + ((!isShopperMode && remaining > 0) ? renderLockedPrompt(roomId, remaining) : '');
       })()}
     </div>
   `;
@@ -8424,7 +10075,8 @@ function renderTripDetail(item){
 /* ---- DETAIL: LAPAK ---- */
 function renderLapakDetail(item){
   const roomId = 'l:' + item.id;
-  const catalog = lapakCatalogs[item.id] || [];
+  const catalog = lapakCatalogs[item.id] || item.catalog || [];
+  const isShopperMode = state.appMode === 'jastiper';
   const jastiperData = { name: item.jastiper, initials: item.initials, rating: item.rating, ratingCount: item.ratingCount, homebase: item.location, itemsSold: item.itemsSold, verified: item.verified, paymentScheme: item.paymentScheme || 'full', dpPercent: item.dpPercent || 50 };
   const sourceData = { type: 'lapak', title: item.title, location: item.location, roomTitle: item.roomTitle, roomId: roomId, paymentScheme: item.paymentScheme || 'full', dpPercent: item.dpPercent || 50 };
   const jSafe = encodeURIComponent(JSON.stringify(jastiperData));
@@ -8474,6 +10126,22 @@ function renderLapakDetail(item){
         </div>
       </div>
 
+      ${isShopperMode ? `
+        <div style="background:#F0FDF4; border:1.5px solid #86EFAC; border-radius:14px; padding:12px 14px; margin-bottom:14px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+          <div>
+            <div style="font-size:12.5px; font-weight:800; color:var(--primary); display:flex; align-items:center; gap:5px;">
+              <span>📸 ${state.lang === 'id' ? 'Kelola Katalog Lapak' : 'Manage Stall Catalog'}</span>
+            </div>
+            <div style="font-size:10.5px; color:var(--tertiary); margin-top:2px;">
+              ${state.lang === 'id' ? 'Tambah koleksi barang PO/Ready Stock untuk lapak ini.' : 'Add items to this stall catalog for buyers to buy.'}
+            </div>
+          </div>
+          <button class="btn-primary" style="padding:7px 12px; font-size:11px; margin:0; white-space:nowrap; flex-shrink:0;" onclick="openAddCatalogModal('lapak', '${item.id}', '${item.title.replace(/'/g, "\\'")}')">
+            + Upload Item
+          </button>
+        </div>
+      ` : ''}
+
       <div class="section-head" style="padding:6px 0 10px;">
         <div class="section-title">Product Catalog</div>
         <div class="section-link">${catalog.length} items</div>
@@ -8481,9 +10149,9 @@ function renderLapakDetail(item){
       ${renderRoomCard(roomId, item.roomTitle, item.roomDesc)}
       ${(() => {
         const joined = !!joinedRooms[roomId];
-        const visible = joined ? catalog : catalog.slice(0,3);
+        const visible = (joined || isShopperMode) ? catalog : catalog.slice(0,3);
         const remaining = catalog.length - visible.length;
-        return visible.map(prod => renderProductCard(prod, jastiperData, sourceData)).join('') + (remaining > 0 ? renderLockedPrompt(roomId, remaining) : '');
+        return visible.map(prod => renderProductCard(prod, jastiperData, sourceData)).join('') + ((!isShopperMode && remaining > 0) ? renderLockedPrompt(roomId, remaining) : '');
       })()}
     </div>
   `;
@@ -9306,7 +10974,7 @@ function renderProfile(){
         </div>
         <div style="display:flex; gap:8px;">
           ${isJastiper ? `
-            <button style="flex:1; background:var(--secondary); color:#fff; border:none; border-radius:10px; padding:8px 0; font-size:11.5px; font-weight:700; cursor:pointer;" onclick="showToast(state.lang === 'id' ? 'Buka jadwal trip baru' : 'Open new trip schedule')">
+            <button style="flex:1; background:var(--secondary); color:#fff; border:none; border-radius:10px; padding:8px 0; font-size:11.5px; font-weight:700; cursor:pointer;" onclick="openCreateTripForm()">
               ${isId ? '+ Buka Trip Baru' : '+ Post New Trip'}
             </button>
             <button style="flex:1; background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2); border-radius:10px; padding:8px 0; font-size:11.5px; font-weight:600; cursor:pointer;" onclick="showToast(state.lang === 'id' ? 'Tarik penghasilan ke rekening bank' : 'Withdraw earnings to bank account')">
@@ -9326,7 +10994,7 @@ function renderProfile(){
       <!-- Menu Items List -->
       <div style="background:#fff; border:1px solid var(--border); border-radius:16px; overflow:hidden;">
         ${isJastiper ? `
-          <div class="meta-row" style="cursor:pointer; border-bottom:1px solid var(--border); padding:13px 16px;" onclick="showToast('Manage trips and stalls')">
+          <div class="meta-row" style="cursor:pointer; border-bottom:1px solid var(--border); padding:13px 16px;" onclick="openMyTripsManage()">
             ${svg('trip')}
             <div style="flex:1;">
               <div class="meta-row-label">${t('profile.manageTrips', 'Kelola Jadwal Trip & Lapak')}</div>
